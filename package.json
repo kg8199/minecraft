@@ -1,0 +1,31 @@
+{
+  "name": "minecraft",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kamilgeagea/minecraft.git"
+  },
+  "keywords": [],
+  "author": "kamilgeagea",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kamilgeagea/minecraft/issues"
+  },
+  "homepage": "https://github.com/kamilgeagea/minecraft#readme",
+  "dependencies": {
+    "three": "^0.138.3"
+  },
+  "devDependencies": {
+    "@types/three": "^0.138.0",
+    "ts-loader": "^9.2.8",
+    "typescript": "^4.6.2",
+    "webpack": "^5.70.0",
+    "webpack-cli": "^4.9.2"
+  }
+}
