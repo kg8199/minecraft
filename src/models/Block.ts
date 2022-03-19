@@ -47,7 +47,7 @@ class Block {
 
     // Position the edges
     line.position.x = this.x;
-    line.position.y = this.y - BLOCK_SIZE * 2; // Initiate the Block Y edges position under the player position
+    line.position.y = this.y; // Initiate the Block Y edges position under the player position
     line.position.z = this.z;
 
     // Display the block

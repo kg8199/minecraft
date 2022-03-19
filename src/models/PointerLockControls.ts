@@ -1,3 +1,7 @@
+/**
+ * This file is copied from : https://gist.github.com/TBubba/430e421e9d1b25c7838df844578b3a43
+ */
+
 import * as THREE from "three";
 
 const PI_2 = Math.PI / 2;
@@ -9,7 +13,7 @@ const changeEvent = { type: "change" };
 const lockEvent = { type: "lock" };
 const unlockEvent = { type: "unlock" };
 
-export class PointerLockControls extends THREE.EventDispatcher {
+class PointerLockControls extends THREE.EventDispatcher {
   public camera: THREE.Camera;
   public domElement: Element;
   public isLocked: boolean = false;
@@ -132,3 +136,5 @@ export class PointerLockControls extends THREE.EventDispatcher {
     console.error("THREE.PointerLockControls: Unable to use Pointer Lock API");
   };
 }
+
+export default PointerLockControls;
