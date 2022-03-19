@@ -1,6 +1,6 @@
 import { Scene, WebGLRenderer, PerspectiveCamera } from "three";
 
-import { Block, PointerLockControls } from "./models";
+import { PointerLockControls } from "./models";
 
 import {
   CAMERA_FIELD_OF_VIEW,
@@ -8,6 +8,7 @@ import {
   CAMERA_MAX_DISTANCE,
   BLOCK_SIZE,
 } from "./constants";
+import { generateRandomTerrain } from "./game";
 
 const scene = new Scene();
 const renderer = new WebGLRenderer();
@@ -39,16 +40,8 @@ window.addEventListener("resize", () => {
   camera.updateProjectionMatrix(); // Apply changes on the camera
 });
 
-/**
- * TODO: Change place later
- */
-// Initiate the game
-for (let x = 0; x < 20; x++) {
-  for (let z = 0; z < 20; z++) {
-    const block = new Block(x * BLOCK_SIZE, 0, z * BLOCK_SIZE);
-    block.display(scene);
-  }
-}
+// Generate the terrain
+generateRandomTerrain(scene);
 
 const gameLoop = () => {
   requestAnimationFrame(gameLoop);
