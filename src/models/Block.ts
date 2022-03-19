@@ -16,18 +16,18 @@ import { BLOCK_SIZE } from "../constants";
 
 class Block {
   // Coordinates of the block
-  x: number;
-  y: number;
-  z: number;
+  private x: number;
+  private y: number;
+  private z: number;
 
-  constructor(x: number, y: number, z: number) {
+  public constructor(x: number, y: number, z: number) {
     this.x = x;
-    this.y = y;
+    this.y = y - BLOCK_SIZE * 2; // Initiate the Block Y position under the player position
     this.z = z;
   }
 
   // Method that displays the block
-  display = (scene: Scene) => {
+  public display = (scene: Scene) => {
     // Create the block
     const blockBox = new BoxBufferGeometry(BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE); // Create a new box (width, height, depth)
     const blockMesh = new MeshBasicMaterial({ color: 0x00ff00 }); // What is displayed on the block (the color / image)
@@ -47,7 +47,7 @@ class Block {
 
     // Position the edges
     line.position.x = this.x;
-    line.position.y = this.y;
+    line.position.y = this.y - BLOCK_SIZE * 2; // Initiate the Block Y edges position under the player position
     line.position.z = this.z;
 
     // Display the block
