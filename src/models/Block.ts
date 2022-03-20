@@ -8,7 +8,7 @@ import {
   LineBasicMaterial,
 } from "three";
 
-import { BLOCK_SIZE } from "../constants";
+import { BLOCK_SIZE, EDGE_COLOR } from "../constants";
 
 /**
  * The Block class builds the squared object that we see in the game (example: cube of dirt, cube of sand, water...)
@@ -42,7 +42,7 @@ class Block {
     const edges = new EdgesGeometry(blockBox); // Position the border
     let line = new LineSegments(
       edges, // Position
-      new LineBasicMaterial({ color: 0xffffff }) // Material
+      new LineBasicMaterial({ color: EDGE_COLOR }) // Material
     ); // Create the border
 
     // Position the edges

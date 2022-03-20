@@ -1,17 +1,19 @@
 import { Scene, WebGLRenderer, PerspectiveCamera } from "three";
 
 import { PointerLockControls } from "./models";
+import { generateRandomTerrain, updateGame } from "./game";
 
 import {
   CAMERA_FIELD_OF_VIEW,
   CAMERA_MIN_DISTANCE,
   CAMERA_MAX_DISTANCE,
-  BLOCK_SIZE,
 } from "./constants";
-import { generateRandomTerrain } from "./game";
 
 const scene = new Scene();
 const renderer = new WebGLRenderer();
+
+// Variables shared accross the game
+let pressedKeys: Set<string> = new Set<string>(); // Keys that are pressed at a certain frame
 
 // Set the size of the renderer to the screen width / height
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -43,8 +45,18 @@ window.addEventListener("resize", () => {
 // Generate the terrain
 generateRandomTerrain(scene);
 
+// Controls - listeners that add and remove keys from the set of pressed keys
+document.addEventListener("keydown", (event: KeyboardEvent) => {
+  pressedKeys.add(event.key);
+});
+
+document.addEventListener("keyup", (event: KeyboardEvent) => {
+  pressedKeys.delete(event.key);
+});
+
 const gameLoop = () => {
   requestAnimationFrame(gameLoop);
+  updateGame(controls, pressedKeys);
   renderer.render(scene, camera); // render the game
 };
 
