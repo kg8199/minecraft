@@ -98,7 +98,9 @@ const update = () => {
   // If we're under the block, go back on top
   if (
     currentBlock && // If we're on a block
-    camera.position.y <= currentBlock.y + BLOCK_SIZE * CAMERA_INITIAL_POSITION
+    camera.position.y <=
+      currentBlock.y + BLOCK_SIZE * CAMERA_INITIAL_POSITION &&
+    camera.position.y >= currentBlock.y - BLOCK_SIZE * CAMERA_INITIAL_POSITION
   ) {
     camera.position.y = currentBlock.y + BLOCK_SIZE * CAMERA_INITIAL_POSITION; // Back to the ground
     yAcceleration = 0; // Reset acceleration
