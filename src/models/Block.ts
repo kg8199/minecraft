@@ -16,9 +16,9 @@ import { BLOCK_SIZE, EDGE_COLOR } from "../constants";
 
 class Block {
   // Coordinates of the block
-  private x: number;
-  private y: number;
-  private z: number;
+  x: number;
+  y: number;
+  z: number;
 
   public constructor(x: number, y: number, z: number) {
     this.x = x;

@@ -1,19 +1,28 @@
 import { Scene, WebGLRenderer, PerspectiveCamera } from "three";
 
-import { PointerLockControls } from "./models";
-import { generateRandomTerrain, updateGame } from "./game";
+import { PointerLockControls, Block } from "./models";
+import { generateRandomTerrain } from "./game";
 
 import {
   CAMERA_FIELD_OF_VIEW,
   CAMERA_MIN_DISTANCE,
   CAMERA_MAX_DISTANCE,
+  BLOCK_SIZE,
+  GRAVITY,
+  MOVING_SPEED,
+  CAMERA_INITIAL_POSITION,
+  JUMPING,
 } from "./constants";
+import { BlockStorage } from "./types";
 
 const scene = new Scene();
 const renderer = new WebGLRenderer();
 
 // Variables shared accross the game
+let blocks: BlockStorage = {}; // Store the blocks that we add in memory
 let pressedKeys: Set<string> = new Set<string>(); // Keys that are pressed at a certain frame
+let yAcceleration = 0; // The acceleration of the camera on the y axis (vertical)
+let canJump = true; // Variable that indicates whether the player can jump or not
 
 // Set the size of the renderer to the screen width / height
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -43,20 +52,63 @@ window.addEventListener("resize", () => {
 });
 
 // Generate the terrain
-generateRandomTerrain(scene);
+generateRandomTerrain(scene, blocks);
 
 // Controls - listeners that add and remove keys from the set of pressed keys
 document.addEventListener("keydown", (event: KeyboardEvent) => {
-  pressedKeys.add(event.key);
+  if (event.key === " " && canJump) {
+    yAcceleration = JUMPING; // Change y position
+    canJump = false; // Disable jump (to avoid infinite jump)
+  } else {
+    pressedKeys.add(event.key);
+  }
 });
 
 document.addEventListener("keyup", (event: KeyboardEvent) => {
   pressedKeys.delete(event.key);
 });
 
+// The update function runs at every frame - it updates the state of the game
+const update = () => {
+  // Controls - This algorithm will be executed at every frame, if a certain key is pressed -> move accordingly
+  if (pressedKeys.has("w")) {
+    controls.moveForward(MOVING_SPEED);
+  }
+  if (pressedKeys.has("a")) {
+    controls.moveRight(-1 * MOVING_SPEED);
+  }
+  if (pressedKeys.has("s")) {
+    controls.moveForward(-1 * MOVING_SPEED);
+  }
+  if (pressedKeys.has("d")) {
+    controls.moveRight(MOVING_SPEED);
+  }
+
+  // Physics - This algorithm will reposition the camera at every frame to make sure the player is on top of the block
+  // At every frame, apply gravity to the position
+  camera.position.y = camera.position.y - yAcceleration;
+  yAcceleration += GRAVITY;
+
+  // Get the current block the player is on
+  const currentPositionX =
+    Math.floor(camera.position.x / BLOCK_SIZE) * BLOCK_SIZE;
+  const currentPositionZ =
+    Math.floor(camera.position.z / BLOCK_SIZE) * BLOCK_SIZE;
+  const currentBlock = blocks[`${currentPositionX},${currentPositionZ}`]; // Current block we're on
+  // If we're under the block, go back on top
+  if (
+    currentBlock && // If we're on a block
+    camera.position.y <= currentBlock.y + BLOCK_SIZE * CAMERA_INITIAL_POSITION
+  ) {
+    camera.position.y = currentBlock.y + BLOCK_SIZE * CAMERA_INITIAL_POSITION; // Back to the ground
+    yAcceleration = 0; // Reset acceleration
+    canJump = true; // Can jump once we touch the ground
+  }
+};
+
 const gameLoop = () => {
   requestAnimationFrame(gameLoop);
-  updateGame(controls, pressedKeys);
+  update();
   renderer.render(scene, camera); // render the game
 };
 
