@@ -1,6 +1,6 @@
 import { Scene, WebGLRenderer, PerspectiveCamera } from "three";
 
-import { PointerLockControls, Block } from "./models";
+import { PointerLockControls } from "./models";
 import { generateRandomTerrain } from "./game";
 
 import {
@@ -70,6 +70,13 @@ document.addEventListener("keyup", (event: KeyboardEvent) => {
 
 // The update function runs at every frame - it updates the state of the game
 const update = () => {
+  // Get the current block the player is on
+  const currentPositionX =
+    Math.floor((camera.position.x + BLOCK_SIZE / 2) / BLOCK_SIZE) * BLOCK_SIZE;
+  const currentPositionZ =
+    Math.floor((camera.position.z + BLOCK_SIZE / 2) / BLOCK_SIZE) * BLOCK_SIZE;
+  const currentBlock = blocks[`${currentPositionX},${currentPositionZ}`]; // Current block we're on
+
   // Controls - This algorithm will be executed at every frame, if a certain key is pressed -> move accordingly
   if (pressedKeys.has("w")) {
     controls.moveForward(MOVING_SPEED);
@@ -89,18 +96,11 @@ const update = () => {
   camera.position.y = camera.position.y - yAcceleration;
   yAcceleration += GRAVITY;
 
-  // Get the current block the player is on
-  const currentPositionX =
-    Math.floor(camera.position.x / BLOCK_SIZE) * BLOCK_SIZE;
-  const currentPositionZ =
-    Math.floor(camera.position.z / BLOCK_SIZE) * BLOCK_SIZE;
-  const currentBlock = blocks[`${currentPositionX},${currentPositionZ}`]; // Current block we're on
-  // If we're under the block, go back on top
+  // If we're under the block or on top of the block, go back to the block's y
   if (
     currentBlock && // If we're on a block
-    camera.position.y <=
-      currentBlock.y + BLOCK_SIZE * CAMERA_INITIAL_POSITION &&
-    camera.position.y >= currentBlock.y - BLOCK_SIZE * CAMERA_INITIAL_POSITION
+    camera.position.y <= currentBlock.y + BLOCK_SIZE * CAMERA_INITIAL_POSITION
+    // camera.position.y >= currentBlock.y - BLOCK_SIZE * CAMERA_INITIAL_POSITION
   ) {
     camera.position.y = currentBlock.y + BLOCK_SIZE * CAMERA_INITIAL_POSITION; // Back to the ground
     yAcceleration = 0; // Reset acceleration
