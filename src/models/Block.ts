@@ -20,18 +20,22 @@ class Block {
   y: number;
   z: number;
 
-  public constructor(x: number, y: number, z: number) {
+  // Texture of the block (grass, stone, dirt...)
+  texture: MeshBasicMaterial[];
+
+  public constructor(x: number, y: number, z: number, texture: MeshBasicMaterial[]) {
     this.x = x;
     this.y = y - BLOCK_SIZE * 2; // Initiate the Block Y position under the player position
     this.z = z;
+    this.texture = texture;
   }
 
   // Method that displays the block
   public display = (scene: Scene) => {
     // Create the block
-    const blockBox = new BoxBufferGeometry(BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE); // Create a new box (width, height, depth)
-    const blockMesh = new MeshBasicMaterial({ color: 0x00ff00 }); // What is displayed on the block (the color / image)
-    let block = new Mesh(blockBox, blockMesh); // Combine the block and the material
+    // Create a new box (width, height, depth)
+    const blockBox = new BoxBufferGeometry(BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+    let block = new Mesh(blockBox, this.texture); // Combine the block and the material
 
     // Position the block
     block.position.x = this.x;
@@ -51,7 +55,7 @@ class Block {
     line.position.z = this.z;
 
     // Display the block
-    scene.add(line);
+    // scene.add(line);
     scene.add(block); // Add the block to the scene (our environement)
   };
 }
