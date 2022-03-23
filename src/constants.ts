@@ -6,7 +6,7 @@
 export const CAMERA_FIELD_OF_VIEW = 75;
 export const CAMERA_MIN_DISTANCE = 0.1;
 export const CAMERA_MAX_DISTANCE = 1000;
-export const CAMERA_INITIAL_POSITION = 2.5;
+export const CAMERA_INITIAL_POSITION = 15;
 
 // Blocks
 export const BLOCK_SIZE = 5;
