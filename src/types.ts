@@ -4,6 +4,6 @@
 
 import { Block } from "./models";
 
-export interface BlockStorage {
+export interface Chunk {
   [key: string]: Block;
 }

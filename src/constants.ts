@@ -14,9 +14,16 @@ export const EDGE_COLOR = 0x000000;
 
 // Perlin
 export const PERLIN_INCREMENT = 0.05; // The higher the increment, the less smooth the terrain become (the more random)
-export const PERLIN_AMPLITUDE = 20; // The higher the amplitude, the higher the terrain goes
+export const PERLIN_AMPLITUDE = 50; // The higher the amplitude, the higher the terrain goes
 
 // Physics
 export const MOVING_SPEED = 0.6;
 export const GRAVITY = 0.08;
 export const JUMPING = -1;
+
+// Colors
+export const SKY_COLOR = 0x94d2ff;
+
+// Chunks
+export const RENDER_DISTANCE = 3; // Number of chunks we render around the player
+export const CHUNK_SIZE = 8; // The size of a chunk (16x16)

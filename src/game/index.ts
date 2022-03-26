@@ -1,1 +1,2 @@
-export { default as generateRandomTerrain } from "./generateRandomTerrain";
+export { default as generateChunks } from "./generateChunks";
+export { default as displayChunks } from "./displayChunks";

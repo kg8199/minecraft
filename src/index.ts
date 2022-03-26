@@ -1,7 +1,14 @@
-import { Scene, WebGLRenderer, PerspectiveCamera } from "three";
+import {
+  Scene,
+  WebGLRenderer,
+  PerspectiveCamera,
+  Color,
+  TextureLoader,
+  MeshBasicMaterial
+} from "three";
 
 import { PointerLockControls } from "./models";
-import { generateRandomTerrain } from "./game";
+import { displayChunks, generateChunks } from "./game";
 import { getCurrentBlock } from "./utils";
 
 import {
@@ -12,14 +19,14 @@ import {
   MOVING_SPEED,
   CAMERA_INITIAL_POSITION,
   JUMPING,
+  SKY_COLOR,
 } from "./constants";
-import { BlockStorage } from "./types";
 
-const scene = new Scene();
+let scene = new Scene();
+scene.background = new Color(SKY_COLOR); // Change scene background
 const renderer = new WebGLRenderer();
 
 // Variables shared accross the game
-let blocks: BlockStorage = {}; // Store the blocks that we add in memory
 let pressedKeys: Set<string> = new Set<string>(); // Keys that are pressed at a certain frame
 let yAcceleration = 0; // The acceleration of the camera on the y axis (vertical)
 let canJump = true; // Variable that indicates whether the player can jump or not
@@ -51,8 +58,20 @@ window.addEventListener("resize", () => {
   camera.updateProjectionMatrix(); // Apply changes on the camera
 });
 
-// Generate the terrain
-generateRandomTerrain(scene, blocks);
+// Textures
+const LOADER = new TextureLoader();
+export const GRASS_TEXTURE: MeshBasicMaterial[] = [
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/grass/side4.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/grass/side1.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/grass/top.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/grass/bottom.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/grass/side2.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/grass/side3.png") }),
+];
+
+// Generate and display the terrain
+const chunks = generateChunks(GRASS_TEXTURE);
+displayChunks(scene, chunks);
 
 // Controls - listeners that add and remove keys from the set of pressed keys
 document.addEventListener("keydown", (event: KeyboardEvent) => {
@@ -74,7 +93,7 @@ const update = () => {
   if (pressedKeys.has("w")) {
     controls.moveForward(MOVING_SPEED);
     // Get the current block we are on
-    const currentBlock = getCurrentBlock(camera.position.x, camera.position.z, blocks);
+    const currentBlock = getCurrentBlock(camera.position.x, camera.position.z, chunks);
     // if current block is higher than user, move back to initial position => collision
     if (currentBlock.y > camera.position.y - CAMERA_INITIAL_POSITION) {
       controls.moveForward(-1 * MOVING_SPEED);
@@ -83,7 +102,7 @@ const update = () => {
   if (pressedKeys.has("a")) {
     controls.moveRight(-1 * MOVING_SPEED);
     // Get the current block we are on
-    const currentBlock = getCurrentBlock(camera.position.x, camera.position.z, blocks);
+    const currentBlock = getCurrentBlock(camera.position.x, camera.position.z, chunks);
     // if current block is higher than user, move back to initial position => collision
     if (currentBlock.y > camera.position.y - CAMERA_INITIAL_POSITION) {
       controls.moveRight(MOVING_SPEED);
@@ -92,7 +111,7 @@ const update = () => {
   if (pressedKeys.has("s")) {
     controls.moveForward(-1 * MOVING_SPEED);
     // Get the current block we are on
-    const currentBlock = getCurrentBlock(camera.position.x, camera.position.z, blocks);
+    const currentBlock = getCurrentBlock(camera.position.x, camera.position.z, chunks);
     // if current block is higher than user, move back to initial position => collision
     if (currentBlock.y > camera.position.y - CAMERA_INITIAL_POSITION) {
       controls.moveForward(MOVING_SPEED);
@@ -101,14 +120,14 @@ const update = () => {
   if (pressedKeys.has("d")) {
     controls.moveRight(MOVING_SPEED);
     // Get the current block we are on
-    const currentBlock = getCurrentBlock(camera.position.x, camera.position.z, blocks);
+    const currentBlock = getCurrentBlock(camera.position.x, camera.position.z, chunks);
     // if current block is higher than user, move back to initial position => collision
     if (currentBlock.y > camera.position.y - CAMERA_INITIAL_POSITION) {
       controls.moveRight(-1 * MOVING_SPEED);
     }
   }
 
-  const currentBlock = getCurrentBlock(camera.position.x, camera.position.z, blocks);
+  const currentBlock = getCurrentBlock(camera.position.x, camera.position.z, chunks);
 
   // Physics - This algorithm will reposition the camera at every frame to make sure the player is on top of the block
   // At every frame, apply gravity to the position

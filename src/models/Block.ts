@@ -3,12 +3,9 @@ import {
   BoxBufferGeometry,
   MeshBasicMaterial,
   Mesh,
-  EdgesGeometry,
-  LineSegments,
-  LineBasicMaterial,
 } from "three";
 
-import { BLOCK_SIZE, EDGE_COLOR } from "../constants";
+import { BLOCK_SIZE } from "../constants";
 
 /**
  * The Block class builds the squared object that we see in the game (example: cube of dirt, cube of sand, water...)
@@ -42,20 +39,7 @@ class Block {
     block.position.y = this.y;
     block.position.z = this.z;
 
-    // Create edges for the block (borders)
-    const edges = new EdgesGeometry(blockBox); // Position the border
-    let line = new LineSegments(
-      edges, // Position
-      new LineBasicMaterial({ color: EDGE_COLOR }) // Material
-    ); // Create the border
-
-    // Position the edges
-    line.position.x = this.x;
-    line.position.y = this.y; // Initiate the Block Y edges position under the player position
-    line.position.z = this.z;
-
     // Display the block
-    // scene.add(line);
     scene.add(block); // Add the block to the scene (our environement)
   };
 }
