@@ -6,22 +6,23 @@ import { MeshBasicMaterial } from "three";
 
 import { Noise } from "../models";
 
-import { RENDER_DISTANCE } from "../constants";
-import { Chunk } from "../types";
+import { CHUNK_SIZE, RENDER_DISTANCE } from "../constants";
+import { Chunks } from "../types";
 import generateChunk from "./generateChunk";
 
-const generateChunks = (texture: MeshBasicMaterial[]): Chunk[] => {
+const generateChunks = (texture: MeshBasicMaterial[]): Chunks => {
 	// Load Perlin Noise
 	let noise = new Noise();
 	noise.seed(Math.random());
 
 	// Array of chunks we return
-	const chunks: Chunk[] = [];
+	let chunks: Chunks = {};
 
 	// Loop over the render distance to generate the chunks
-	for (let i = 0; i < RENDER_DISTANCE; i++) {
-		for (let j = 0; j < RENDER_DISTANCE; j++) {
-			chunks.push(generateChunk(noise, texture, i, j));
+	for (let x = 0; x < CHUNK_SIZE * RENDER_DISTANCE; x+= CHUNK_SIZE) {
+		for (let z = 0; z < CHUNK_SIZE * RENDER_DISTANCE; z+= CHUNK_SIZE) {
+			const key = `(${x},${z})`; // The key of the chunk is the initial x and z
+			chunks[key] = generateChunk(noise, texture, x, z);
 		}
 	}
 

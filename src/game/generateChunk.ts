@@ -14,9 +14,9 @@ const generateChunk = (noise: Noise, texture: MeshBasicMaterial[], initialX: num
 
 	let xoff = 0; // Increment on the x axis
   let zoff = 0; // Increment on the y axis
-  for (let x = initialX * CHUNK_SIZE; x < initialX * CHUNK_SIZE + CHUNK_SIZE; x++) {
+  for (let x = initialX; x < initialX + CHUNK_SIZE; x++) {
     xoff = 0;
-    for (let z = initialZ * CHUNK_SIZE; z < initialZ * CHUNK_SIZE + CHUNK_SIZE; z++) {
+    for (let z = initialZ; z < initialZ + CHUNK_SIZE; z++) {
       xoff = x * PERLIN_INCREMENT;
       zoff = z * PERLIN_INCREMENT;
       const blockX = x * BLOCK_SIZE;

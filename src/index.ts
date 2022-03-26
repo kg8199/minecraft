@@ -3,8 +3,6 @@ import {
   WebGLRenderer,
   PerspectiveCamera,
   Color,
-  TextureLoader,
-  MeshBasicMaterial
 } from "three";
 
 import { PointerLockControls } from "./models";
@@ -20,7 +18,12 @@ import {
   CAMERA_INITIAL_POSITION,
   JUMPING,
   SKY_COLOR,
+  RENDER_DISTANCE,
+  CHUNK_SIZE,
+  BLOCK_SIZE,
+  GRASS_TEXTURE
 } from "./constants";
+import { Chunks } from "./types";
 
 let scene = new Scene();
 scene.background = new Color(SKY_COLOR); // Change scene background
@@ -30,6 +33,7 @@ const renderer = new WebGLRenderer();
 let pressedKeys: Set<string> = new Set<string>(); // Keys that are pressed at a certain frame
 let yAcceleration = 0; // The acceleration of the camera on the y axis (vertical)
 let canJump = true; // Variable that indicates whether the player can jump or not
+let chunks: Chunks = {};
 
 // Set the size of the renderer to the screen width / height
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -38,7 +42,7 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
 // Setup camera - User POV
-const camera = new PerspectiveCamera(
+let camera = new PerspectiveCamera(
   CAMERA_FIELD_OF_VIEW, // Field of view - how wide the POV of the player is
   window.innerWidth / window.innerHeight, // Aspect ratio
   CAMERA_MIN_DISTANCE, // How near can the player see
@@ -58,20 +62,14 @@ window.addEventListener("resize", () => {
   camera.updateProjectionMatrix(); // Apply changes on the camera
 });
 
-// Textures
-const LOADER = new TextureLoader();
-export const GRASS_TEXTURE: MeshBasicMaterial[] = [
-	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/grass/side4.png") }),
-	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/grass/side1.png") }),
-	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/grass/top.png") }),
-	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/grass/bottom.png") }),
-	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/grass/side2.png") }),
-	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/grass/side3.png") }),
-];
-
 // Generate and display the terrain
-const chunks = generateChunks(GRASS_TEXTURE);
+chunks = generateChunks(GRASS_TEXTURE);
 displayChunks(scene, chunks);
+
+// Place the player in the middle of the map on initialization
+camera.position.x = RENDER_DISTANCE * CHUNK_SIZE * BLOCK_SIZE / 2;
+camera.position.z = RENDER_DISTANCE * CHUNK_SIZE * BLOCK_SIZE / 2;
+camera.position.y = 0;
 
 // Controls - listeners that add and remove keys from the set of pressed keys
 document.addEventListener("keydown", (event: KeyboardEvent) => {

@@ -2,6 +2,8 @@
  * File where we store the constants
  */
 
+import { MeshBasicMaterial, TextureLoader } from "three";
+
 // Camera
 export const CAMERA_FIELD_OF_VIEW = 75;
 export const CAMERA_MIN_DISTANCE = 0.1;
@@ -27,3 +29,14 @@ export const SKY_COLOR = 0x94d2ff;
 // Chunks
 export const RENDER_DISTANCE = 3; // Number of chunks we render around the player
 export const CHUNK_SIZE = 8; // The size of a chunk (16x16)
+
+// Textures
+const LOADER = new TextureLoader();
+export const GRASS_TEXTURE: MeshBasicMaterial[] = [
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/grass/side4.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/grass/side1.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/grass/top.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/grass/bottom.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/grass/side2.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/grass/side3.png") }),
+];

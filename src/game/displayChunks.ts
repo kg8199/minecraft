@@ -4,11 +4,11 @@
 
 import { Scene } from "three";
 
-import { Chunk } from "../types";
+import { Chunks } from "../types";
 
-const displayChunks = (scene: Scene, chunks: Chunk[]) => {
-  for (let i = 0; i < chunks.length; i++) {
-    const chunk = chunks[i];
+const displayChunks = (scene: Scene, chunks: Chunks) => {
+  for (const chunkKey in chunks) {
+    const chunk = chunks[chunkKey];
     for (const key in chunk) {
       chunk[key].display(scene);
     }
