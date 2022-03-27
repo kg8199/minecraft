@@ -15,3 +15,16 @@ export interface Chunks {
 export interface CurrentChunk {
   value: string;
 }
+
+export enum Side {
+  LEFT = "LEFT",
+  RIGHT = "RIGHT",
+  BOTTOM = "BOTTOM",
+  TOP = "TOP",
+  BACK = "BACK",
+  FRONT = "FRONT"
+}
+
+export type Sides = {
+  [key in Side]: [number, number, number];
+};
