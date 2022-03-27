@@ -1,6 +1,4 @@
 import {
-  Scene,
-  BoxBufferGeometry,
   MeshBasicMaterial,
   Mesh,
 } from "three";
@@ -51,35 +49,6 @@ class Block {
       }
     }
   }
-
-  // Method that displays the block
-  public display = (scene: Scene, chunks: Chunks) => {
-    // Get hidden sizes
-    this.getHiddenSides(chunks);
-
-    // Create the block
-    // Create a new box (width, height, depth)
-    const blockBox = new BoxBufferGeometry(BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
-    this.mesh = new Mesh(
-      blockBox,
-      [
-        this.hiddenSides.includes(Side.RIGHT) ? null : this.texture[0],
-        this.hiddenSides.includes(Side.LEFT) ? null : this.texture[1],
-        this.hiddenSides.includes(Side.TOP) ? null : this.texture[2],
-        this.hiddenSides.includes(Side.BOTTOM) ? null : this.texture[3],
-        this.hiddenSides.includes(Side.FRONT) ? null : this.texture[4],
-        this.hiddenSides.includes(Side.BACK) ? null : this.texture[5],
-      ]
-    ); // Combine the block and the material
-
-    // Position the block
-    this.mesh.position.x = this.x;
-    this.mesh.position.y = this.y;
-    this.mesh.position.z = this.z;
-
-    // Display the block
-    scene.add(this.mesh); // Add the block to the scene (our environement)
-  };
 }
 
 export default Block;

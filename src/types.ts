@@ -2,6 +2,8 @@
  * File where we store types
  */
 
+import { InstancedMesh } from "three";
+
 import { Block } from "./models";
 
 export interface Chunk {
@@ -28,3 +30,7 @@ export enum Side {
 export type Sides = {
   [key in Side]: [number, number, number];
 };
+
+export interface InstancedMeshReference {
+  value: InstancedMesh
+}

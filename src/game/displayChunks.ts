@@ -1,18 +1,35 @@
 /**
- * Function that displays the chunks we pass on the canvas
+ * Function used to display a chunk on the scene
  */
 
-import { Scene } from "three";
+import { InstancedMesh, Matrix4, Scene } from "three";
 
-import { Chunks } from "../types";
+import { BLOCK_BOX, CHUNK_SIZE, GRASS_TEXTURE, RENDER_DISTANCE } from "../constants";
+import { Chunks, InstancedMeshReference } from "../types";
 
-const displayChunks = (scene: Scene, chunks: Chunks) => {
-  for (const chunkKey in chunks) {
-    const chunk = chunks[chunkKey];
-    for (const key in chunk) {
-      chunk[key].display(scene, chunks);
+const displayChunk = (scene: Scene, instancedMesh: InstancedMeshReference, chunks: Chunks) => {
+  // Remove old mesh
+  if (scene.children.length) {
+    scene.remove(instancedMesh.value);
+  }
+
+  instancedMesh.value = new InstancedMesh(
+    BLOCK_BOX,
+    GRASS_TEXTURE,
+    RENDER_DISTANCE**2 * CHUNK_SIZE**2
+  );
+
+  // Create new mesh and add it to the scene
+  let count = 0;
+  for (let chunk in chunks) {
+    for (let key in chunks[chunk]) {
+      const block = chunks[chunk][key];
+      const matrix = new Matrix4().makeTranslation(block.x, block.y, block.z);
+      instancedMesh.value.setMatrixAt(count, matrix);
+      count++;
     }
   }
+  scene.add(instancedMesh.value);
 };
 
-export default displayChunks;
+export default displayChunk;

@@ -3,6 +3,7 @@ import {
   WebGLRenderer,
   PerspectiveCamera,
   Color,
+  InstancedMesh,
 } from "three";
 
 import { Noise, PointerLockControls } from "./models";
@@ -17,9 +18,13 @@ import {
   MOVING_SPEED,
   CAMERA_INITIAL_POSITION,
   JUMPING,
-  SKY_COLOR
+  SKY_COLOR,
+  BLOCK_BOX,
+  GRASS_TEXTURE,
+  RENDER_DISTANCE,
+  CHUNK_SIZE
 } from "./constants";
-import { Chunks, CurrentChunk } from "./types";
+import { Chunks, CurrentChunk, InstancedMeshReference } from "./types";
 
 let scene = new Scene();
 scene.background = new Color(SKY_COLOR); // Change scene background
@@ -36,6 +41,16 @@ let canJump = true; // Variable that indicates whether the player can jump or no
 let chunks: Chunks = {}; // Database of all the chunks that are generated
 let displayableChunks: Chunks = {}; // Chunks that are currently displayed on the map
 let currentChunk: CurrentChunk = { value: "" }; // The Chunk we are currently on
+
+// Create a chunk of mesh that will be sent to the GPU without having to send the mesh every single time we display the
+// block. InstancedMesh will allow us to limit interactions between CPU and GPU, and therefore, improve performance.
+let instancedMesh: InstancedMeshReference = {
+  value: new InstancedMesh(
+    BLOCK_BOX,
+    GRASS_TEXTURE,
+    RENDER_DISTANCE**2 * CHUNK_SIZE**2
+  )
+};
 
 // Set the size of the renderer to the screen width / height
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -138,6 +153,7 @@ const update = () => {
 
   // Code that updates chunks as we move through the map
   updateChunks(
+    instancedMesh,
     scene,
     noise,
     currentChunk,

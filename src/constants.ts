@@ -2,7 +2,7 @@
  * File where we store the constants
  */
 
-import { MeshBasicMaterial, TextureLoader } from "three";
+import { BoxGeometry, MeshBasicMaterial, TextureLoader } from "three";
 
 import { Sides, Side } from "./types";
 
@@ -15,6 +15,7 @@ export const CAMERA_INITIAL_POSITION = 15;
 // Blocks
 export const BLOCK_SIZE = 5;
 export const EDGE_COLOR = 0x000000;
+export const BLOCK_BOX = new BoxGeometry(BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
 export const SIDES: Sides = {
 	[Side.LEFT]: [-BLOCK_SIZE, 0, 0],
 	[Side.RIGHT]: [BLOCK_SIZE, 0, 0],
@@ -37,7 +38,7 @@ export const JUMPING = -1;
 export const SKY_COLOR = 0x94d2ff;
 
 // Chunks
-export const RENDER_DISTANCE = 3; // Number of chunks we render around the player
+export const RENDER_DISTANCE = 12; // Number of chunks we render around the player
 export const CHUNK_SIZE = 8; // The size of a chunk (16x16)
 
 // Textures
