@@ -20,6 +20,9 @@ class Block {
   // Texture of the block (grass, stone, dirt...)
   texture: MeshBasicMaterial[];
 
+  // Visuals of the Block
+  mesh: Mesh;
+
   public constructor(x: number, y: number, z: number, texture: MeshBasicMaterial[]) {
     this.x = x;
     this.y = y - BLOCK_SIZE * 2; // Initiate the Block Y position under the player position
@@ -32,15 +35,15 @@ class Block {
     // Create the block
     // Create a new box (width, height, depth)
     const blockBox = new BoxBufferGeometry(BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
-    let block = new Mesh(blockBox, this.texture); // Combine the block and the material
+    this.mesh = new Mesh(blockBox, this.texture); // Combine the block and the material
 
     // Position the block
-    block.position.x = this.x;
-    block.position.y = this.y;
-    block.position.z = this.z;
+    this.mesh.position.x = this.x;
+    this.mesh.position.y = this.y;
+    this.mesh.position.z = this.z;
 
     // Display the block
-    scene.add(block); // Add the block to the scene (our environement)
+    scene.add(this.mesh); // Add the block to the scene (our environement)
   };
 }
 

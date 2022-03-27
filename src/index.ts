@@ -5,8 +5,8 @@ import {
   Color,
 } from "three";
 
-import { PointerLockControls } from "./models";
-import { displayChunks, generateChunks } from "./game";
+import { Noise, PointerLockControls } from "./models";
+import { updateChunks } from "./game";
 import { getCurrentBlock } from "./utils";
 
 import {
@@ -17,23 +17,25 @@ import {
   MOVING_SPEED,
   CAMERA_INITIAL_POSITION,
   JUMPING,
-  SKY_COLOR,
-  RENDER_DISTANCE,
-  CHUNK_SIZE,
-  BLOCK_SIZE,
-  GRASS_TEXTURE
+  SKY_COLOR
 } from "./constants";
-import { Chunks } from "./types";
+import { Chunks, CurrentChunk } from "./types";
 
 let scene = new Scene();
 scene.background = new Color(SKY_COLOR); // Change scene background
 const renderer = new WebGLRenderer();
 
+// Load Perlin Noise
+let noise = new Noise();
+noise.seed(Math.random());
+
 // Variables shared accross the game
 let pressedKeys: Set<string> = new Set<string>(); // Keys that are pressed at a certain frame
 let yAcceleration = 0; // The acceleration of the camera on the y axis (vertical)
 let canJump = true; // Variable that indicates whether the player can jump or not
-let chunks: Chunks = {};
+let chunks: Chunks = {}; // Database of all the chunks that are generated
+let displayableChunks: Chunks = {}; // Chunks that are currently displayed on the map
+let currentChunk: CurrentChunk = { value: "" }; // The Chunk we are currently on
 
 // Set the size of the renderer to the screen width / height
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -61,15 +63,6 @@ window.addEventListener("resize", () => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix(); // Apply changes on the camera
 });
-
-// Generate and display the terrain
-chunks = generateChunks(GRASS_TEXTURE);
-displayChunks(scene, chunks);
-
-// Place the player in the middle of the map on initialization
-camera.position.x = RENDER_DISTANCE * CHUNK_SIZE * BLOCK_SIZE / 2;
-camera.position.z = RENDER_DISTANCE * CHUNK_SIZE * BLOCK_SIZE / 2;
-camera.position.y = 0;
 
 // Controls - listeners that add and remove keys from the set of pressed keys
 document.addEventListener("keydown", (event: KeyboardEvent) => {
@@ -142,6 +135,17 @@ const update = () => {
     yAcceleration = 0; // Reset acceleration
     canJump = true; // Can jump once we touch the ground
   }
+
+  // Code that updates chunks as we move through the map
+  updateChunks(
+    scene,
+    noise,
+    currentChunk,
+    chunks,
+    displayableChunks,
+    camera.position.x,
+    camera.position.z
+  );
 };
 
 const gameLoop = () => {

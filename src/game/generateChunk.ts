@@ -13,21 +13,19 @@ const generateChunk = (noise: Noise, texture: MeshBasicMaterial[], initialX: num
 	let chunk: Chunk = {};
 
 	let xoff = 0; // Increment on the x axis
-  let zoff = 0; // Increment on the y axis
-  for (let x = initialX; x < initialX + CHUNK_SIZE; x++) {
+  let zoff = 0; // Increment on the z axis
+  for (let x = initialX; x < initialX + CHUNK_SIZE * BLOCK_SIZE; x+=BLOCK_SIZE) {
     xoff = 0;
-    for (let z = initialZ; z < initialZ + CHUNK_SIZE; z++) {
-      xoff = x * PERLIN_INCREMENT;
-      zoff = z * PERLIN_INCREMENT;
-      const blockX = x * BLOCK_SIZE;
-      const blockZ = z * BLOCK_SIZE;
+    for (let z = initialZ; z < initialZ + CHUNK_SIZE * BLOCK_SIZE; z+=BLOCK_SIZE) {
+      xoff = (x / BLOCK_SIZE) * PERLIN_INCREMENT;
+      zoff = (z / BLOCK_SIZE) * PERLIN_INCREMENT;
       const y =
         Math.round(
           (noise.perlin2(xoff, zoff) * PERLIN_AMPLITUDE) / BLOCK_SIZE
         ) * BLOCK_SIZE;
-      const block = new Block(blockX, y, blockZ, texture);
+      const block = new Block(x, y, z, texture);
 
-      chunk[`${blockX},${blockZ}`] = block;
+      chunk[`${x},${z}`] = block;
     }
   }
 

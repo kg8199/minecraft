@@ -11,3 +11,7 @@ export interface Chunk {
 export interface Chunks {
   [key: string]: Chunk;
 }
+
+export interface CurrentChunk {
+  value: string;
+}
