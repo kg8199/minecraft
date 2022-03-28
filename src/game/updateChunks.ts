@@ -12,15 +12,15 @@ import displayChunks from "./displayChunks";
 import { getCurrentChunk, getSurroundingChunks } from "../utils";
 
 import { GRASS_TEXTURE } from "../constants";
-import { Chunks, CurrentChunk, InstancedMeshReference } from "../types";
+import { Chunks, Reference } from "../types";
 
 const updateChunks = (
-  instancedMesh: InstancedMeshReference,
+  instancedMesh: Reference<InstancedMesh>,
   scene: Scene,
   noise: Noise,
-  currentChunk: CurrentChunk,
+  currentChunk: Reference<string>,
   chunks: Chunks,
-  displayableChunks: Chunks,
+  displayableChunks: Reference<Chunks>,
   x: number,
   z: number
 ) => {
@@ -53,13 +53,13 @@ const updateChunks = (
     }
 
     // Reset displayableChunks to make sure the keys were properly added / deleted
-    displayableChunks = {};
+    displayableChunks.value = {};
     for (let i = 0; i < surroundingChunks.length; i++) {
-      displayableChunks[surroundingChunks[i]] = chunks[surroundingChunks[i]];
+      displayableChunks.value[surroundingChunks[i]] = chunks[surroundingChunks[i]];
     }
 
     // Display the new chunks
-    displayChunks(scene, instancedMesh, displayableChunks);
+    displayChunks(scene, instancedMesh, displayableChunks.value);
   }
 };
 

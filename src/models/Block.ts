@@ -25,7 +25,7 @@ class Block {
 
   public constructor(x: number, y: number, z: number, texture: MeshBasicMaterial[]) {
     this.x = x;
-    this.y = y - BLOCK_SIZE * 2; // Initiate the Block Y position under the player position
+    this.y = y;
     this.z = z;
     this.texture = texture;
   }
@@ -34,7 +34,11 @@ class Block {
   private getVoxel = (chunks: Chunks, x: number, y: number, z: number): boolean => {
     const potentialKey = `${x},${z}`;
     for (let chunk in chunks) {
-      if (chunks[chunk][potentialKey] && chunks[chunk][potentialKey].y === y) return true;
+      if (chunks[chunk][potentialKey]) {
+        for (let i = 0; i < chunks[chunk][potentialKey].length; i++) {
+          if (chunks[chunk][potentialKey][i].y === y) return true;
+        }
+      }
     }
     return false;
   }

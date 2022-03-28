@@ -12,7 +12,7 @@ import {
 } from "three";
 
 import { Noise, PointerLockControls } from "./models";
-import { updateChunks } from "./game";
+import { addBlock, updateChunks } from "./game";
 import { getCurrentBlock } from "./utils";
 
 import {
@@ -33,7 +33,7 @@ import {
   RAYCASTER_COLOR,
   PLANE_OPACITY
 } from "./constants";
-import { Chunks, CurrentChunk, InstancedMeshReference } from "./types";
+import { Chunks, Reference } from "./types";
 
 let scene = new Scene();
 scene.background = new Color(SKY_COLOR); // Change scene background
@@ -50,13 +50,13 @@ let pressedKeys: Set<string> = new Set<string>(); // Keys that are pressed at a 
 let yAcceleration = 0; // The acceleration of the camera on the y axis (vertical)
 let canJump = true; // Variable that indicates whether the player can jump or not
 let chunks: Chunks = {}; // Database of all the chunks that are generated
-let displayableChunks: Chunks = {}; // Chunks that are currently displayed on the map
-let currentChunk: CurrentChunk = { value: "" }; // The Chunk we are currently on
+let displayableChunks: Reference<Chunks> = { value: {} }; // Chunks that are currently displayed on the map
+let currentChunk: Reference<string> = { value: "" }; // The Chunk we are currently on
 let plane: Mesh; // The plane that will be displayed on top of a block to detect which block we're pointing at
 
 // Create a chunk of mesh that will be sent to the GPU without having to send the mesh every single time we display the
 // block. InstancedMesh will allow us to limit interactions between CPU and GPU, and therefore, improve performance.
-let instancedMesh: InstancedMeshReference = {
+let instancedMesh: Reference<InstancedMesh> = {
   value: new InstancedMesh(
     BLOCK_BOX,
     GRASS_TEXTURE,
@@ -96,6 +96,8 @@ document.addEventListener("keydown", (event: KeyboardEvent) => {
   if (event.key === " " && canJump) {
     yAcceleration = JUMPING; // Change y position
     canJump = false; // Disable jump (to avoid infinite jump)
+  } else if (event.key === "q") {
+    addBlock(camera, instancedMesh, chunks, displayableChunks, scene);
   } else {
     pressedKeys.add(event.key);
   }

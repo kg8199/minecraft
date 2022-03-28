@@ -25,7 +25,7 @@ const generateChunk = (noise: Noise, texture: MeshBasicMaterial[], initialX: num
         ) * BLOCK_SIZE;
       const block = new Block(x, y, z, texture);
 
-      chunk[`${x},${z}`] = block;
+      chunk[`${x},${z}`] = [block];
     }
   }
 

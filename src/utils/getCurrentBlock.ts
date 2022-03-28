@@ -17,7 +17,14 @@ const getCurrentBlock = (x: number, z: number, chunks: Chunks): Block | null => 
 	// Loop over chunks to check if current block is there
 	for (const chunk in chunks) {
 		if (chunks[chunk][block]) {
-			return chunks[chunk][block]; // Return current block if found
+			// Get the block that has the highest y and return it
+			let currentBlock: Block;
+			for (let i = 0; i < chunks[chunk][block].length; i++) {
+				if (!currentBlock || chunks[chunk][block][i].y > currentBlock.y) {
+					currentBlock = chunks[chunk][block][i]
+				}
+			}
+			return currentBlock; // Return current block if found
 		}
 	}
 

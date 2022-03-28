@@ -2,20 +2,14 @@
  * File where we store types
  */
 
-import { InstancedMesh } from "three";
-
 import { Block } from "./models";
 
 export interface Chunk {
-  [key: string]: Block;
+  [key: string]: Block[];
 }
 
 export interface Chunks {
   [key: string]: Chunk;
-}
-
-export interface CurrentChunk {
-  value: string;
 }
 
 export enum Side {
@@ -29,8 +23,8 @@ export enum Side {
 
 export type Sides = {
   [key in Side]: [number, number, number];
-};
+}
 
-export interface InstancedMeshReference {
-  value: InstancedMesh
+export interface Reference<T> {
+  value: T;
 }
