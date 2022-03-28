@@ -11,6 +11,7 @@ export const CAMERA_FIELD_OF_VIEW = 75;
 export const CAMERA_MIN_DISTANCE = 0.1;
 export const CAMERA_MAX_DISTANCE = 1000;
 export const CAMERA_INITIAL_POSITION = 15;
+export const RAYCASTER_DISTANCE = 40;
 
 // Blocks
 export const BLOCK_SIZE = 5;
@@ -36,6 +37,10 @@ export const JUMPING = -1;
 
 // Colors
 export const SKY_COLOR = 0x94d2ff;
+export const RAYCASTER_COLOR = 0xffffff;
+
+// Opacity
+export const PLANE_OPACITY = 0.3;
 
 // Chunks
 export const RENDER_DISTANCE = 12; // Number of chunks we render around the player

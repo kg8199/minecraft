@@ -4,6 +4,11 @@ import {
   PerspectiveCamera,
   Color,
   InstancedMesh,
+  Raycaster,
+  Vector2,
+  Mesh,
+  PlaneGeometry,
+  MeshBasicMaterial,
 } from "three";
 
 import { Noise, PointerLockControls } from "./models";
@@ -22,13 +27,19 @@ import {
   BLOCK_BOX,
   GRASS_TEXTURE,
   RENDER_DISTANCE,
-  CHUNK_SIZE
+  CHUNK_SIZE,
+  RAYCASTER_DISTANCE,
+  BLOCK_SIZE,
+  RAYCASTER_COLOR,
+  PLANE_OPACITY
 } from "./constants";
 import { Chunks, CurrentChunk, InstancedMeshReference } from "./types";
 
 let scene = new Scene();
 scene.background = new Color(SKY_COLOR); // Change scene background
 const renderer = new WebGLRenderer();
+const raycaster = new Raycaster(); // Ray that is shot from the camera to detect objects
+let pointer = new Vector2(0,0); // Vector that is shot by the raycaster
 
 // Load Perlin Noise
 let noise = new Noise();
@@ -41,6 +52,7 @@ let canJump = true; // Variable that indicates whether the player can jump or no
 let chunks: Chunks = {}; // Database of all the chunks that are generated
 let displayableChunks: Chunks = {}; // Chunks that are currently displayed on the map
 let currentChunk: CurrentChunk = { value: "" }; // The Chunk we are currently on
+let plane: Mesh; // The plane that will be displayed on top of a block to detect which block we're pointing at
 
 // Create a chunk of mesh that will be sent to the GPU without having to send the mesh every single time we display the
 // block. InstancedMesh will allow us to limit interactions between CPU and GPU, and therefore, improve performance.
@@ -164,10 +176,89 @@ const update = () => {
   );
 };
 
+// Function that renders the game to the screen at every frame
+const render = () => {
+  raycaster.setFromCamera(pointer, camera); // Create the ray
+  const intersection = raycaster.intersectObject(instancedMesh.value); // An array of the object we intersect with the ray
+  // Implement the plane if the object is in distance
+  if (intersection.length && intersection[0] && intersection[0].distance <= RAYCASTER_DISTANCE) {
+    // If the plane does not exist yet, create it
+    if (!plane) {
+      const planeGeometry = new PlaneGeometry(BLOCK_SIZE, BLOCK_SIZE); // Setup Geometry
+      let planeMesh = new MeshBasicMaterial({ color: RAYCASTER_COLOR }); // Setup Mesh
+      planeMesh.transparent = true;
+      planeMesh.opacity = PLANE_OPACITY;
+      plane = new Mesh(planeGeometry, planeMesh);
+      scene.add(plane); // Add the plane to the scene
+    } else {
+      plane.visible = true; // Make the plane visible if it already exists
+      const materialIndex = intersection[0].face.materialIndex; // Get the side of the object we're pointing at (top, bot...)
+      const position = intersection[0].point; // Get the coordinates of the object in order to set the plane's coordinates
+      const increment = 0.0001; // We add increment to the position in order for it not to be hidden by the block's mesh
+      // Set the position and the rotation of the plane based on the side of the object we're pointing at
+      switch (materialIndex) {
+        case 0: // Right
+          plane.rotation.x = 0;
+          plane.rotation.y = Math.PI / 2;
+          plane.rotation.z = 0;
+          plane.position.x = position.x + increment;
+          plane.position.y = Math.round(position.y / BLOCK_SIZE) * BLOCK_SIZE;
+          plane.position.z = Math.round(position.z / BLOCK_SIZE) * BLOCK_SIZE;
+          break;
+        case 1: // Left
+          plane.rotation.x = 0;
+          plane.rotation.y = -Math.PI / 2;
+          plane.rotation.z = 0;
+          plane.position.x = position.x - increment;
+          plane.position.y = Math.round(position.y / BLOCK_SIZE) * BLOCK_SIZE;
+          plane.position.z = Math.round(position.z / BLOCK_SIZE) * BLOCK_SIZE;
+          break;
+        case 2: // Top
+          plane.rotation.x = -Math.PI / 2;
+          plane.rotation.y = 0;
+          plane.rotation.z = 0;
+          plane.position.x = Math.round(position.x / BLOCK_SIZE) * BLOCK_SIZE;
+          plane.position.y = position.y + increment;
+          plane.position.z = Math.round(position.z / BLOCK_SIZE) * BLOCK_SIZE;
+          break;
+        case 3: // Bottom
+          plane.rotation.x = Math.PI / 2;
+          plane.rotation.y = 0;
+          plane.rotation.z = 0;
+          plane.position.x = Math.round(position.x / BLOCK_SIZE) * BLOCK_SIZE;
+          plane.position.y = position.y - increment;
+          plane.position.z = Math.round(position.z / BLOCK_SIZE) * BLOCK_SIZE;
+          break;
+        case 4: // Front
+          plane.rotation.x = 0;
+          plane.rotation.y = 0;
+          plane.rotation.z = 0;
+          plane.position.x = Math.round(position.x / BLOCK_SIZE) * BLOCK_SIZE;
+          plane.position.y = Math.round(position.y / BLOCK_SIZE) * BLOCK_SIZE;
+          plane.position.z = position.z + increment;
+          break;
+        case 5: // Back
+          plane.rotation.x = 0;
+          plane.rotation.y = Math.PI;
+          plane.rotation.z = 0;
+          plane.position.x = Math.round(position.x / BLOCK_SIZE) * BLOCK_SIZE;
+          plane.position.y = Math.round(position.y / BLOCK_SIZE) * BLOCK_SIZE;
+          plane.position.z = position.z - increment;
+          break;
+      }
+    }
+  } else if (plane) {
+    // If there are no objects detected, make the plane invisible
+    plane.visible = false;
+  }
+
+  renderer.render(scene, camera); // Render the game
+};
+
 const gameLoop = () => {
   requestAnimationFrame(gameLoop);
   update();
-  renderer.render(scene, camera); // render the game
+  render();
 };
 
 gameLoop();
