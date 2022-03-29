@@ -12,7 +12,7 @@ import {
 } from "three";
 
 import { Noise, PointerLockControls } from "./models";
-import { addBlock, updateChunks } from "./game";
+import { addBlock, removeBlock, updateChunks } from "./game";
 import { getCurrentBlock } from "./utils";
 
 import {
@@ -98,6 +98,8 @@ document.addEventListener("keydown", (event: KeyboardEvent) => {
     canJump = false; // Disable jump (to avoid infinite jump)
   } else if (event.key === "q") {
     addBlock(camera, instancedMesh, chunks, displayableChunks, scene);
+  } else if (event.key === "e") {
+    removeBlock(camera, instancedMesh, chunks, displayableChunks, scene);
   } else {
     pressedKeys.add(event.key);
   }
@@ -113,7 +115,7 @@ const update = () => {
   if (pressedKeys.has("w")) {
     controls.moveForward(MOVING_SPEED);
     // Get the current block we are on
-    const currentBlock = getCurrentBlock(camera.position.x, camera.position.z, chunks);
+    const currentBlock = getCurrentBlock(camera.position.x, camera.position.y, camera.position.z, chunks);
     // if current block is higher than user, move back to initial position => collision
     if (currentBlock.y > camera.position.y - CAMERA_INITIAL_POSITION) {
       controls.moveForward(-1 * MOVING_SPEED);
@@ -122,7 +124,7 @@ const update = () => {
   if (pressedKeys.has("a")) {
     controls.moveRight(-1 * MOVING_SPEED);
     // Get the current block we are on
-    const currentBlock = getCurrentBlock(camera.position.x, camera.position.z, chunks);
+    const currentBlock = getCurrentBlock(camera.position.x, camera.position.y, camera.position.z, chunks);
     // if current block is higher than user, move back to initial position => collision
     if (currentBlock.y > camera.position.y - CAMERA_INITIAL_POSITION) {
       controls.moveRight(MOVING_SPEED);
@@ -131,7 +133,7 @@ const update = () => {
   if (pressedKeys.has("s")) {
     controls.moveForward(-1 * MOVING_SPEED);
     // Get the current block we are on
-    const currentBlock = getCurrentBlock(camera.position.x, camera.position.z, chunks);
+    const currentBlock = getCurrentBlock(camera.position.x, camera.position.y, camera.position.z, chunks);
     // if current block is higher than user, move back to initial position => collision
     if (currentBlock.y > camera.position.y - CAMERA_INITIAL_POSITION) {
       controls.moveForward(MOVING_SPEED);
@@ -140,14 +142,14 @@ const update = () => {
   if (pressedKeys.has("d")) {
     controls.moveRight(MOVING_SPEED);
     // Get the current block we are on
-    const currentBlock = getCurrentBlock(camera.position.x, camera.position.z, chunks);
+    const currentBlock = getCurrentBlock(camera.position.x, camera.position.y, camera.position.z, chunks);
     // if current block is higher than user, move back to initial position => collision
     if (currentBlock.y > camera.position.y - CAMERA_INITIAL_POSITION) {
       controls.moveRight(-1 * MOVING_SPEED);
     }
   }
 
-  const currentBlock = getCurrentBlock(camera.position.x, camera.position.z, chunks);
+  const currentBlock = getCurrentBlock(camera.position.x, camera.position.y, camera.position.z, chunks);
 
   // Physics - This algorithm will reposition the camera at every frame to make sure the player is on top of the block
   // At every frame, apply gravity to the position
@@ -158,7 +160,6 @@ const update = () => {
   if (
     currentBlock && // If we're on a block
     camera.position.y <= currentBlock.y + CAMERA_INITIAL_POSITION
-    // camera.position.y >= currentBlock.y - BLOCK_SIZE * CAMERA_INITIAL_POSITION
   ) {
     camera.position.y = currentBlock.y + CAMERA_INITIAL_POSITION; // Back to the ground
     yAcceleration = 0; // Reset acceleration
