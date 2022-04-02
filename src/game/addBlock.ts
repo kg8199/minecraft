@@ -6,9 +6,9 @@ import { Camera, InstancedMesh, Raycaster, Scene, Vector2 } from "three";
 
 import { Block } from "../models";
 
-import { getCurrentChunk } from "../utils";
+import { getCurrentBlock, getCurrentChunk } from "../utils";
 
-import { BLOCK_SIZE, GRASS_TEXTURE, RAYCASTER_DISTANCE } from "../constants";
+import { BLOCK_SIZE, CAMERA_INITIAL_POSITION, GRASS_TEXTURE, RAYCASTER_DISTANCE } from "../constants";
 import { Chunks, Exists, Reference } from "../types";
 import { displayChunks } from ".";
 
@@ -18,7 +18,7 @@ const addBlock = (
   chunks: Chunks,
   displayableChunks: Reference<Chunks>,
   knownTerritory: Reference<Exists>,
-  scene: Scene,
+  scene: Scene
 ) => {
   // Throw a raycast to detect where to place the block
   const raycaster = new Raycaster();
@@ -66,10 +66,19 @@ const addBlock = (
         z = Math.round(position.z - increment);
         break;
     }
-    // Create new block
-    const block = new Block(x, y, z, GRASS_TEXTURE);
+    const currentBlock = getCurrentBlock(camera.position.x, camera.position.y, camera.position.z, chunks);
+
+    // Check that the block that will be placed is not on the player
+    if (
+      (currentBlock.x === x && currentBlock.z === z)
+      && !(camera.position.y - BLOCK_SIZE * 2 > y + BLOCK_SIZE / 2)
+      && !(camera.position.y < y - BLOCK_SIZE / 2)
+    ) return;
+
     // Check what chunk the block is on
     const chunk = getCurrentChunk(x, z);
+    // Create new block
+    const block = new Block(x, y, z, GRASS_TEXTURE);
     // Add block to chunk
     const blockKey = `${x},${z}`;
     chunks[chunk][blockKey].push(block);

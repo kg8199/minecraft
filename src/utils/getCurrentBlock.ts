@@ -4,15 +4,12 @@
 
 import { Block } from "../models";
 
+import getCurrentBlocks from "./getCurrentBlocks";
+
 import { Chunks } from "../types";
-import { BLOCK_SIZE } from "../constants";
 
 const getCurrentBlock = (x: number, y: number, z: number, chunks: Chunks): Block | null => {
-	// Get the current block the player is on
-	const currentPositionX =
-	Math.floor((x + BLOCK_SIZE / 2) / BLOCK_SIZE) * BLOCK_SIZE;
-	const currentPositionZ = Math.floor((z + BLOCK_SIZE / 2) / BLOCK_SIZE) * BLOCK_SIZE;
-	const block = `${currentPositionX},${currentPositionZ}`; // The key of the block we're looking for
+	const block = getCurrentBlocks(x, z);
 
 	// Loop over chunks to check if current block is there
 	for (const chunk in chunks) {

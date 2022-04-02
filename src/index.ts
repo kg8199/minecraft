@@ -13,7 +13,7 @@ import {
 
 import { Noise, PointerLockControls } from "./models";
 import { addBlock, removeBlock, updateChunks } from "./game";
-import { getCurrentBlock } from "./utils";
+import { getBlockOnTopOfPlayer, getCurrentBlock } from "./utils";
 
 import {
   CAMERA_FIELD_OF_VIEW,
@@ -176,6 +176,15 @@ const update = () => {
   // Physics - This algorithm will reposition the camera at every frame to make sure the player is on top of the block
   // At every frame, apply gravity to the position
   camera.position.y = camera.position.y - yAcceleration;
+
+  // If the position of y touches the block on top of the player, bring jumping acceleration back to 0 (stop jumping)
+  const blockOnTopOfPlayer = getBlockOnTopOfPlayer(camera.position.x, camera.position.y, camera.position.z, chunks);
+  if (blockOnTopOfPlayer && camera.position.y >= blockOnTopOfPlayer.y - BLOCK_SIZE / 2) {
+    // Reset the camera position and put acceleration to 0
+    camera.position.y = camera.position.y + yAcceleration
+    yAcceleration = 0;
+  }
+
   yAcceleration += GRAVITY;
 
   // If we're under the block or on top of the block, go back to the block's y
