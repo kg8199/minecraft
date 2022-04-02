@@ -9,7 +9,7 @@ import { Block } from "../models";
 import { getCurrentChunk } from "../utils";
 
 import { BLOCK_SIZE, GRASS_TEXTURE, RAYCASTER_DISTANCE } from "../constants";
-import { Chunks, Reference } from "../types";
+import { Chunks, Exists, Reference } from "../types";
 import { displayChunks } from ".";
 
 const addBlock = (
@@ -17,6 +17,7 @@ const addBlock = (
   instancedMesh: Reference<InstancedMesh>,
   chunks: Chunks,
   displayableChunks: Reference<Chunks>,
+  knownTerritory: Reference<Exists>,
   scene: Scene,
 ) => {
   // Throw a raycast to detect where to place the block
@@ -35,34 +36,34 @@ const addBlock = (
     // Determine the position of the block based on the face we're aiming at
     switch (materialIndex) {
       case 0: // Right
-        x = position.x + increment;
+        x = Math.round(position.x + increment);
         y = Math.round(position.y / BLOCK_SIZE) * BLOCK_SIZE;
         z = Math.round(position.z / BLOCK_SIZE) * BLOCK_SIZE;
         break;
       case 1: // Left
-        x = position.x - increment;
+        x = Math.round(position.x - increment);
         y = Math.round(position.y / BLOCK_SIZE) * BLOCK_SIZE;
         z = Math.round(position.z / BLOCK_SIZE) * BLOCK_SIZE;
         break;
       case 2: // Top
         x = Math.round(position.x / BLOCK_SIZE) * BLOCK_SIZE;
-        y = position.y + increment;
+        y = Math.round(position.y + increment);
         z = Math.round(position.z / BLOCK_SIZE) * BLOCK_SIZE;
         break;
       case 3: // Bottom
         x = Math.round(position.x / BLOCK_SIZE) * BLOCK_SIZE;
-        y = position.y - increment;
+        y = Math.round(position.y - increment);
         z = Math.round(position.z / BLOCK_SIZE) * BLOCK_SIZE;
         break;
       case 4: // Front
         x = Math.round(position.x / BLOCK_SIZE) * BLOCK_SIZE;
         y = Math.round(position.y / BLOCK_SIZE) * BLOCK_SIZE;
-        z = position.z + increment;
+        z = Math.round(position.z + increment);
         break;
       case 5: // Back
         x = Math.round(position.x / BLOCK_SIZE) * BLOCK_SIZE;
         y = Math.round(position.y / BLOCK_SIZE) * BLOCK_SIZE;
-        z = position.z - increment;
+        z = Math.round(position.z - increment);
         break;
     }
     // Create new block
@@ -72,6 +73,9 @@ const addBlock = (
     // Add block to chunk
     const blockKey = `${x},${z}`;
     chunks[chunk][blockKey].push(block);
+
+    // Add the block to the known territory database
+    knownTerritory.value[`${x},${y},${z}`] = true;
 
     // Display the scene
     displayChunks(scene, instancedMesh, displayableChunks.value);

@@ -12,7 +12,7 @@ import displayChunks from "./displayChunks";
 import { getCurrentChunk, getSurroundingChunks } from "../utils";
 
 import { GRASS_TEXTURE } from "../constants";
-import { Chunks, Reference } from "../types";
+import { Chunks, Exists, Level, Reference } from "../types";
 
 const updateChunks = (
   instancedMesh: Reference<InstancedMesh>,
@@ -21,6 +21,8 @@ const updateChunks = (
   currentChunk: Reference<string>,
   chunks: Chunks,
   displayableChunks: Reference<Chunks>,
+  knownTerritory: Reference<Exists>,
+  topLevel: Reference<Level>,
   x: number,
   z: number
 ) => {
@@ -45,7 +47,7 @@ const updateChunks = (
           // Create a new chunk
           const [x, z] = surroundingChunks[i].split(",").map(Number); // Get the coordinates of the chunk to generate blocks
 
-          const newChunk = generateChunk(noise, GRASS_TEXTURE, x, z); // Generate blocks
+          const newChunk = generateChunk(noise, GRASS_TEXTURE, x, z, knownTerritory, topLevel); // Generate blocks
   
           chunks[surroundingChunks[i]] = newChunk; // Add blocks to database
         }

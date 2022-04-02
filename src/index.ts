@@ -33,7 +33,7 @@ import {
   RAYCASTER_COLOR,
   PLANE_OPACITY
 } from "./constants";
-import { Chunks, Reference } from "./types";
+import { Chunks, Exists, Level, Reference } from "./types";
 
 let scene = new Scene();
 scene.background = new Color(SKY_COLOR); // Change scene background
@@ -49,10 +49,14 @@ noise.seed(Math.random());
 let pressedKeys: Set<string> = new Set<string>(); // Keys that are pressed at a certain frame
 let yAcceleration = 0; // The acceleration of the camera on the y axis (vertical)
 let canJump = true; // Variable that indicates whether the player can jump or not
+let canAddBlock = true // Variable that indicates whether the player can add a block or not
+let canRemoveBlock = true; // Variable that indicates whether the player can remove a block or not
 let chunks: Chunks = {}; // Database of all the chunks that are generated
 let displayableChunks: Reference<Chunks> = { value: {} }; // Chunks that are currently displayed on the map
 let currentChunk: Reference<string> = { value: "" }; // The Chunk we are currently on
 let plane: Mesh; // The plane that will be displayed on top of a block to detect which block we're pointing at
+let knownTerritory: Reference<Exists> = { value: {} }; // Database that keeps track of the blocks that have been placed
+let topLevel: Reference<Level> = { value: {} }; // Database that keeps track of the blocks that are on the top layer
 
 // Create a chunk of mesh that will be sent to the GPU without having to send the mesh every single time we display the
 // block. InstancedMesh will allow us to limit interactions between CPU and GPU, and therefore, improve performance.
@@ -97,15 +101,33 @@ document.addEventListener("keydown", (event: KeyboardEvent) => {
     yAcceleration = JUMPING; // Change y position
     canJump = false; // Disable jump (to avoid infinite jump)
   } else if (event.key === "q") {
-    addBlock(camera, instancedMesh, chunks, displayableChunks, scene);
+    if (canAddBlock) {
+      addBlock(
+        camera,
+        instancedMesh,
+        chunks,
+        displayableChunks,
+        knownTerritory,
+        scene
+      );
+      canAddBlock = false;
+    }
   } else if (event.key === "e") {
-    removeBlock(camera, instancedMesh, chunks, displayableChunks, scene);
+    if (canRemoveBlock) {
+      removeBlock(camera, instancedMesh, chunks, displayableChunks, knownTerritory, topLevel, scene);
+      canRemoveBlock = false;
+    }
   } else {
     pressedKeys.add(event.key);
   }
 });
 
 document.addEventListener("keyup", (event: KeyboardEvent) => {
+  if (event.key === "q") {
+    canAddBlock = true;
+  } else if (event.key === "e") {
+    canRemoveBlock = true;
+  }
   pressedKeys.delete(event.key);
 });
 
@@ -174,6 +196,8 @@ const update = () => {
     currentChunk,
     chunks,
     displayableChunks,
+    knownTerritory,
+    topLevel,
     camera.position.x,
     camera.position.z
   );
