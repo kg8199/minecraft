@@ -15,6 +15,8 @@ export const RAYCASTER_DISTANCE = 40;
 export const BLOCK_SIZE = 5;
 export const EDGE_COLOR = 0x000000;
 export const BLOCK_BOX = new BoxGeometry(BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+export const INITIAL_WORLD_DEPTH = 3;
+export const MAX_WORLD_DEPTH = -150;
 
 // Perlin
 export const PERLIN_INCREMENT = 0.05; // The higher the increment, the less smooth the terrain become (the more random)

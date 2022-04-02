@@ -6,7 +6,7 @@ import { MeshBasicMaterial } from "three";
 
 import { Noise, Block } from "../models";
 
-import { BLOCK_SIZE, PERLIN_AMPLITUDE, PERLIN_INCREMENT, CHUNK_SIZE } from "../constants";
+import { BLOCK_SIZE, PERLIN_AMPLITUDE, PERLIN_INCREMENT, CHUNK_SIZE, INITIAL_WORLD_DEPTH } from "../constants";
 import { Chunk } from "../types";
 
 const generateChunk = (noise: Noise, texture: MeshBasicMaterial[], initialX: number, initialZ: number): Chunk => {
@@ -19,13 +19,17 @@ const generateChunk = (noise: Noise, texture: MeshBasicMaterial[], initialX: num
     for (let z = initialZ; z < initialZ + CHUNK_SIZE * BLOCK_SIZE; z+=BLOCK_SIZE) {
       xoff = (x / BLOCK_SIZE) * PERLIN_INCREMENT;
       zoff = (z / BLOCK_SIZE) * PERLIN_INCREMENT;
-      const y =
+      const initialY =
         Math.round(
           (noise.perlin2(xoff, zoff) * PERLIN_AMPLITUDE) / BLOCK_SIZE
         ) * BLOCK_SIZE;
-      const block = new Block(x, y, z, texture);
-
-      chunk[`${x},${z}`] = [block];
+      const blocks: Block[] = [];
+      // Generate INITIAL_WORLD_DEPTH blocks
+      for (let d = 0; d < INITIAL_WORLD_DEPTH; d++) {
+        const y = initialY - d * BLOCK_SIZE;
+        blocks.push(new Block(x, y, z, texture));
+      }
+      chunk[`${x},${z}`] = blocks;
     }
   }
 
