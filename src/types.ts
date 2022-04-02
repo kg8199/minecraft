@@ -12,19 +12,6 @@ export interface Chunks {
   [key: string]: Chunk;
 }
 
-export enum Side {
-  LEFT = "LEFT",
-  RIGHT = "RIGHT",
-  BOTTOM = "BOTTOM",
-  TOP = "TOP",
-  BACK = "BACK",
-  FRONT = "FRONT"
-}
-
-export type Sides = {
-  [key in Side]: [number, number, number];
-}
-
 export interface Reference<T> {
   value: T;
 }
