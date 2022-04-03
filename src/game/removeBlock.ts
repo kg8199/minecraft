@@ -2,18 +2,18 @@
  * Function that removes a block when we click on it
  */
 
-import { Camera, InstancedMesh, Raycaster, Scene, Vector2 } from "three";
+import { Camera, Scene } from "three";
 
-import { getCurrentChunk } from "../utils";
+import { getCurrentChunk, getRaycasterIntersection } from "../utils";
 import displayChunk from "./displayChunks";
 
 import { BLOCK_SIZE, RAYCASTER_DISTANCE } from "../constants";
-import { Chunks, Exists, Level, Reference } from "../types";
+import { Chunks, Exists, InstancedMeshes, Level, Reference } from "../types";
 import generateSurroundingBlocks from "./generateSurroundingBlocks";
 
 const removeBlock = (
   camera: Camera,
-  instancedMesh: Reference<InstancedMesh>,
+  instancedMeshes: Reference<InstancedMeshes>,
   chunks: Chunks,
   displayableChunks: Reference<Chunks>,
   knownTerritory: Reference<Exists>,
@@ -21,11 +21,7 @@ const removeBlock = (
   scene: Scene
 ) => {
   // Throw a raycast to detect which block to remove
-  const raycaster = new Raycaster();
-  const pointer = new Vector2(0,0);
-
-  raycaster.setFromCamera(pointer, camera);
-  const intersection = raycaster.intersectObject(instancedMesh.value);
+  const intersection = getRaycasterIntersection(camera, instancedMeshes);
 
   // Check if we're intersecting an object in range in order to remove it
   if (intersection.length && intersection[0].distance <= RAYCASTER_DISTANCE) {
@@ -78,7 +74,7 @@ const removeBlock = (
         generateSurroundingBlocks(x, y, z, chunks, knownTerritory);
       }
       // Display the chunks with the block removed
-      displayChunk(scene, instancedMesh, displayableChunks.value);
+      displayChunk(scene, instancedMeshes, displayableChunks.value);
     }
   }
 };

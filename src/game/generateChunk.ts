@@ -7,7 +7,7 @@ import { MeshBasicMaterial } from "three";
 import { Noise, Block } from "../models";
 
 import { BLOCK_SIZE, PERLIN_AMPLITUDE, PERLIN_INCREMENT, CHUNK_SIZE, INITIAL_WORLD_DEPTH } from "../constants";
-import { Chunk, Exists, Level, Reference } from "../types";
+import { BlockType, Chunk, Exists, Level, Reference } from "../types";
 
 const generateChunk = (
   noise: Noise,
@@ -36,7 +36,7 @@ const generateChunk = (
       // Generate INITIAL_WORLD_DEPTH blocks
       for (let d = 0; d < INITIAL_WORLD_DEPTH; d++) {
         const y = initialY - d * BLOCK_SIZE;
-        blocks.push(new Block(x, y, z, texture));
+        blocks.push(new Block(x, y, z, BlockType.GRASS));
         // Add the coordinates of the block to the known territory database
         knownTerritory.value[`${x},${y},${z}`] = true;
       }

@@ -7,8 +7,8 @@ import { Block } from "../models";
 
 import { getCurrentChunk } from "../utils";
 
-import { BLOCK_SIZE, GRASS_TEXTURE } from "../constants";
-import { Chunks, Coordinates, Exists, Reference } from "../types";
+import { BLOCK_SIZE } from "../constants";
+import { BlockType, Chunks, Coordinates, Exists, Reference } from "../types";
 
 const generateSurroundingBlocks = (
   x: number,
@@ -32,7 +32,7 @@ const generateSurroundingBlocks = (
     if (!knownTerritory.value[`${block.x},${block.y},${block.z}`]) {
       // If we don't know territory, add new block
       const chunk = getCurrentChunk(block.x, block.z);
-      chunks[chunk][`${block.x},${block.z}`].push(new Block(block.x, block.y, block.z, GRASS_TEXTURE));
+      chunks[chunk][`${block.x},${block.z}`].push(new Block(block.x, block.y, block.z, BlockType.GRASS));
       // Add new block to known territory
       knownTerritory.value[`${block.x},${block.y},${block.z}`] = true;
     }

@@ -3,9 +3,6 @@ import {
   WebGLRenderer,
   PerspectiveCamera,
   Color,
-  InstancedMesh,
-  Raycaster,
-  Vector2,
   Mesh,
   PlaneGeometry,
   MeshBasicMaterial,
@@ -13,7 +10,7 @@ import {
 
 import { Noise, PointerLockControls } from "./models";
 import { addBlock, removeBlock, updateChunks } from "./game";
-import { getBlockOnTopOfPlayer, getCurrentBlock } from "./utils";
+import { generateInstancedMeshes, getBlockOnTopOfPlayer, getCurrentBlock, getRaycasterIntersection } from "./utils";
 
 import {
   CAMERA_FIELD_OF_VIEW,
@@ -24,22 +21,16 @@ import {
   CAMERA_INITIAL_POSITION,
   JUMPING,
   SKY_COLOR,
-  BLOCK_BOX,
-  GRASS_TEXTURE,
-  RENDER_DISTANCE,
-  CHUNK_SIZE,
   RAYCASTER_DISTANCE,
   BLOCK_SIZE,
   RAYCASTER_COLOR,
   PLANE_OPACITY
 } from "./constants";
-import { Chunks, Exists, Level, Reference } from "./types";
+import { Chunks, Exists, InstancedMeshes, Level, Reference } from "./types";
 
 let scene = new Scene();
 scene.background = new Color(SKY_COLOR); // Change scene background
 const renderer = new WebGLRenderer();
-const raycaster = new Raycaster(); // Ray that is shot from the camera to detect objects
-let pointer = new Vector2(0,0); // Vector that is shot by the raycaster
 
 // Load Perlin Noise
 let noise = new Noise();
@@ -60,12 +51,8 @@ let topLevel: Reference<Level> = { value: {} }; // Database that keeps track of 
 
 // Create a chunk of mesh that will be sent to the GPU without having to send the mesh every single time we display the
 // block. InstancedMesh will allow us to limit interactions between CPU and GPU, and therefore, improve performance.
-let instancedMesh: Reference<InstancedMesh> = {
-  value: new InstancedMesh(
-    BLOCK_BOX,
-    GRASS_TEXTURE,
-    RENDER_DISTANCE**2 * CHUNK_SIZE**2
-  )
+let instancedMeshes: Reference<InstancedMeshes> = {
+  value: generateInstancedMeshes()
 };
 
 // Set the size of the renderer to the screen width / height
@@ -104,7 +91,7 @@ document.addEventListener("keydown", (event: KeyboardEvent) => {
     if (canAddBlock) {
       addBlock(
         camera,
-        instancedMesh,
+        instancedMeshes,
         chunks,
         displayableChunks,
         knownTerritory,
@@ -114,7 +101,7 @@ document.addEventListener("keydown", (event: KeyboardEvent) => {
     }
   } else if (event.key === "e") {
     if (canRemoveBlock) {
-      removeBlock(camera, instancedMesh, chunks, displayableChunks, knownTerritory, topLevel, scene);
+      removeBlock(camera, instancedMeshes, chunks, displayableChunks, knownTerritory, topLevel, scene);
       canRemoveBlock = false;
     }
   } else {
@@ -199,7 +186,7 @@ const update = () => {
 
   // Code that updates chunks as we move through the map
   updateChunks(
-    instancedMesh,
+    instancedMeshes,
     scene,
     noise,
     currentChunk,
@@ -214,8 +201,7 @@ const update = () => {
 
 // Function that renders the game to the screen at every frame
 const render = () => {
-  raycaster.setFromCamera(pointer, camera); // Create the ray
-  const intersection = raycaster.intersectObject(instancedMesh.value); // An array of the object we intersect with the ray
+  const intersection = getRaycasterIntersection(camera, instancedMeshes);
   // Implement the plane if the object is in distance
   if (intersection.length && intersection[0] && intersection[0].distance <= RAYCASTER_DISTANCE) {
     // If the plane does not exist yet, create it

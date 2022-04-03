@@ -3,7 +3,7 @@
  * It scans the current chunk we're in and update the surroundings in order to create an infinite world
  */
 
-import { InstancedMesh, Scene } from "three";
+import { Scene } from "three";
 
 import { Noise } from "../models";
 
@@ -12,10 +12,10 @@ import displayChunks from "./displayChunks";
 import { getCurrentChunk, getSurroundingChunks } from "../utils";
 
 import { GRASS_TEXTURE } from "../constants";
-import { Chunks, Exists, Level, Reference } from "../types";
+import { Chunks, Exists, InstancedMeshes, Level, Reference } from "../types";
 
 const updateChunks = (
-  instancedMesh: Reference<InstancedMesh>,
+  instancedMeshes: Reference<InstancedMeshes>,
   scene: Scene,
   noise: Noise,
   currentChunk: Reference<string>,
@@ -61,7 +61,7 @@ const updateChunks = (
     }
 
     // Display the new chunks
-    displayChunks(scene, instancedMesh, displayableChunks.value);
+    displayChunks(scene, instancedMeshes, displayableChunks.value);
   }
 };
 

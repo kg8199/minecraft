@@ -2,6 +2,8 @@
  * File where we store types
  */
 
+import { InstancedMesh, MeshBasicMaterial } from "three";
+
 import { Block } from "./models";
 
 export interface Chunk {
@@ -30,6 +32,14 @@ export interface Coordinates {
   z: number;
 }
 
+export type MapBlockTypeToTexture = {
+  [key in BlockType]: MeshBasicMaterial[];
+}
+
+export type InstancedMeshes = {
+  [key in BlockType]: InstancedMesh;
+}
+
 export enum BlockType {
   GRASS = "GRASS",
   DIRT = "DIRT",
@@ -40,8 +50,9 @@ export enum BlockType {
   PLANK = "PLANK",
   BEDROCK = "BEDROCK",
   WATER = "WATER",
-  CHEST = "CHEST",
   LEAVES = "LEAVES",
   BRICK = "BRICK",
-  OBSIDIAN = "OBSIDIAN"
+  OBSIDIAN = "OBSIDIAN",
+  SNOW = "SNOW",
+  SNOW_LEAVES = "SNOW_LEAVES"
 }

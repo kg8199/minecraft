@@ -3,6 +3,7 @@
  */
 
 import { BoxGeometry, MeshBasicMaterial, TextureLoader } from "three";
+import { BlockType, MapBlockTypeToTexture } from "./types";
 
 // Camera
 export const CAMERA_FIELD_OF_VIEW = 75;
@@ -37,6 +38,7 @@ export const PLANE_OPACITY = 0.3;
 // Chunks
 export const RENDER_DISTANCE = 12; // Number of chunks we render around the player
 export const CHUNK_SIZE = 8; // The size of a chunk (16x16)
+export const INITIAL_BLOCK_COUNT = 0;
 
 // Textures
 const LOADER = new TextureLoader();
@@ -113,12 +115,12 @@ export const WATER_TEXTURE: MeshBasicMaterial[] = [
 	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/water/side.png") }),
 ];
 export const LEAVES_TEXTURE: MeshBasicMaterial[] = [
-	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/leaves/side.png") }),
-	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/leaves/side.png") }),
-	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/leaves/side.png") }),
-	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/leaves/side.png") }),
-	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/leaves/side.png") }),
-	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/leaves/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/leaves/side.webp") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/leaves/side.webp") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/leaves/side.webp") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/leaves/side.webp") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/leaves/side.webp") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/leaves/side.webp") }),
 ];
 export const BRICK_TEXTURE: MeshBasicMaterial[] = [
 	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/brick/side.png") }),
@@ -136,3 +138,36 @@ export const OBSIDIAN_TEXTURE: MeshBasicMaterial[] = [
 	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/obsidian/side.png") }),
 	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/obsidian/side.png") }),
 ];
+export const SNOW_TEXTURE: MeshBasicMaterial[] = [
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/snow/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/snow/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/snow/top.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/snow/bottom.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/snow/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/snow/side.png") }),
+];
+export const SNOW_LEAVES_TEXTURE: MeshBasicMaterial[] = [
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/snow_leaves/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/snow_leaves/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/snow_leaves/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/snow_leaves/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/snow_leaves/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/snow_leaves/side.png") }),
+];
+
+export const MAP_BLOCK_TO_TEXTURE: MapBlockTypeToTexture = {
+	[BlockType.GRASS]: GRASS_TEXTURE,
+	[BlockType.DIRT]: DIRT_TEXTURE,
+	[BlockType.STONE]: STONE_TEXTURE,
+	[BlockType.SAND]: SAND_TEXTURE,
+	[BlockType.LOG]: LOG_TEXTURE,
+	[BlockType.COBBLESTONE]: COBBLESTONE_TEXTURE,
+	[BlockType.PLANK]: PLANK_TEXTURE,
+	[BlockType.BEDROCK]: BEDROCK_TEXTURE,
+	[BlockType.WATER]: WATER_TEXTURE,
+	[BlockType.LEAVES]: LEAVES_TEXTURE,
+	[BlockType.BRICK]: BRICK_TEXTURE,
+	[BlockType.OBSIDIAN]: OBSIDIAN_TEXTURE,
+	[BlockType.SNOW]: SNOW_TEXTURE,
+	[BlockType.SNOW_LEAVES]: SNOW_LEAVES_TEXTURE,
+};

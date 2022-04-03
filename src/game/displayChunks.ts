@@ -6,34 +6,50 @@ import { InstancedMesh, Matrix4, Scene } from "three";
 
 import { getBlockCount } from "../utils";
 
-import { BLOCK_BOX, GRASS_TEXTURE } from "../constants";
-import { Chunks, Reference } from "../types";
+import { BLOCK_BOX, GRASS_TEXTURE, MAP_BLOCK_TO_TEXTURE } from "../constants";
+import { BlockType, Chunks, InstancedMeshes, Reference } from "../types";
 
-const displayChunk = (scene: Scene, instancedMesh: Reference<InstancedMesh>, chunks: Chunks) => {
+const displayChunk = (scene: Scene, instancedMeshes: Reference<InstancedMeshes>, chunks: Chunks) => {
   // Remove old mesh
-  if (scene.children.length) {
-    scene.remove(instancedMesh.value);
+  for (const blockType in instancedMeshes.value) {
+    scene.remove(instancedMeshes.value[blockType as BlockType]);
   }
 
-  instancedMesh.value = new InstancedMesh(
-    BLOCK_BOX,
-    GRASS_TEXTURE,
-    getBlockCount(chunks)
-  );
+  // Modify current mesh
+  for (const blockType in instancedMeshes.value) {
+    instancedMeshes.value[blockType as BlockType] = new InstancedMesh(
+      BLOCK_BOX,
+      MAP_BLOCK_TO_TEXTURE[blockType as BlockType],
+      getBlockCount(chunks, blockType as BlockType)
+    );
+  }
+
+  // Create a counts hashmap to keep track of each blocktype count
+  let counts: { [key in BlockType]: number } = {} as { [key in BlockType]: number };
+
+  // Fill the counts variable
+  const blockTypes = Object.keys(BlockType);
+  for (let i = 0; i < blockTypes.length; i++) {
+    counts[blockTypes[i] as BlockType] = 0;
+  }
+
 
   // Create new mesh and add it to the scene
-  let count = 0;
   for (let chunk in chunks) {
     for (let key in chunks[chunk]) {
       for (let i = 0; i < chunks[chunk][key].length; i++) {
         const block = chunks[chunk][key][i];
         const matrix = new Matrix4().makeTranslation(block.x, block.y, block.z);
-        instancedMesh.value.setMatrixAt(count, matrix);
-        count++;
+        instancedMeshes.value[block.type].setMatrixAt(counts[block.type], matrix);
+        counts[block.type] += 1;
       }
     }
   }
-  scene.add(instancedMesh.value);
+
+  // Add blocks to the scene
+  for (const blockType in instancedMeshes.value) {
+    scene.add(instancedMeshes.value[blockType as BlockType]);
+  }
 };
 
 export default displayChunk;

@@ -2,30 +2,26 @@
  * Function that adds blocks to the map
  */
 
-import { Camera, InstancedMesh, Raycaster, Scene, Vector2 } from "three";
+import { Camera, Scene } from "three";
 
 import { Block } from "../models";
 
-import { getCurrentBlock, getCurrentChunk } from "../utils";
+import { getCurrentBlock, getCurrentChunk, getRaycasterIntersection } from "../utils";
 
-import { BLOCK_SIZE, GRASS_TEXTURE, RAYCASTER_DISTANCE } from "../constants";
-import { Chunks, Exists, Reference } from "../types";
+import { BLOCK_SIZE, RAYCASTER_DISTANCE } from "../constants";
+import { BlockType, Chunks, Exists, InstancedMeshes, Reference } from "../types";
 import { displayChunks } from ".";
 
 const addBlock = (
   camera: Camera,
-  instancedMesh: Reference<InstancedMesh>,
+  instancedMeshes: Reference<InstancedMeshes>,
   chunks: Chunks,
   displayableChunks: Reference<Chunks>,
   knownTerritory: Reference<Exists>,
   scene: Scene
 ) => {
   // Throw a raycast to detect where to place the block
-  const raycaster = new Raycaster();
-  const pointer = new Vector2(0,0);
-
-  raycaster.setFromCamera(pointer, camera);
-  const intersection = raycaster.intersectObject(instancedMesh.value);
+  const intersection = getRaycasterIntersection(camera, instancedMeshes);
 
   // Check if the block that needs to be placed is in range
   if (intersection.length && intersection[0].distance <= RAYCASTER_DISTANCE) {
@@ -78,7 +74,7 @@ const addBlock = (
     // Check what chunk the block is on
     const chunk = getCurrentChunk(x, z);
     // Create new block
-    const block = new Block(x, y, z, GRASS_TEXTURE);
+    const block = new Block(x, y, z, BlockType.GRASS);
     // Add block to chunk
     const blockKey = `${x},${z}`;
     chunks[chunk][blockKey].push(block);
@@ -87,7 +83,7 @@ const addBlock = (
     knownTerritory.value[`${x},${y},${z}`] = true;
 
     // Display the scene
-    displayChunks(scene, instancedMesh, displayableChunks.value);
+    displayChunks(scene, instancedMeshes, displayableChunks.value);
   }
 };
 

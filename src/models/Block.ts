@@ -1,4 +1,4 @@
-import { MeshBasicMaterial } from "three";
+import { BlockType } from "../types";
 
 /**
  * The Block class builds the squared object that we see in the game (example: cube of dirt, cube of sand, water...)
@@ -11,13 +11,14 @@ class Block {
   z: number;
 
   // Texture of the block (grass, stone, dirt...)
-  texture: MeshBasicMaterial[];
+  type: BlockType;
 
-  public constructor(x: number, y: number, z: number, texture: MeshBasicMaterial[]) {
+  public constructor(x: number, y: number, z: number, type: BlockType) {
     this.x = x;
     this.y = y;
     this.z = z;
-    this.texture = texture;
+    this.type = type;
+
   }
 }
 
