@@ -41,10 +41,98 @@ export const CHUNK_SIZE = 8; // The size of a chunk (16x16)
 // Textures
 const LOADER = new TextureLoader();
 export const GRASS_TEXTURE: MeshBasicMaterial[] = [
-	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/grass/side4.png") }),
-	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/grass/side1.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/grass/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/grass/side.png") }),
 	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/grass/top.png") }),
 	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/grass/bottom.png") }),
-	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/grass/side2.png") }),
-	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/grass/side3.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/grass/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/grass/side.png") }),
+];
+export const DIRT_TEXTURE: MeshBasicMaterial[] = [
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/dirt/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/dirt/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/dirt/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/dirt/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/dirt/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/dirt/side.png") }),
+];
+export const STONE_TEXTURE: MeshBasicMaterial[] = [
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/stone/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/stone/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/stone/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/stone/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/stone/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/stone/side.png") }),
+];
+export const SAND_TEXTURE: MeshBasicMaterial[] = [
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/sand/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/sand/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/sand/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/sand/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/sand/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/sand/side.png") }),
+];
+export const LOG_TEXTURE: MeshBasicMaterial[] = [
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/face.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/face.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/side.png") }),
+];
+export const COBBLESTONE_TEXTURE: MeshBasicMaterial[] = [
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/cobblestone/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/cobblestone/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/cobblestone/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/cobblestone/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/cobblestone/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/cobblestone/side.png") }),
+];
+export const PLANK_TEXTURE: MeshBasicMaterial[] = [
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/plank/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/plank/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/plank/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/plank/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/plank/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/plank/side.png") }),
+];
+export const BEDROCK_TEXTURE: MeshBasicMaterial[] = [
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/bedrock/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/bedrock/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/bedrock/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/bedrock/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/bedrock/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/bedrock/side.png") }),
+];
+export const WATER_TEXTURE: MeshBasicMaterial[] = [
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/water/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/water/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/water/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/water/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/water/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/water/side.png") }),
+];
+export const LEAVES_TEXTURE: MeshBasicMaterial[] = [
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/leaves/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/leaves/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/leaves/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/leaves/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/leaves/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/leaves/side.png") }),
+];
+export const BRICK_TEXTURE: MeshBasicMaterial[] = [
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/brick/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/brick/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/brick/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/brick/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/brick/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/brick/side.png") }),
+];
+export const OBSIDIAN_TEXTURE: MeshBasicMaterial[] = [
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/obsidian/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/obsidian/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/obsidian/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/obsidian/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/obsidian/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/obsidian/side.png") }),
 ];

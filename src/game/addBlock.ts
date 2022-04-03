@@ -8,7 +8,7 @@ import { Block } from "../models";
 
 import { getCurrentBlock, getCurrentChunk } from "../utils";
 
-import { BLOCK_SIZE, CAMERA_INITIAL_POSITION, GRASS_TEXTURE, RAYCASTER_DISTANCE } from "../constants";
+import { BLOCK_SIZE, GRASS_TEXTURE, RAYCASTER_DISTANCE } from "../constants";
 import { Chunks, Exists, Reference } from "../types";
 import { displayChunks } from ".";
 

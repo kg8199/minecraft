@@ -29,3 +29,19 @@ export interface Coordinates {
   y: number;
   z: number;
 }
+
+export enum BlockType {
+  GRASS = "GRASS",
+  DIRT = "DIRT",
+  STONE = "STONE",
+  SAND = "SAND",
+  LOG = "LOG",
+  COBBLESTONE = "COBBLESTONE",
+  PLANK = "PLANK",
+  BEDROCK = "BEDROCK",
+  WATER = "WATER",
+  CHEST = "CHEST",
+  LEAVES = "LEAVES",
+  BRICK = "BRICK",
+  OBSIDIAN = "OBSIDIAN"
+}
