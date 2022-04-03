@@ -6,7 +6,7 @@ import { InstancedMesh, Matrix4, Scene } from "three";
 
 import { getBlockCount } from "../utils";
 
-import { BLOCK_BOX, GRASS_TEXTURE, MAP_BLOCK_TO_TEXTURE } from "../constants";
+import { BLOCK_BOX, MAP_BLOCK_TO_TEXTURE } from "../constants";
 import { BlockType, Chunks, InstancedMeshes, Reference } from "../types";
 
 const displayChunk = (scene: Scene, instancedMeshes: Reference<InstancedMeshes>, chunks: Chunks) => {
@@ -15,12 +15,14 @@ const displayChunk = (scene: Scene, instancedMeshes: Reference<InstancedMeshes>,
     scene.remove(instancedMeshes.value[blockType as BlockType]);
   }
 
+  const blockCounts = getBlockCount(chunks);
+
   // Modify current mesh
   for (const blockType in instancedMeshes.value) {
     instancedMeshes.value[blockType as BlockType] = new InstancedMesh(
       BLOCK_BOX,
       MAP_BLOCK_TO_TEXTURE[blockType as BlockType],
-      getBlockCount(chunks, blockType as BlockType)
+      blockCounts[blockType as BlockType]
     );
   }
 

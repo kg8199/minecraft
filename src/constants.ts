@@ -16,7 +16,7 @@ export const RAYCASTER_DISTANCE = 40;
 export const BLOCK_SIZE = 5;
 export const EDGE_COLOR = 0x000000;
 export const BLOCK_BOX = new BoxGeometry(BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
-export const INITIAL_WORLD_DEPTH = 3;
+export const INITIAL_WORLD_DEPTH = 2;
 export const MAX_WORLD_DEPTH = -150;
 
 // Perlin
@@ -36,7 +36,7 @@ export const RAYCASTER_COLOR = 0xffffff;
 export const PLANE_OPACITY = 0.3;
 
 // Chunks
-export const RENDER_DISTANCE = 12; // Number of chunks we render around the player
+export const RENDER_DISTANCE = 10; // Number of chunks we render around the player
 export const CHUNK_SIZE = 8; // The size of a chunk (16x16)
 export const INITIAL_BLOCK_COUNT = 0;
 
