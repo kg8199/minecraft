@@ -17,7 +17,9 @@ export const BLOCK_SIZE = 5;
 export const EDGE_COLOR = 0x000000;
 export const BLOCK_BOX = new BoxGeometry(BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
 export const INITIAL_WORLD_DEPTH = 2;
-export const MAX_WORLD_DEPTH = -150;
+export const MAX_WORLD_DEPTH = -50 * BLOCK_SIZE;
+export const TOP_BLOCK_LIMIT = 0;
+export const MID_BLOCK_LIMIT = 2;
 
 // Perlin
 export const PERLIN_INCREMENT = 0.05; // The higher the increment, the less smooth the terrain become (the more random)
@@ -36,7 +38,7 @@ export const RAYCASTER_COLOR = 0xffffff;
 export const PLANE_OPACITY = 0.3;
 
 // Chunks
-export const RENDER_DISTANCE = 10; // Number of chunks we render around the player
+export const RENDER_DISTANCE = 8; // Number of chunks we render around the player
 export const CHUNK_SIZE = 8; // The size of a chunk (16x16)
 export const INITIAL_BLOCK_COUNT = 0;
 

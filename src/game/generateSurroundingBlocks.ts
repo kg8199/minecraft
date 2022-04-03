@@ -7,7 +7,7 @@ import { Block } from "../models";
 
 import { getCurrentChunk } from "../utils";
 
-import { BLOCK_SIZE } from "../constants";
+import { BLOCK_SIZE, MAX_WORLD_DEPTH } from "../constants";
 import { BlockType, Chunks, Coordinates, Exists, Reference } from "../types";
 
 const generateSurroundingBlocks = (
@@ -31,8 +31,17 @@ const generateSurroundingBlocks = (
     // Check if we know territory
     if (!knownTerritory.value[`${block.x},${block.y},${block.z}`]) {
       // If we don't know territory, add new block
+      let blockType: BlockType;
+
+      // Place bedrock if we reached last layer
+      if (block.y === MAX_WORLD_DEPTH) {
+        blockType = BlockType.BEDROCK;
+      } else {
+        blockType = BlockType.STONE;
+      }
+
       const chunk = getCurrentChunk(block.x, block.z);
-      chunks[chunk][`${block.x},${block.z}`].push(new Block(block.x, block.y, block.z, BlockType.GRASS));
+      chunks[chunk][`${block.x},${block.z}`].push(new Block(block.x, block.y, block.z, blockType));
       // Add new block to known territory
       knownTerritory.value[`${block.x},${block.y},${block.z}`] = true;
     }

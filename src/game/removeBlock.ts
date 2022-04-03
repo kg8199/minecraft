@@ -7,8 +7,8 @@ import { Camera, Scene } from "three";
 import { getCurrentChunk, getRaycasterIntersection } from "../utils";
 import displayChunk from "./displayChunks";
 
-import { BLOCK_SIZE, RAYCASTER_DISTANCE } from "../constants";
-import { Chunks, Exists, InstancedMeshes, Level, Reference } from "../types";
+import { BLOCK_SIZE, MAX_WORLD_DEPTH, RAYCASTER_DISTANCE } from "../constants";
+import { BlockType, Chunks, Exists, InstancedMeshes, Level, Reference } from "../types";
 import generateSurroundingBlocks from "./generateSurroundingBlocks";
 
 const removeBlock = (
@@ -68,7 +68,7 @@ const removeBlock = (
     const blockKey = `${x},${z}`;
 
     if (chunks[chunk][blockKey]) {
-      chunks[chunk][blockKey] = chunks[chunk][blockKey].filter(block => y !== block.y);
+      chunks[chunk][blockKey] = chunks[chunk][blockKey].filter(block => y !== block.y || block.type === BlockType.BEDROCK);
       // Generate neighbor blocks
       if (y < topLevel.value[blockKey]) { // We don't want to generate surrounding blocks beyond the top level
         generateSurroundingBlocks(x, y, z, chunks, knownTerritory);
