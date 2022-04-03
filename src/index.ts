@@ -28,6 +28,11 @@ import {
 } from "./constants";
 import { Chunks, Exists, InstancedMeshes, Level, Reference } from "./types";
 
+// Add cursor to the screen
+let cursor = document.getElementById("crosshair");
+cursor.style.left = (0.5 * window.innerWidth - 0.5 * cursor.clientWidth).toString() + "px";
+cursor.style.top = (0.5 * window.innerHeight - 0.5 * cursor.clientHeight).toString() + "px";
+
 let scene = new Scene();
 scene.background = new Color(SKY_COLOR); // Change scene background
 const renderer = new WebGLRenderer();
