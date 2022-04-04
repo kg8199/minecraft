@@ -2,7 +2,7 @@
  * Function used to display a chunk on the scene
  */
 
-import { InstancedMesh, Matrix4, Scene } from "three";
+import { Color, InstancedMesh, Matrix4, Scene } from "three";
 
 import { getBlockCount } from "../utils";
 
@@ -22,7 +22,7 @@ const displayChunk = (scene: Scene, instancedMeshes: Reference<InstancedMeshes>,
     instancedMeshes.value[blockType as BlockType] = new InstancedMesh(
       BLOCK_BOX,
       MAP_BLOCK_TO_TEXTURE[blockType as BlockType],
-      blockCounts[blockType as BlockType]
+      blockCounts[blockType as BlockType],
     );
   }
 

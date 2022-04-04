@@ -42,6 +42,8 @@ export const RENDER_DISTANCE = 8; // Number of chunks we render around the playe
 export const CHUNK_SIZE = 8; // The size of a chunk (16x16)
 export const INITIAL_BLOCK_COUNT = 0;
 
+export const BLOCK_TYPES = Object.values(BlockType);
+
 // Textures
 const LOADER = new TextureLoader();
 export const GRASS_TEXTURE: MeshBasicMaterial[] = [
@@ -172,4 +174,21 @@ export const MAP_BLOCK_TO_TEXTURE: MapBlockTypeToTexture = {
 	[BlockType.OBSIDIAN]: OBSIDIAN_TEXTURE,
 	[BlockType.SNOW]: SNOW_TEXTURE,
 	[BlockType.SNOW_LEAVES]: SNOW_LEAVES_TEXTURE,
+};
+
+export const MAP_BLOCK_TO_PREVIEW: { [key in BlockType]: string } = {
+	[BlockType.GRASS]: "../assets/previews/grass.png",
+	[BlockType.DIRT]: "../assets/previews/dirt.png",
+	[BlockType.STONE]: "../assets/previews/stone.png",
+	[BlockType.SAND]: "../assets/previews/sand.png",
+	[BlockType.LOG]: "../assets/previews/log.png",
+	[BlockType.COBBLESTONE]: "../assets/previews/cobblestone.png",
+	[BlockType.PLANK]: "../assets/previews/plank.png",
+	[BlockType.BEDROCK]: "../assets/previews/bedrock.png",
+	[BlockType.BRICK]: "../assets/previews/brick.png",
+	[BlockType.OBSIDIAN]: "../assets/previews/obsidian.png",
+	[BlockType.WATER]: "",
+	[BlockType.LEAVES]: "",
+	[BlockType.SNOW]: "",
+	[BlockType.SNOW_LEAVES]: "",
 };

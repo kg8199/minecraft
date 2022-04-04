@@ -7,3 +7,28 @@ body {
   position: absolute;
   width: 1.5%;
 }
+
+#item-bar {
+  position: absolute;
+  left: 0; 
+  right: 0; 
+  margin-left: auto; 
+  margin-right: auto; 
+  bottom: 20px;
+  display: flex;
+  height: 60px;
+  width: 600px;
+}
+
+#item-bar > div {
+  flex: 1;
+  background-color: rgba(61, 63, 38, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#item-bar > div > img {
+  height: 45px;
+  width: 45px;
+}

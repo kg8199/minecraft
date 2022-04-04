@@ -8,7 +8,7 @@ import { Block } from "../models";
 
 import { getCurrentBlock, getCurrentChunk, getRaycasterIntersection } from "../utils";
 
-import { BLOCK_SIZE, RAYCASTER_DISTANCE } from "../constants";
+import { BLOCK_SIZE, BLOCK_TYPES, MAP_BLOCK_TO_TEXTURE, RAYCASTER_DISTANCE } from "../constants";
 import { BlockType, Chunks, Exists, InstancedMeshes, Reference } from "../types";
 import { displayChunks } from ".";
 
@@ -18,7 +18,8 @@ const addBlock = (
   chunks: Chunks,
   displayableChunks: Reference<Chunks>,
   knownTerritory: Reference<Exists>,
-  scene: Scene
+  scene: Scene,
+  currentItemIndex: number
 ) => {
   // Throw a raycast to detect where to place the block
   const intersection = getRaycasterIntersection(camera, instancedMeshes);
@@ -74,7 +75,7 @@ const addBlock = (
     // Check what chunk the block is on
     const chunk = getCurrentChunk(x, z);
     // Create new block
-    const block = new Block(x, y, z, BlockType.GRASS);
+    const block = new Block(x, y, z, BLOCK_TYPES[currentItemIndex]);
     // Add block to chunk
     const blockKey = `${x},${z}`;
     chunks[chunk][blockKey].push(block);

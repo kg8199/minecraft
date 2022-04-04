@@ -24,7 +24,9 @@ import {
   RAYCASTER_DISTANCE,
   BLOCK_SIZE,
   RAYCASTER_COLOR,
-  PLANE_OPACITY
+  PLANE_OPACITY,
+  MAP_BLOCK_TO_PREVIEW,
+  BLOCK_TYPES
 } from "./constants";
 import { Chunks, Exists, InstancedMeshes, Level, Reference } from "./types";
 
@@ -32,6 +34,27 @@ import { Chunks, Exists, InstancedMeshes, Level, Reference } from "./types";
 let cursor = document.getElementById("crosshair");
 cursor.style.left = (0.5 * window.innerWidth - 0.5 * cursor.clientWidth).toString() + "px";
 cursor.style.top = (0.5 * window.innerHeight - 0.5 * cursor.clientHeight).toString() + "px";
+
+// Manage the item bar
+let currentItemIndex = 0; // The current block we are using
+let itemBar = document.getElementById("item-bar");
+
+Array.from(itemBar.children).forEach((value, idx) => {
+  const element = value as HTMLElement;
+
+  // Set the border of the element
+  if (idx === currentItemIndex) {
+    element.style.border = "6px solid white";
+  } else {
+    element.style.border = "6px solid gray";
+  }
+
+  // Set the background image of the elements
+  element.innerHTML = `<img
+    src="${MAP_BLOCK_TO_PREVIEW[BLOCK_TYPES[idx]]}"
+    alt="item"
+  />`;
+});
 
 let scene = new Scene();
 scene.background = new Color(SKY_COLOR); // Change scene background
@@ -92,7 +115,23 @@ document.addEventListener("keydown", (event: KeyboardEvent) => {
   if (event.key === " " && canJump) {
     yAcceleration = JUMPING; // Change y position
     canJump = false; // Disable jump (to avoid infinite jump)
-  } else if (event.key === "q") {
+  } else if (event.key >= "1" && event.key <= "9") {
+    currentItemIndex = Number(event.key) - 1;
+    Array.from(itemBar.children).forEach((value, idx) => {
+      if (idx === currentItemIndex) {
+        (value as HTMLElement).style.border = "6px solid white";
+      } else {
+        (value as HTMLElement).style.border = "6px solid gray";
+      }
+    });
+  } else {
+    pressedKeys.add(event.key);
+  }
+});
+
+// Detect mouse event
+document.addEventListener("mousedown", event => {
+  if (event.button === 2) { // Right click
     if (canAddBlock) {
       addBlock(
         camera,
@@ -100,26 +139,28 @@ document.addEventListener("keydown", (event: KeyboardEvent) => {
         chunks,
         displayableChunks,
         knownTerritory,
-        scene
+        scene,
+        currentItemIndex
       );
       canAddBlock = false;
     }
-  } else if (event.key === "e") {
+  } else if (event.button === 0) {
     if (canRemoveBlock) {
       removeBlock(camera, instancedMeshes, chunks, displayableChunks, knownTerritory, topLevel, scene);
       canRemoveBlock = false;
     }
-  } else {
-    pressedKeys.add(event.key);
   }
 });
 
-document.addEventListener("keyup", (event: KeyboardEvent) => {
-  if (event.key === "q") {
+document.addEventListener("mouseup", event => {
+  if (event.button === 2) {
     canAddBlock = true;
-  } else if (event.key === "e") {
+  } else if (event.button === 0) {
     canRemoveBlock = true;
   }
+});
+
+document.addEventListener("keyup", event => {
   pressedKeys.delete(event.key);
 });
 
