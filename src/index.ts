@@ -10,7 +10,12 @@ import {
 
 import { Noise, PointerLockControls } from "./models";
 import { addBlock, removeBlock, updateChunks } from "./game";
-import { generateInstancedMeshes, getBlockOnTopOfPlayer, getCurrentBlock, getRaycasterIntersection } from "./utils";
+import {
+  generateInstancedMeshes,
+  getBlockOnTopOfPlayer,
+  getCurrentBlock,
+  getRaycasterIntersection
+} from "./utils";
 
 import {
   CAMERA_FIELD_OF_VIEW,
