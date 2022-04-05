@@ -9,10 +9,10 @@ import { Noise } from "../models";
 
 import generateChunk from "./generateChunk";
 import displayChunks from "./displayChunks";
-import { getCurrentChunk, getSurroundingChunks } from "../utils";
+import { getCurrentChunk, getSurroundingChunks, randRange } from "../utils";
 
-import { GRASS_TEXTURE } from "../constants";
-import { Chunks, Exists, InstancedMeshes, Level, Reference } from "../types";
+import { BIOMES, BIOME_SIZE } from "../constants";
+import { Biome, Chunks, Exists, InstancedMeshes, Level, Reference } from "../types";
 
 const updateChunks = (
   instancedMeshes: Reference<InstancedMeshes>,
@@ -24,7 +24,10 @@ const updateChunks = (
   knownTerritory: Reference<Exists>,
   topLevel: Reference<Level>,
   x: number,
-  z: number
+  z: number,
+  currentBiome: Reference<Biome>,
+  currentBiomeCount: Reference<number>,
+  currentAmplitude: Reference<number>
 ) => {
   // Get the chunk we are on
   const newChunk = getCurrentChunk(x, z);
@@ -47,7 +50,18 @@ const updateChunks = (
           // Create a new chunk
           const [x, z] = surroundingChunks[i].split(",").map(Number); // Get the coordinates of the chunk to generate blocks
 
-          const newChunk = generateChunk(noise, GRASS_TEXTURE, x, z, knownTerritory, topLevel); // Generate blocks
+          const newChunk = generateChunk(
+            noise, x, z, knownTerritory, topLevel, currentBiome.value, currentAmplitude.value); // Generate blocks
+          currentBiomeCount.value += 1; // Increase the count of chunks that have been built in the current biome
+
+          // Change biome if we exceeded the current biome limit
+          if (currentBiomeCount.value >= BIOME_SIZE) {
+            // Implement new biome
+            currentBiomeCount.value = 0;
+            const biomeIndex = randRange(0, currentBiome.value.neighbors.length - 1);
+            currentBiome.value = BIOMES[currentBiome.value.neighbors[biomeIndex]];
+            currentAmplitude.value = randRange(currentBiome.value.amplitudeRange[0], currentBiome.value.amplitudeRange[1]);
+          }
   
           chunks[surroundingChunks[i]] = newChunk; // Add blocks to database
         }

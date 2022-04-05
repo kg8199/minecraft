@@ -5,3 +5,4 @@ export { default as getBlockCount } from "./getBlockCount";
 export { default as getBlockOnTopOfPlayer } from "./getBlockOnTopOfPlayer";
 export { default as generateInstancedMeshes } from "./generateInstancedMeshes";
 export { default as getRaycasterIntersection } from "./getRaycasterIntersection";
+export { default as randRange } from "./randRange";

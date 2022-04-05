@@ -56,3 +56,20 @@ export enum BlockType {
   WATER = "WATER",
   LEAVES = "LEAVES",
 }
+
+export enum BiomeType {
+  PLAIN = "PLAIN",
+  DESERT = "DESERT",
+  SNOW = "SNOW"
+}
+
+export interface Biome {
+  top: BlockType;
+  bottom: BlockType;
+  neighbors: BiomeType[];
+  amplitudeRange: [number, number];
+}
+
+export type Biomes = {
+  [key in BiomeType]: Biome;
+}

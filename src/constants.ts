@@ -3,7 +3,7 @@
  */
 
 import { BoxGeometry, MeshBasicMaterial, TextureLoader } from "three";
-import { BlockType, MapBlockTypeToTexture } from "./types";
+import { Biomes, BiomeType, BlockType, MapBlockTypeToTexture } from "./types";
 
 // Camera
 export const CAMERA_FIELD_OF_VIEW = 75;
@@ -16,14 +16,14 @@ export const RAYCASTER_DISTANCE = 40;
 export const BLOCK_SIZE = 5;
 export const EDGE_COLOR = 0x000000;
 export const BLOCK_BOX = new BoxGeometry(BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
-export const INITIAL_WORLD_DEPTH = 2;
+export const INITIAL_WORLD_DEPTH = 3;
 export const MAX_WORLD_DEPTH = -50 * BLOCK_SIZE;
 export const TOP_BLOCK_LIMIT = 0;
 export const MID_BLOCK_LIMIT = 2;
+export const INITIAL_AMPLITUDE = 20;
 
 // Perlin
 export const PERLIN_INCREMENT = 0.05; // The higher the increment, the less smooth the terrain become (the more random)
-export const PERLIN_AMPLITUDE = 50; // The higher the amplitude, the higher the terrain goes
 
 // Physics
 export const MOVING_SPEED = 0.6;
@@ -41,6 +41,7 @@ export const PLANE_OPACITY = 0.3;
 export const RENDER_DISTANCE = 8; // Number of chunks we render around the player
 export const CHUNK_SIZE = 8; // The size of a chunk (16x16)
 export const INITIAL_BLOCK_COUNT = 0;
+export const BIOME_SIZE = RENDER_DISTANCE ** 2; // How large should a biome be before switching to the next
 
 export const BLOCK_TYPES = Object.values(BlockType);
 
@@ -191,4 +192,25 @@ export const MAP_BLOCK_TO_PREVIEW: { [key in BlockType]: string } = {
 	[BlockType.LEAVES]: "",
 	[BlockType.SNOW]: "",
 	[BlockType.SNOW_LEAVES]: "",
+};
+
+export const BIOMES: Biomes = {
+	[BiomeType.PLAIN]: {
+		top: BlockType.GRASS,
+		bottom: BlockType.DIRT,
+		neighbors: [BiomeType.PLAIN, BiomeType.PLAIN, BiomeType.PLAIN, BiomeType.PLAIN, BiomeType.SNOW, BiomeType.DESERT],
+		amplitudeRange: [20, 30]
+	},
+	[BiomeType.DESERT]: {
+		top: BlockType.SAND,
+		bottom: BlockType.SAND,
+		neighbors: [BiomeType.DESERT, BiomeType.DESERT, BiomeType.DESERT, BiomeType.PLAIN],
+		amplitudeRange: [20, 30]
+	},
+	[BiomeType.SNOW]: {
+		top: BlockType.SNOW,
+		bottom: BlockType.DIRT,
+		neighbors: [BiomeType.SNOW, BiomeType.SNOW, BiomeType.SNOW, BiomeType.PLAIN],
+		amplitudeRange: [20, 40]
+	}
 };

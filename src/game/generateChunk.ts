@@ -2,20 +2,28 @@
  * Code responsible for generating a chunk - a chunk is an n x n collection of blocks
  * The world generates random chunks as we move over the map
  */
-import { MeshBasicMaterial } from "three";
-
 import { Noise, Block } from "../models";
 
-import { BLOCK_SIZE, PERLIN_AMPLITUDE, PERLIN_INCREMENT, CHUNK_SIZE, INITIAL_WORLD_DEPTH, TOP_BLOCK_LIMIT, GRASS_TEXTURE, MID_BLOCK_LIMIT } from "../constants";
-import { BlockType, Chunk, Exists, Level, Reference } from "../types";
+import {
+  BLOCK_SIZE,
+  PERLIN_INCREMENT,
+  CHUNK_SIZE,
+  INITIAL_WORLD_DEPTH,
+  TOP_BLOCK_LIMIT,
+  MID_BLOCK_LIMIT,
+  BIOMES
+} from "../constants";
+import { Biome, BiomeType, BlockType, Chunk, Exists, Level, Reference } from "../types";
+import { randRange } from "../utils";
 
 const generateChunk = (
   noise: Noise,
-  texture: MeshBasicMaterial[],
   initialX: number,
   initialZ: number,
   knownTerritory: Reference<Exists>,
-  topLevel: Reference<Level>
+  topLevel: Reference<Level>,
+  biome: Biome,
+  amplitude: number
 ): Chunk => {
 	let chunk: Chunk = {};
 
@@ -26,10 +34,7 @@ const generateChunk = (
     for (let z = initialZ; z < initialZ + CHUNK_SIZE * BLOCK_SIZE; z+=BLOCK_SIZE) {
       xoff = (x / BLOCK_SIZE) * PERLIN_INCREMENT;
       zoff = (z / BLOCK_SIZE) * PERLIN_INCREMENT;
-      const initialY =
-        Math.round(
-          (noise.perlin2(xoff, zoff) * PERLIN_AMPLITUDE) / BLOCK_SIZE
-        ) * BLOCK_SIZE;
+      const initialY = Math.round((noise.perlin2(xoff, zoff) * amplitude) / BLOCK_SIZE) * BLOCK_SIZE;
       const blocks: Block[] = [];
       // Add the first block to the top level
       topLevel.value[`${x},${z}`] = initialY;
@@ -37,9 +42,9 @@ const generateChunk = (
       for (let d = 0; d < INITIAL_WORLD_DEPTH; d++) {
         let type: BlockType;
         if (d <= TOP_BLOCK_LIMIT) {
-          type = BlockType.GRASS;
+          type = biome.top;
         } else if (d <= MID_BLOCK_LIMIT) {
-          type = BlockType.DIRT;
+          type = biome.bottom;
         } else {
           type = BlockType.STONE;
         }

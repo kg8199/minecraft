@@ -14,7 +14,8 @@ import {
   generateInstancedMeshes,
   getBlockOnTopOfPlayer,
   getCurrentBlock,
-  getRaycasterIntersection
+  getRaycasterIntersection,
+  randRange
 } from "./utils";
 
 import {
@@ -31,9 +32,11 @@ import {
   RAYCASTER_COLOR,
   PLANE_OPACITY,
   MAP_BLOCK_TO_PREVIEW,
-  BLOCK_TYPES
+  BLOCK_TYPES,
+  BIOMES,
+  INITIAL_AMPLITUDE
 } from "./constants";
-import { Chunks, Exists, InstancedMeshes, Level, Reference } from "./types";
+import { Biome, BiomeType, Chunks, Exists, InstancedMeshes, Level, Reference } from "./types";
 
 let isGameLocked = false; // If the game is locked
 
@@ -83,6 +86,9 @@ let currentChunk: Reference<string> = { value: "" }; // The Chunk we are current
 let plane: Mesh; // The plane that will be displayed on top of a block to detect which block we're pointing at
 let knownTerritory: Reference<Exists> = { value: {} }; // Database that keeps track of the blocks that have been placed
 let topLevel: Reference<Level> = { value: {} }; // Database that keeps track of the blocks that are on the top layer
+let currentBiome: Reference<Biome> = { value:BIOMES[BiomeType.PLAIN] }; // The current type of blocks we are building
+let currentBiomeCount: Reference<number> = { value: 0 }; // How many chunks of the current biome have been built so far
+let currentAmplitude: Reference<number> = { value: INITIAL_AMPLITUDE }; // The current amplitude of the biome
 
 // Create a chunk of mesh that will be sent to the GPU without having to send the mesh every single time we display the
 // block. InstancedMesh will allow us to limit interactions between CPU and GPU, and therefore, improve performance.
@@ -263,7 +269,10 @@ const update = () => {
     knownTerritory,
     topLevel,
     camera.position.x,
-    camera.position.z
+    camera.position.z,
+    currentBiome,
+    currentBiomeCount,
+    currentAmplitude
   );
 };
 
