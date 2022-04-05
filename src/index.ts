@@ -35,6 +35,8 @@ import {
 } from "./constants";
 import { Chunks, Exists, InstancedMeshes, Level, Reference } from "./types";
 
+let isGameLocked = false; // If the game is locked
+
 // Add cursor to the screen
 let cursor = document.getElementById("crosshair");
 cursor.style.left = (0.5 * window.innerWidth - 0.5 * cursor.clientWidth).toString() + "px";
@@ -112,61 +114,76 @@ document.body.addEventListener("click", () => {
 window.addEventListener("resize", () => {
   renderer.setSize(window.innerWidth, window.innerHeight);
   camera.aspect = window.innerWidth / window.innerHeight;
+  cursor.style.left = (0.5 * window.innerWidth - 0.5 * cursor.clientWidth).toString() + "px";
+  cursor.style.top = (0.5 * window.innerHeight - 0.5 * cursor.clientHeight).toString() + "px";
   camera.updateProjectionMatrix(); // Apply changes on the camera
 });
 
 // Controls - listeners that add and remove keys from the set of pressed keys
 document.addEventListener("keydown", (event: KeyboardEvent) => {
-  if (event.key === " " && canJump) {
-    yAcceleration = JUMPING; // Change y position
-    canJump = false; // Disable jump (to avoid infinite jump)
-  } else if (event.key >= "1" && event.key <= "9") {
-    currentItemIndex = Number(event.key) - 1;
-    Array.from(itemBar.children).forEach((value, idx) => {
-      if (idx === currentItemIndex) {
-        (value as HTMLElement).style.border = "6px solid white";
-      } else {
-        (value as HTMLElement).style.border = "6px solid gray";
-      }
-    });
-  } else {
-    pressedKeys.add(event.key);
+  if (isGameLocked) {
+    if (event.key === " " && canJump) {
+      yAcceleration = JUMPING; // Change y position
+      canJump = false; // Disable jump (to avoid infinite jump)
+    } else if (event.key >= "1" && event.key <= "9") {
+      currentItemIndex = Number(event.key) - 1;
+      Array.from(itemBar.children).forEach((value, idx) => {
+        if (idx === currentItemIndex) {
+          (value as HTMLElement).style.border = "6px solid white";
+        } else {
+          (value as HTMLElement).style.border = "6px solid gray";
+        }
+      });
+    } else {
+      pressedKeys.add(event.key);
+    }
   }
 });
 
 // Detect mouse event
 document.addEventListener("mousedown", event => {
-  if (event.button === 2) { // Right click
-    if (canAddBlock) {
-      addBlock(
-        camera,
-        instancedMeshes,
-        chunks,
-        displayableChunks,
-        knownTerritory,
-        scene,
-        currentItemIndex
-      );
-      canAddBlock = false;
-    }
-  } else if (event.button === 0) {
-    if (canRemoveBlock) {
-      removeBlock(camera, instancedMeshes, chunks, displayableChunks, knownTerritory, topLevel, scene);
-      canRemoveBlock = false;
+  if (isGameLocked) {
+    if (event.button === 2) { // Right click
+      if (canAddBlock) {
+        addBlock(
+          camera,
+          instancedMeshes,
+          chunks,
+          displayableChunks,
+          knownTerritory,
+          scene,
+          currentItemIndex
+        );
+        canAddBlock = false;
+      }
+    } else if (event.button === 0) {
+      if (canRemoveBlock) {
+        removeBlock(camera, instancedMeshes, chunks, displayableChunks, knownTerritory, topLevel, scene);
+        canRemoveBlock = false;
+      }
     }
   }
 });
 
 document.addEventListener("mouseup", event => {
-  if (event.button === 2) {
-    canAddBlock = true;
-  } else if (event.button === 0) {
-    canRemoveBlock = true;
+  if (isGameLocked) {
+    if (event.button === 2) {
+      canAddBlock = true;
+    } else if (event.button === 0) {
+      canRemoveBlock = true;
+    }
   }
 });
 
 document.addEventListener("keyup", event => {
   pressedKeys.delete(event.key);
+});
+
+controls.addEventListener("lock", () => {
+  isGameLocked = true;
+});
+controls.addEventListener("unlock", () => {
+  isGameLocked = false;
 });
 
 // The update function runs at every frame - it updates the state of the game
