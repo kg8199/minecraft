@@ -14,8 +14,7 @@ import {
   generateInstancedMeshes,
   getBlockOnTopOfPlayer,
   getCurrentBlock,
-  getRaycasterIntersection,
-  randRange
+  getRaycasterIntersection
 } from "./utils";
 
 import {
@@ -141,7 +140,7 @@ document.addEventListener("keydown", (event: KeyboardEvent) => {
         }
       });
     } else {
-      pressedKeys.add(event.key);
+      pressedKeys.add(event.key.toLowerCase());
     }
   }
 });
@@ -182,7 +181,7 @@ document.addEventListener("mouseup", event => {
 });
 
 document.addEventListener("keyup", event => {
-  pressedKeys.delete(event.key);
+  pressedKeys.delete(event.key.toLowerCase());
 });
 
 controls.addEventListener("lock", () => {

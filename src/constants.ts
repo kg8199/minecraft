@@ -21,6 +21,9 @@ export const MAX_WORLD_DEPTH = -50 * BLOCK_SIZE;
 export const TOP_BLOCK_LIMIT = 0;
 export const MID_BLOCK_LIMIT = 2;
 export const INITIAL_AMPLITUDE = 20;
+export const TREE_HEIGHT = 3;
+export const MAX_TREE_HEIGHT = 5;
+export const TREE_WIDTH = 3;
 
 // Perlin
 export const PERLIN_INCREMENT = 0.05; // The higher the increment, the less smooth the terrain become (the more random)
@@ -39,7 +42,7 @@ export const PLANE_OPACITY = 0.3;
 
 // Chunks
 export const RENDER_DISTANCE = 8; // Number of chunks we render around the player
-export const CHUNK_SIZE = 8; // The size of a chunk (16x16)
+export const CHUNK_SIZE = 8; // The size of a chunk (8x8)
 export const INITIAL_BLOCK_COUNT = 0;
 export const BIOME_SIZE = RENDER_DISTANCE ** 2; // How large should a biome be before switching to the next
 
@@ -120,12 +123,12 @@ export const WATER_TEXTURE: MeshBasicMaterial[] = [
 	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/water/side.png") }),
 ];
 export const LEAVES_TEXTURE: MeshBasicMaterial[] = [
-	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/leaves/side.webp") }),
-	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/leaves/side.webp") }),
-	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/leaves/side.webp") }),
-	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/leaves/side.webp") }),
-	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/leaves/side.webp") }),
-	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/leaves/side.webp") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/leaves/side.webp"), transparent: true }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/leaves/side.webp"), transparent: true }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/leaves/side.webp"), transparent: true }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/leaves/side.webp"), transparent: true }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/leaves/side.webp"), transparent: true }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/leaves/side.webp"), transparent: true }),
 ];
 export const BRICK_TEXTURE: MeshBasicMaterial[] = [
 	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/brick/side.png") }),
@@ -152,12 +155,12 @@ export const SNOW_TEXTURE: MeshBasicMaterial[] = [
 	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/snow/side.png") }),
 ];
 export const SNOW_LEAVES_TEXTURE: MeshBasicMaterial[] = [
-	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/snow_leaves/side.png") }),
-	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/snow_leaves/side.png") }),
-	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/snow_leaves/side.png") }),
-	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/snow_leaves/side.png") }),
-	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/snow_leaves/side.png") }),
-	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/snow_leaves/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/snow_leaves/side.png"), transparent: true }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/snow_leaves/side.png"), transparent: true }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/snow_leaves/side.png"), transparent: true }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/snow_leaves/side.png"), transparent: true }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/snow_leaves/side.png"), transparent: true }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/snow_leaves/side.png"), transparent: true }),
 ];
 
 export const MAP_BLOCK_TO_TEXTURE: MapBlockTypeToTexture = {

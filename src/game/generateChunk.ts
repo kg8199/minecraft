@@ -11,10 +11,9 @@ import {
   INITIAL_WORLD_DEPTH,
   TOP_BLOCK_LIMIT,
   MID_BLOCK_LIMIT,
-  BIOMES
 } from "../constants";
-import { Biome, BiomeType, BlockType, Chunk, Exists, Level, Reference } from "../types";
-import { randRange } from "../utils";
+import { Biome, BlockType, Chunk, Exists, Level, Reference } from "../types";
+import generateTree from "./generateTree";
 
 const generateChunk = (
   noise: Noise,
@@ -35,7 +34,7 @@ const generateChunk = (
       xoff = (x / BLOCK_SIZE) * PERLIN_INCREMENT;
       zoff = (z / BLOCK_SIZE) * PERLIN_INCREMENT;
       const initialY = Math.round((noise.perlin2(xoff, zoff) * amplitude) / BLOCK_SIZE) * BLOCK_SIZE;
-      const blocks: Block[] = [];
+      let blocks: Block[] = [];
       // Add the first block to the top level
       topLevel.value[`${x},${z}`] = initialY;
       // Generate INITIAL_WORLD_DEPTH blocks
@@ -50,6 +49,11 @@ const generateChunk = (
         }
         const y = initialY - d * BLOCK_SIZE;
         blocks.push(new Block(x, y, z, type));
+
+        if (x === 3 * BLOCK_SIZE && z === 3 * BLOCK_SIZE && d === 0) {
+          blocks = [...blocks, ...generateTree(x, y, z, true)];
+        }
+
         // Add the coordinates of the block to the known territory database
         knownTerritory.value[`${x},${y},${z}`] = true;
       }
