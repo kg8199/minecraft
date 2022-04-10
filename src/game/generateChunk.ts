@@ -13,7 +13,9 @@ import {
   CHUNK_SIZE,
   INITIAL_WORLD_DEPTH,
   TOP_BLOCK_LIMIT,
-  MID_BLOCK_LIMIT
+  MID_BLOCK_LIMIT,
+  CHEST_BASE_BLOCK_HEIGHT,
+  CHEST_TOP_BLOCK_HEIGHT
 } from "../constants";
 import { Biome, BiomeType, BlockType, Chunk, Exists, Level, Reference } from "../types";
 
@@ -62,6 +64,10 @@ const generateChunk = (
         }
         const y = initialY - d * BLOCK_SIZE;
         blocks.push(new Block(x, y, z, type));
+
+        if (d === 0 && x === 20 && z === 20) {
+          blocks.push(new Block(x, y + BLOCK_SIZE, z, BlockType.CHEST));
+        }
 
         // Add the coordinates of the block to the known territory database
         knownTerritory.value[`${x},${y},${z}`] = true;

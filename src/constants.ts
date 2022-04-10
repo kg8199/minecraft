@@ -2,7 +2,7 @@
  * File where we store the constants
  */
 
-import { BoxGeometry, MeshBasicMaterial, TextureLoader } from "three";
+import { BoxGeometry, MeshBasicMaterial, PlaneGeometry, TextureLoader } from "three";
 
 import { Biomes, BiomeType, BlockType, MapBlockTypeToTexture } from "./types";
 
@@ -15,8 +15,12 @@ export const RAYCASTER_DISTANCE = 40;
 
 // Blocks
 export const BLOCK_SIZE = 5;
+export const CHEST_BASE_BLOCK_HEIGHT = 3.5;
+export const CHEST_TOP_BLOCK_HEIGHT = 1.5;
 export const EDGE_COLOR = 0x000000;
 export const BLOCK_BOX = new BoxGeometry(BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+export const BLOCK_BOX_CHEST_BASE = new BoxGeometry(BLOCK_SIZE, CHEST_BASE_BLOCK_HEIGHT, BLOCK_SIZE);
+export const BLOCK_BOX_CHEST_TOP = new BoxGeometry(BLOCK_SIZE, CHEST_TOP_BLOCK_HEIGHT, BLOCK_SIZE);
 export const INITIAL_WORLD_DEPTH = 3;
 export const MAX_WORLD_DEPTH = -50 * BLOCK_SIZE;
 export const TOP_BLOCK_LIMIT = 0;
@@ -178,6 +182,22 @@ export const GLASS_TEXTURE: MeshBasicMaterial[] = [
 	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/glass/side.png"), transparent: true }),
 	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/glass/side.png"), transparent: true }),
 ];
+export const CHEST_TEXTURE: MeshBasicMaterial[] = [
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/chest-base/front.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/chest-base/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/chest-base/top.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/chest-base/bottom.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/chest-base/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/chest-base/side.png") }),
+];
+export const CHEST_TOP_TEXTURE: MeshBasicMaterial[] = [
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/chest-cover/front.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/chest-cover/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/chest-cover/top.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/chest-cover/bottom.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/chest-cover/side.png") }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/chest-cover/side.png") }),
+];
 
 export const MAP_BLOCK_TO_TEXTURE: MapBlockTypeToTexture = {
 	[BlockType.GRASS]: GRASS_TEXTURE,
@@ -195,6 +215,8 @@ export const MAP_BLOCK_TO_TEXTURE: MapBlockTypeToTexture = {
 	[BlockType.OBSIDIAN]: OBSIDIAN_TEXTURE,
 	[BlockType.SNOW]: SNOW_TEXTURE,
 	[BlockType.SNOW_LEAVES]: SNOW_LEAVES_TEXTURE,
+	[BlockType.CHEST]: CHEST_TEXTURE,
+	[BlockType.CHEST_TOP]: CHEST_TOP_TEXTURE
 };
 
 export const MAP_BLOCK_TO_PREVIEW: { [key in BlockType]: string } = {
@@ -213,6 +235,8 @@ export const MAP_BLOCK_TO_PREVIEW: { [key in BlockType]: string } = {
 	[BlockType.LEAVES]: "",
 	[BlockType.SNOW]: "",
 	[BlockType.SNOW_LEAVES]: "",
+	[BlockType.CHEST]: "",
+	[BlockType.CHEST_TOP]: ""
 };
 
 export const BIOMES: Biomes = {

@@ -15,6 +15,10 @@ const getBlockCount = (chunks: Chunks): { [key in BlockType]: number } => {
     for (const block in chunks[chunk]) {
       const blocks = chunks[chunk][block];
       for (let i = 0; i < blocks.length; i++) {
+        if (blocks[i].type === BlockType.CHEST) {
+          // If block is chest, add count to chest top
+          count[BlockType.CHEST_TOP] += 1;
+        }
         count[blocks[i].type] += 1
       }
     }

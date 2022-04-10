@@ -56,6 +56,8 @@ export enum BlockType {
   SNOW_LEAVES = "SNOW_LEAVES",
   WATER = "WATER",
   LEAVES = "LEAVES",
+  CHEST = "CHEST",
+  CHEST_TOP = "CHEST_TOP"
 }
 
 export enum BiomeType {
