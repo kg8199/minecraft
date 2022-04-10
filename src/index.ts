@@ -147,6 +147,10 @@ document.addEventListener("keydown", (event: KeyboardEvent) => {
 
 // Detect mouse event
 document.addEventListener("mousedown", event => {
+  // Animate the pickaxe
+  const pickaxe = document.getElementById("pickaxe");
+  pickaxe.classList.add("hit");
+
   if (isGameLocked) {
     if (event.button === 2) { // Right click
       if (canAddBlock) {
@@ -171,6 +175,10 @@ document.addEventListener("mousedown", event => {
 });
 
 document.addEventListener("mouseup", event => {
+  // Animate the pickaxe
+  const pickaxe = document.getElementById("pickaxe");
+  pickaxe.classList.remove("hit");
+
   if (isGameLocked) {
     if (event.button === 2) {
       canAddBlock = true;

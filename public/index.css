@@ -1,11 +1,30 @@
 body {
   margin: 0;
   background-color: black;
+  overflow: hidden;
 }
 
 #crosshair {
   position: absolute;
   width: 1.5%;
+}
+
+#pickaxe {
+  position: absolute;
+  width: 35%;
+  bottom: 0;
+  right: 0;
+  transition-duration: 0.08s;
+  transition-property: transform margin;
+  margin-bottom: -150px;
+  margin-right: -150px;
+  transform: rotateY(140deg) rotateZ(-70deg);
+}
+
+.hit {
+  margin-bottom: -50px !important;
+  margin-right: 50px !important;
+  transform: rotateY(120deg) rotateZ(0deg) !important;
 }
 
 #item-bar {

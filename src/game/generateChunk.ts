@@ -4,6 +4,8 @@
  */
 import { Noise, Block } from "../models";
 
+import generateTree from "./generateTree";
+
 import {
   BLOCK_SIZE,
   PERLIN_INCREMENT,
@@ -11,9 +13,9 @@ import {
   INITIAL_WORLD_DEPTH,
   TOP_BLOCK_LIMIT,
   MID_BLOCK_LIMIT,
+  TREE_WIDTH
 } from "../constants";
 import { Biome, BlockType, Chunk, Exists, Level, Reference } from "../types";
-import generateTree from "./generateTree";
 
 const generateChunk = (
   noise: Noise,
@@ -24,12 +26,23 @@ const generateChunk = (
   biome: Biome,
   amplitude: number
 ): Chunk => {
-	let chunk: Chunk = {};
+  let chunk: Chunk = {};
+
+  const trees: { x: number, y: number, z: number }[] = [];
+  let builtTreeInQuadrant: Exists = {
+    [`0,0`]: false,
+    [`0,1`]: false,
+    [`1,0`]: false,
+    [`1,1`]: false,
+  };
 
 	let xoff = 0; // Increment on the x axis
   let zoff = 0; // Increment on the z axis
+  let currentCountX = 0;
+  let currentCountZ = 0;
   for (let x = initialX; x < initialX + CHUNK_SIZE * BLOCK_SIZE; x+=BLOCK_SIZE) {
     xoff = 0;
+    currentCountZ = 0;
     for (let z = initialZ; z < initialZ + CHUNK_SIZE * BLOCK_SIZE; z+=BLOCK_SIZE) {
       xoff = (x / BLOCK_SIZE) * PERLIN_INCREMENT;
       zoff = (z / BLOCK_SIZE) * PERLIN_INCREMENT;
@@ -50,15 +63,34 @@ const generateChunk = (
         const y = initialY - d * BLOCK_SIZE;
         blocks.push(new Block(x, y, z, type));
 
-        if (x === 3 * BLOCK_SIZE && z === 3 * BLOCK_SIZE && d === 0) {
-          blocks = [...blocks, ...generateTree(x, y, z, true)];
-        }
-
         // Add the coordinates of the block to the known territory database
         knownTerritory.value[`${x},${y},${z}`] = true;
+
+        // Check if we generate tree
+        const quadrantX = currentCountX <= CHUNK_SIZE / 2 ? 0 : 1;
+        const quadrantZ = currentCountZ <= CHUNK_SIZE / 2 ? 0 : 1;
+        if (
+          d === 0 // We're at the top of the chunk
+          && currentCountX >= (TREE_WIDTH - 1) / 2 && currentCountZ >= (TREE_WIDTH - 1) / 2 // Check chunk limits
+          && currentCountX < CHUNK_SIZE - (TREE_WIDTH - 1) / 2
+          && currentCountZ < CHUNK_SIZE - (TREE_WIDTH - 1) / 2
+          && !builtTreeInQuadrant[`${quadrantX},${quadrantZ}`] // If no tree has been built in the quadrant yet, randomly build
+          && Math.random() < biome.treeFrequency // If we hit the probability of building a tree, build
+        ) {
+
+          builtTreeInQuadrant[`${quadrantX},${quadrantZ}`] = true;
+          trees.push({ x, y, z });
+        }
       }
       chunk[`${x},${z}`] = blocks;
+      currentCountZ++;
     }
+    currentCountX++;
+  }
+
+  // Iterate over tree array to build trees
+  for (let i = 0; i < trees.length; i++) {
+    generateTree(chunk, trees[i].x, trees[i].y, trees[i].z, biome.leafType);
   }
 
 	return chunk;

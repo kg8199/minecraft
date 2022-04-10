@@ -45,6 +45,8 @@ export const RENDER_DISTANCE = 8; // Number of chunks we render around the playe
 export const CHUNK_SIZE = 8; // The size of a chunk (8x8)
 export const INITIAL_BLOCK_COUNT = 0;
 export const BIOME_SIZE = RENDER_DISTANCE ** 2; // How large should a biome be before switching to the next
+export const TREE_FREQUENCY_PLAIN = 1/1000;
+export const TREE_FREQUENCY_FORREST = 1/10;
 
 export const BLOCK_TYPES = Object.values(BlockType);
 
@@ -162,6 +164,14 @@ export const SNOW_LEAVES_TEXTURE: MeshBasicMaterial[] = [
 	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/snow_leaves/side.png"), transparent: true }),
 	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/snow_leaves/side.png"), transparent: true }),
 ];
+export const GLASS_TEXTURE: MeshBasicMaterial[] = [
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/glass/side.png"), transparent: true }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/glass/side.png"), transparent: true }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/glass/side.png"), transparent: true }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/glass/side.png"), transparent: true }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/glass/side.png"), transparent: true }),
+	new MeshBasicMaterial({ map: LOADER.load("../assets/texture/glass/side.png"), transparent: true }),
+];
 
 export const MAP_BLOCK_TO_TEXTURE: MapBlockTypeToTexture = {
 	[BlockType.GRASS]: GRASS_TEXTURE,
@@ -175,6 +185,7 @@ export const MAP_BLOCK_TO_TEXTURE: MapBlockTypeToTexture = {
 	[BlockType.WATER]: WATER_TEXTURE,
 	[BlockType.LEAVES]: LEAVES_TEXTURE,
 	[BlockType.BRICK]: BRICK_TEXTURE,
+	[BlockType.GLASS]: GLASS_TEXTURE,
 	[BlockType.OBSIDIAN]: OBSIDIAN_TEXTURE,
 	[BlockType.SNOW]: SNOW_TEXTURE,
 	[BlockType.SNOW_LEAVES]: SNOW_LEAVES_TEXTURE,
@@ -190,6 +201,7 @@ export const MAP_BLOCK_TO_PREVIEW: { [key in BlockType]: string } = {
 	[BlockType.PLANK]: "../assets/previews/plank.png",
 	[BlockType.BEDROCK]: "../assets/previews/bedrock.png",
 	[BlockType.BRICK]: "../assets/previews/brick.png",
+	[BlockType.GLASS]: "../assets/previews/glass.png",
 	[BlockType.OBSIDIAN]: "../assets/previews/obsidian.png",
 	[BlockType.WATER]: "",
 	[BlockType.LEAVES]: "",
@@ -201,19 +213,49 @@ export const BIOMES: Biomes = {
 	[BiomeType.PLAIN]: {
 		top: BlockType.GRASS,
 		bottom: BlockType.DIRT,
-		neighbors: [BiomeType.PLAIN, BiomeType.PLAIN, BiomeType.PLAIN, BiomeType.PLAIN, BiomeType.SNOW, BiomeType.DESERT],
-		amplitudeRange: [20, 30]
+		neighbors: [
+			BiomeType.PLAIN,
+			BiomeType.PLAIN,
+			BiomeType.PLAIN,
+			BiomeType.PLAIN,
+			BiomeType.FORREST,
+			BiomeType.SNOW,
+			BiomeType.DESERT
+		],
+		amplitudeRange: [20, 40],
+		treeFrequency: TREE_FREQUENCY_PLAIN,
+		leafType: BlockType.LEAVES
 	},
 	[BiomeType.DESERT]: {
 		top: BlockType.SAND,
 		bottom: BlockType.SAND,
 		neighbors: [BiomeType.DESERT, BiomeType.DESERT, BiomeType.DESERT, BiomeType.PLAIN],
-		amplitudeRange: [20, 30]
+		amplitudeRange: [20, 30],
+		treeFrequency: TREE_FREQUENCY_PLAIN,
+		leafType: BlockType.LEAVES
 	},
 	[BiomeType.SNOW]: {
 		top: BlockType.SNOW,
 		bottom: BlockType.DIRT,
-		neighbors: [BiomeType.SNOW, BiomeType.SNOW, BiomeType.SNOW, BiomeType.PLAIN],
-		amplitudeRange: [20, 40]
-	}
+		neighbors: [BiomeType.SNOW, BiomeType.SNOW, BiomeType.SNOW, BiomeType.SNOW_FORREST, BiomeType.PLAIN],
+		amplitudeRange: [20, 40],
+		treeFrequency: TREE_FREQUENCY_PLAIN,
+		leafType: BlockType.SNOW_LEAVES
+	},
+	[BiomeType.FORREST]: {
+		top: BlockType.GRASS,
+		bottom:BlockType.DIRT,
+		neighbors: [BiomeType.FORREST, BiomeType.PLAIN, BiomeType.PLAIN],
+		amplitudeRange: [20, 30],
+		treeFrequency: TREE_FREQUENCY_FORREST,
+		leafType: BlockType.LEAVES
+	},
+	[BiomeType.SNOW_FORREST]: {
+		top: BlockType.SNOW,
+		bottom:BlockType.DIRT,
+		neighbors: [BiomeType.SNOW_FORREST, BiomeType.SNOW, BiomeType.SNOW],
+		amplitudeRange: [20, 40],
+		treeFrequency: TREE_FREQUENCY_FORREST,
+		leafType: BlockType.SNOW_LEAVES
+	},
 };

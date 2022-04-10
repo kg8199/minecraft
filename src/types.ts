@@ -46,6 +46,7 @@ export enum BlockType {
   STONE = "STONE",
   SAND = "SAND",
   LOG = "LOG",
+  GLASS = "GLASS",
   COBBLESTONE = "COBBLESTONE",
   PLANK = "PLANK",
   BRICK = "BRICK",
@@ -60,7 +61,9 @@ export enum BlockType {
 export enum BiomeType {
   PLAIN = "PLAIN",
   DESERT = "DESERT",
-  SNOW = "SNOW"
+  SNOW = "SNOW",
+  FORREST = "FORREST",
+  SNOW_FORREST = "SNOW_FORREST"
 }
 
 export interface Biome {
@@ -68,6 +71,8 @@ export interface Biome {
   bottom: BlockType;
   neighbors: BiomeType[];
   amplitudeRange: [number, number];
+  treeFrequency: number;
+  leafType: BlockType;
 }
 
 export type Biomes = {
