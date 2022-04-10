@@ -2,7 +2,7 @@
  * File where we store types
  */
 
-import { InstancedMesh, MeshBasicMaterial } from "three";
+import { InstancedMesh, Matrix4, MeshBasicMaterial } from "three";
 
 import { Block } from "./models";
 

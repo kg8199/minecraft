@@ -253,7 +253,7 @@ export const BIOMES: Biomes = {
 			BiomeType.SNOW,
 			BiomeType.DESERT
 		],
-		amplitudeRange: [20, 40],
+		amplitudeRange: [20, 30],
 		treeFrequency: TREE_FREQUENCY_PLAIN,
 		tree: {
 			leafType: BlockType.LEAVES,

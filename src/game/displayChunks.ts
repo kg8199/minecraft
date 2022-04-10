@@ -6,10 +6,22 @@ import { InstancedMesh, Matrix4, Scene } from "three";
 
 import { getBlockCount } from "../utils";
 
-import { BLOCK_BOX, BLOCK_BOX_CHEST_BASE, BLOCK_BOX_CHEST_TOP, BLOCK_SIZE, CHEST_BASE_BLOCK_HEIGHT, CHEST_TOP_BLOCK_HEIGHT, MAP_BLOCK_TO_TEXTURE } from "../constants";
+import {
+  BLOCK_BOX,
+  BLOCK_BOX_CHEST_BASE,
+  BLOCK_BOX_CHEST_TOP,
+  BLOCK_SIZE,
+  CHEST_BASE_BLOCK_HEIGHT,
+  CHEST_TOP_BLOCK_HEIGHT,
+  MAP_BLOCK_TO_TEXTURE
+} from "../constants";
 import { BlockType, Chunks, InstancedMeshes, Reference } from "../types";
 
-const displayChunk = (scene: Scene, instancedMeshes: Reference<InstancedMeshes>, chunks: Chunks) => {
+const displayChunk = (
+  scene: Scene,
+  instancedMeshes: Reference<InstancedMeshes>,
+  chunks: Chunks
+) => {
   // Remove old mesh
   for (const blockType in instancedMeshes.value) {
     scene.remove(instancedMeshes.value[blockType as BlockType]);
@@ -65,7 +77,7 @@ const displayChunk = (scene: Scene, instancedMeshes: Reference<InstancedMeshes>,
           );
           instancedMeshes.value[block.type].setMatrixAt(counts[block.type], baseMatrix);
           counts[block.type] += 1;
-          const topMatrix = new Matrix4().makeTranslation(
+          let topMatrix = new Matrix4().makeTranslation(
             block.x,
             block.y - BLOCK_SIZE / 2 + CHEST_BASE_BLOCK_HEIGHT + CHEST_TOP_BLOCK_HEIGHT / 2,
             block.z

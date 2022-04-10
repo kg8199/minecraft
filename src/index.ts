@@ -167,7 +167,15 @@ document.addEventListener("mousedown", event => {
       }
     } else if (event.button === 0) {
       if (canRemoveBlock) {
-        removeBlock(camera, instancedMeshes, chunks, displayableChunks, knownTerritory, topLevel, scene);
+        removeBlock(
+          camera,
+          instancedMeshes,
+          chunks,
+          displayableChunks,
+          knownTerritory,
+          topLevel,
+          scene
+        );
         canRemoveBlock = false;
       }
     }

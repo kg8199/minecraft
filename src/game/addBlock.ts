@@ -8,8 +8,8 @@ import { Block } from "../models";
 
 import { getCurrentBlock, getCurrentChunk, getRaycasterIntersection } from "../utils";
 
-import { BLOCK_SIZE, BLOCK_TYPES, MAP_BLOCK_TO_TEXTURE, RAYCASTER_DISTANCE } from "../constants";
-import { BlockType, Chunks, Exists, InstancedMeshes, Reference } from "../types";
+import { BLOCK_SIZE, BLOCK_TYPES, RAYCASTER_DISTANCE } from "../constants";
+import { Chunks, Exists, InstancedMeshes, Reference } from "../types";
 import { displayChunks } from ".";
 
 const addBlock = (
