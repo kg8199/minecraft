@@ -88,6 +88,7 @@ let topLevel: Reference<Level> = { value: {} }; // Database that keeps track of 
 let currentBiome: Reference<Biome> = { value:BIOMES[BiomeType.PLAIN] }; // The current type of blocks we are building
 let currentBiomeCount: Reference<number> = { value: 0 }; // How many chunks of the current biome have been built so far
 let currentAmplitude: Reference<number> = { value: INITIAL_AMPLITUDE }; // The current amplitude of the biome
+let isChestOpen: Reference<boolean> = { value: false };
 
 // Create a chunk of mesh that will be sent to the GPU without having to send the mesh every single time we display the
 // block. InstancedMesh will allow us to limit interactions between CPU and GPU, and therefore, improve performance.
@@ -174,7 +175,8 @@ document.addEventListener("mousedown", event => {
           displayableChunks,
           knownTerritory,
           topLevel,
-          scene
+          scene,
+          isChestOpen
         );
         canRemoveBlock = false;
       }

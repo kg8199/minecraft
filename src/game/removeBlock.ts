@@ -4,12 +4,14 @@
 
 import { Camera, Scene } from "three";
 
-import { getCurrentChunk, getRaycasterIntersection } from "../utils";
 import displayChunk from "./displayChunks";
+import generateSurroundingBlocks from "./generateSurroundingBlocks";
+import toggleChest from "./toggleChest";
+
+import { getCurrentChunk, getRaycasterIntersection } from "../utils";
 
 import { BLOCK_SIZE, RAYCASTER_DISTANCE } from "../constants";
 import { BlockType, Chunks, Exists, InstancedMeshes, Level, Reference } from "../types";
-import generateSurroundingBlocks from "./generateSurroundingBlocks";
 
 const removeBlock = (
   camera: Camera,
@@ -18,7 +20,8 @@ const removeBlock = (
   displayableChunks: Reference<Chunks>,
   knownTerritory: Reference<Exists>,
   topLevel: Reference<Level>,
-  scene: Scene
+  scene: Scene,
+  isChestOpen: Reference<boolean>
 ) => {
   // Throw a raycast to detect which block to remove
   const intersection = getRaycasterIntersection(camera, instancedMeshes);
@@ -71,17 +74,20 @@ const removeBlock = (
 
     if (blocks) {
       const block = blocks.find(element => element.y === y);
-      if (block.type === BlockType.CHEST) {
-        // If block is chest, apply function
-      } else {
-        // Remove block
-        chunks[chunk][blockKey] = chunks[chunk][blockKey].filter(block => y !== block.y || block.type === BlockType.BEDROCK);
-        // Generate neighbor blocks
-        if (y < topLevel.value[blockKey]) { // We don't want to generate surrounding blocks beyond the top level
-          generateSurroundingBlocks(x, y, z, chunks, knownTerritory);
+      if (block) {
+        if (block.type === BlockType.CHEST) {
+          // If block is chest, apply function
+          toggleChest(scene, instancedMeshes, chunks, x, y, z, isChestOpen);
+        } else {
+          // Remove block
+          chunks[chunk][blockKey] = chunks[chunk][blockKey].filter(block => y !== block.y || block.type === BlockType.BEDROCK);
+          // Generate neighbor blocks
+          if (y < topLevel.value[blockKey]) { // We don't want to generate surrounding blocks beyond the top level
+            generateSurroundingBlocks(x, y, z, chunks, knownTerritory);
+          }
+          // Display the chunks with the block removed
+          displayChunk(scene, instancedMeshes, displayableChunks.value);
         }
-        // Display the chunks with the block removed
-        displayChunk(scene, instancedMeshes, displayableChunks.value);
       }
     }
   }

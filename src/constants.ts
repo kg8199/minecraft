@@ -33,6 +33,7 @@ export const PALM_TREE_HEIGHT = 4;
 export const MAX_PALM_TREE_HEIGHT = 6;
 export const PALM_TREE_WIDTH = 7;
 export const PALM_TREE_SHIFT_TRESHOLD = 3;
+export const CHEST_OPEN_ANGLE = 2.1;
 
 // Perlin
 export const PERLIN_INCREMENT = 0.05; // The higher the increment, the less smooth the terrain become (the more random)
