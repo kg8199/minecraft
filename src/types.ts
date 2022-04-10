@@ -66,13 +66,19 @@ export enum BiomeType {
   SNOW_FORREST = "SNOW_FORREST"
 }
 
+export interface Tree {
+  leafType: BlockType;
+  width: number;
+}
+
 export interface Biome {
+  type: BiomeType;
   top: BlockType;
   bottom: BlockType;
   neighbors: BiomeType[];
   amplitudeRange: [number, number];
   treeFrequency: number;
-  leafType: BlockType;
+  tree: Tree;
 }
 
 export type Biomes = {

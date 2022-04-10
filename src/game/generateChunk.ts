@@ -4,6 +4,7 @@
  */
 import { Noise, Block } from "../models";
 
+import generatePalmTree from "./generatePalmTree";
 import generateTree from "./generateTree";
 
 import {
@@ -12,10 +13,9 @@ import {
   CHUNK_SIZE,
   INITIAL_WORLD_DEPTH,
   TOP_BLOCK_LIMIT,
-  MID_BLOCK_LIMIT,
-  TREE_WIDTH
+  MID_BLOCK_LIMIT
 } from "../constants";
-import { Biome, BlockType, Chunk, Exists, Level, Reference } from "../types";
+import { Biome, BiomeType, BlockType, Chunk, Exists, Level, Reference } from "../types";
 
 const generateChunk = (
   noise: Noise,
@@ -71,9 +71,9 @@ const generateChunk = (
         const quadrantZ = currentCountZ <= CHUNK_SIZE / 2 ? 0 : 1;
         if (
           d === 0 // We're at the top of the chunk
-          && currentCountX >= (TREE_WIDTH - 1) / 2 && currentCountZ >= (TREE_WIDTH - 1) / 2 // Check chunk limits
-          && currentCountX < CHUNK_SIZE - (TREE_WIDTH - 1) / 2
-          && currentCountZ < CHUNK_SIZE - (TREE_WIDTH - 1) / 2
+          && currentCountX >= (biome.tree.width - 1) / 2 && currentCountZ >= (biome.tree.width - 1) / 2 // Check chunk limits
+          && currentCountX < CHUNK_SIZE - (biome.tree.width - 1) / 2
+          && currentCountZ < CHUNK_SIZE - (biome.tree.width - 1) / 2
           && !builtTreeInQuadrant[`${quadrantX},${quadrantZ}`] // If no tree has been built in the quadrant yet, randomly build
           && Math.random() < biome.treeFrequency // If we hit the probability of building a tree, build
         ) {
@@ -90,7 +90,11 @@ const generateChunk = (
 
   // Iterate over tree array to build trees
   for (let i = 0; i < trees.length; i++) {
-    generateTree(chunk, trees[i].x, trees[i].y, trees[i].z, biome.leafType);
+    if (biome.type === BiomeType.DESERT) {
+      generatePalmTree(chunk, trees[i].x, trees[i].y, trees[i].z, biome.tree.leafType);
+    } else {
+      generateTree(chunk, trees[i].x, trees[i].y, trees[i].z, biome.tree.leafType);
+    }
   }
 
 	return chunk;

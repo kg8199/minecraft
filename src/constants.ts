@@ -3,6 +3,7 @@
  */
 
 import { BoxGeometry, MeshBasicMaterial, TextureLoader } from "three";
+
 import { Biomes, BiomeType, BlockType, MapBlockTypeToTexture } from "./types";
 
 // Camera
@@ -20,10 +21,14 @@ export const INITIAL_WORLD_DEPTH = 3;
 export const MAX_WORLD_DEPTH = -50 * BLOCK_SIZE;
 export const TOP_BLOCK_LIMIT = 0;
 export const MID_BLOCK_LIMIT = 2;
-export const INITIAL_AMPLITUDE = 20;
+export const INITIAL_AMPLITUDE = 10;
 export const TREE_HEIGHT = 3;
 export const MAX_TREE_HEIGHT = 5;
 export const TREE_WIDTH = 3;
+export const PALM_TREE_HEIGHT = 4;
+export const MAX_PALM_TREE_HEIGHT = 6;
+export const PALM_TREE_WIDTH = 7;
+export const PALM_TREE_SHIFT_TRESHOLD = 3;
 
 // Perlin
 export const PERLIN_INCREMENT = 0.05; // The higher the increment, the less smooth the terrain become (the more random)
@@ -47,6 +52,7 @@ export const INITIAL_BLOCK_COUNT = 0;
 export const BIOME_SIZE = RENDER_DISTANCE ** 2; // How large should a biome be before switching to the next
 export const TREE_FREQUENCY_PLAIN = 1/1000;
 export const TREE_FREQUENCY_FORREST = 1/10;
+export const THREE_FREQUENCY_DESERT = 1/40;
 
 export const BLOCK_TYPES = Object.values(BlockType);
 
@@ -211,6 +217,7 @@ export const MAP_BLOCK_TO_PREVIEW: { [key in BlockType]: string } = {
 
 export const BIOMES: Biomes = {
 	[BiomeType.PLAIN]: {
+		type: BiomeType.PLAIN,
 		top: BlockType.GRASS,
 		bottom: BlockType.DIRT,
 		neighbors: [
@@ -224,38 +231,57 @@ export const BIOMES: Biomes = {
 		],
 		amplitudeRange: [20, 40],
 		treeFrequency: TREE_FREQUENCY_PLAIN,
-		leafType: BlockType.LEAVES
+		tree: {
+			leafType: BlockType.LEAVES,
+			width: TREE_WIDTH
+		}
 	},
 	[BiomeType.DESERT]: {
+		type: BiomeType.DESERT,
 		top: BlockType.SAND,
 		bottom: BlockType.SAND,
 		neighbors: [BiomeType.DESERT, BiomeType.DESERT, BiomeType.DESERT, BiomeType.PLAIN],
 		amplitudeRange: [20, 30],
-		treeFrequency: TREE_FREQUENCY_PLAIN,
-		leafType: BlockType.LEAVES
+		treeFrequency: THREE_FREQUENCY_DESERT,
+		tree: {
+			leafType: BlockType.LEAVES,
+			width: PALM_TREE_WIDTH
+		}
 	},
 	[BiomeType.SNOW]: {
+		type: BiomeType.SNOW,
 		top: BlockType.SNOW,
 		bottom: BlockType.DIRT,
 		neighbors: [BiomeType.SNOW, BiomeType.SNOW, BiomeType.SNOW, BiomeType.SNOW_FORREST, BiomeType.PLAIN],
 		amplitudeRange: [20, 40],
 		treeFrequency: TREE_FREQUENCY_PLAIN,
-		leafType: BlockType.SNOW_LEAVES
+		tree: {
+			leafType: BlockType.SNOW_LEAVES,
+			width: TREE_WIDTH
+		}
 	},
 	[BiomeType.FORREST]: {
+		type: BiomeType.FORREST,
 		top: BlockType.GRASS,
 		bottom:BlockType.DIRT,
 		neighbors: [BiomeType.FORREST, BiomeType.PLAIN, BiomeType.PLAIN],
 		amplitudeRange: [20, 30],
 		treeFrequency: TREE_FREQUENCY_FORREST,
-		leafType: BlockType.LEAVES
+		tree: {
+			leafType: BlockType.LEAVES,
+			width: TREE_WIDTH
+		}
 	},
 	[BiomeType.SNOW_FORREST]: {
+		type: BiomeType.SNOW_FORREST,
 		top: BlockType.SNOW,
 		bottom:BlockType.DIRT,
 		neighbors: [BiomeType.SNOW_FORREST, BiomeType.SNOW, BiomeType.SNOW],
 		amplitudeRange: [20, 40],
 		treeFrequency: TREE_FREQUENCY_FORREST,
-		leafType: BlockType.SNOW_LEAVES
+		tree: {
+			leafType: BlockType.SNOW_LEAVES,
+			width: TREE_WIDTH
+		}
 	},
 };
