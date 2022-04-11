@@ -43,7 +43,6 @@ export type InstancedMeshes = {
 export enum BlockType {
   GRASS = "GRASS",
   DIRT = "DIRT",
-  STONE = "STONE",
   SAND = "SAND",
   LOG = "LOG",
   GLASS = "GLASS",
@@ -51,19 +50,20 @@ export enum BlockType {
   PLANK = "PLANK",
   BRICK = "BRICK",
   OBSIDIAN = "OBSIDIAN",
+  LEAVES = "LEAVES",
   BEDROCK = "BEDROCK",
   SNOW = "SNOW",
   SNOW_LEAVES = "SNOW_LEAVES",
   WATER = "WATER",
-  LEAVES = "LEAVES",
-  CHEST = "CHEST",
-  CHEST_TOP = "CHEST_TOP",
   LOG_EDUCATION = "LOG_EDUCATION",
   LOG_PROFESSIONAL_EXPERIENCE = "LOG_PROFESSIONAL_EXPERIENCE",
   LOG_PERSONAL_PROJECTS = "LOG_PERSONAL_PROJECTS",
   LOG_COMPETITIONS = "LOG_COMPETITIONS",
   LOG_LEADERSHIP = "LOG_LEADERSHIP",
   LOG_HOBBIES = "LOG_HOBBIES",
+  CHEST = "CHEST",
+  STONE = "STONE",
+  CHEST_TOP = "CHEST_TOP",
 }
 
 export enum BiomeType {
@@ -92,3 +92,8 @@ export interface Biome {
 export type Biomes = {
   [key in BiomeType]: Biome;
 };
+
+export interface Chest {
+  coords: Coordinates;
+  labelTexture: BlockType
+}

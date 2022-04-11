@@ -9,7 +9,7 @@ import {
 } from "three";
 
 import { Noise, PointerLockControls } from "./models";
-import { addBlock, removeBlock, updateChunks } from "./game";
+import { addBlock, buildInitialStructure, cleanTerrain, displayChunks, removeBlock, updateChunks } from "./game";
 import {
   generateInstancedMeshes,
   getBlockOnTopOfPlayer,
@@ -89,6 +89,7 @@ let currentBiome: Reference<Biome> = { value:BIOMES[BiomeType.PLAIN] }; // The c
 let currentBiomeCount: Reference<number> = { value: 0 }; // How many chunks of the current biome have been built so far
 let currentAmplitude: Reference<number> = { value: INITIAL_AMPLITUDE }; // The current amplitude of the biome
 let isChestOpen: Reference<boolean> = { value: false };
+let initialDisplay: Reference<boolean> = { value: false };
 
 // Create a chunk of mesh that will be sent to the GPU without having to send the mesh every single time we display the
 // block. InstancedMesh will allow us to limit interactions between CPU and GPU, and therefore, improve performance.
@@ -291,6 +292,30 @@ const update = () => {
     currentBiomeCount,
     currentAmplitude
   );
+
+  if (!initialDisplay.value) {
+    initialDisplay.value = true;
+
+    cleanTerrain(
+      chunks,
+      -50,
+      50,
+      -70,
+      30,
+      -5
+    );
+
+    buildInitialStructure(
+      chunks,
+      -50,
+      50,
+      -70,
+      30,
+      0
+    );
+
+    displayChunks(scene, instancedMeshes, displayableChunks.value);
+  }
 };
 
 // Function that renders the game to the screen at every frame

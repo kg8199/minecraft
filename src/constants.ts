@@ -4,7 +4,7 @@
 
 import { BoxGeometry, MeshBasicMaterial, TextureLoader } from "three";
 
-import { Biomes, BiomeType, BlockType, MapBlockTypeToTexture } from "./types";
+import { Biomes, BiomeType, BlockType, Chest, MapBlockTypeToTexture } from "./types";
 
 // Camera
 export const CAMERA_FIELD_OF_VIEW = 75;
@@ -377,7 +377,7 @@ export const GLASS_TEXTURE: MeshBasicMaterial[] = [
 ];
 export const CHEST_TEXTURE: MeshBasicMaterial[] = [
   new MeshBasicMaterial({
-    map: LOADER.load("../assets/texture/chest-base/front.png"),
+    map: LOADER.load("../assets/texture/chest-base/side.png"),
   }),
   new MeshBasicMaterial({
     map: LOADER.load("../assets/texture/chest-base/side.png"),
@@ -389,7 +389,7 @@ export const CHEST_TEXTURE: MeshBasicMaterial[] = [
     map: LOADER.load("../assets/texture/chest-base/bottom.png"),
   }),
   new MeshBasicMaterial({
-    map: LOADER.load("../assets/texture/chest-base/side.png"),
+    map: LOADER.load("../assets/texture/chest-base/front.png"),
   }),
   new MeshBasicMaterial({
     map: LOADER.load("../assets/texture/chest-base/side.png"),
@@ -397,7 +397,7 @@ export const CHEST_TEXTURE: MeshBasicMaterial[] = [
 ];
 export const CHEST_TOP_TEXTURE: MeshBasicMaterial[] = [
   new MeshBasicMaterial({
-    map: LOADER.load("../assets/texture/chest-cover/front.png"),
+    map: LOADER.load("../assets/texture/chest-cover/side.png"),
   }),
   new MeshBasicMaterial({
     map: LOADER.load("../assets/texture/chest-cover/side.png"),
@@ -409,70 +409,70 @@ export const CHEST_TOP_TEXTURE: MeshBasicMaterial[] = [
     map: LOADER.load("../assets/texture/chest-cover/bottom.png"),
   }),
   new MeshBasicMaterial({
-    map: LOADER.load("../assets/texture/chest-cover/side.png"),
+    map: LOADER.load("../assets/texture/chest-cover/front.png"),
   }),
   new MeshBasicMaterial({
     map: LOADER.load("../assets/texture/chest-cover/side.png"),
   }),
 ];
 export const LOG_PROFESSIONAL_EXPERIENCE_TEXTURE: MeshBasicMaterial[] = [
+  new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/side.png") }),
+  new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/side.png") }),
+  new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/face.png") }),
+  new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/face.png") }),
   new MeshBasicMaterial({
     map: LOADER.load("../assets/texture/sign/professional-experience.png"),
   }),
   new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/side.png") }),
-  new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/side.png") }),
-  new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/side.png") }),
-  new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/side.png") }),
-  new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/side.png") }),
 ];
 export const LOG_PERSONAL_PROJECTS_TEXTURE: MeshBasicMaterial[] = [
+  new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/side.png") }),
+  new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/side.png") }),
+  new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/face.png") }),
+  new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/face.png") }),
   new MeshBasicMaterial({
     map: LOADER.load("../assets/texture/sign/personal-projects.png"),
   }),
   new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/side.png") }),
-  new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/side.png") }),
-  new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/side.png") }),
-  new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/side.png") }),
-  new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/side.png") }),
 ];
 export const LOG_COMPETITIONS_TEXTURE: MeshBasicMaterial[] = [
+  new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/side.png") }),
+  new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/side.png") }),
+  new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/face.png") }),
+  new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/face.png") }),
   new MeshBasicMaterial({
     map: LOADER.load("../assets/texture/sign/competitions.png"),
   }),
   new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/side.png") }),
-  new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/side.png") }),
-  new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/side.png") }),
-  new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/side.png") }),
-  new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/side.png") }),
 ];
 export const LOG_EDUCATION_TEXTURE: MeshBasicMaterial[] = [
+  new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/side.png") }),
+  new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/side.png") }),
+  new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/face.png") }),
+  new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/face.png") }),
   new MeshBasicMaterial({
     map: LOADER.load("../assets/texture/sign/education.png"),
   }),
   new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/side.png") }),
-  new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/side.png") }),
-  new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/side.png") }),
-  new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/side.png") }),
-  new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/side.png") }),
 ];
 export const LOG_LEADERSHIP_TEXTURE: MeshBasicMaterial[] = [
+  new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/side.png") }),
+  new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/side.png") }),
+  new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/face.png") }),
+  new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/face.png") }),
   new MeshBasicMaterial({
     map: LOADER.load("../assets/texture/sign/leadership.png"),
   }),
   new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/side.png") }),
-  new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/side.png") }),
-  new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/side.png") }),
-  new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/side.png") }),
-  new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/side.png") }),
 ];
 export const LOG_HOBBIES_TEXTURE: MeshBasicMaterial[] = [
+  new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/side.png") }),
+  new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/side.png") }),
+  new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/face.png") }),
+  new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/face.png") }),
   new MeshBasicMaterial({
     map: LOADER.load("../assets/texture/sign/hobbies.png"),
   }),
-  new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/side.png") }),
-  new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/side.png") }),
-  new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/side.png") }),
-  new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/side.png") }),
   new MeshBasicMaterial({ map: LOADER.load("../assets/texture/log/side.png") }),
 ];
 
@@ -609,3 +609,12 @@ export const BIOMES: Biomes = {
     },
   },
 };
+
+export const CHESTS: Chest[] = [
+  { coords: { x: -20, y: 5, z: -40 }, labelTexture: BlockType.LOG_LEADERSHIP },
+  { coords: { x: 20, y: 5, z: -40 }, labelTexture: BlockType.LOG_HOBBIES },
+  { coords: { x: 0, y: 5, z: -40 }, labelTexture: BlockType.LOG_COMPETITIONS },
+  { coords: { x: -10, y: 5, z: -25 }, labelTexture: BlockType.LOG_PERSONAL_PROJECTS },
+  { coords: { x: 10, y: 5, z: -25 }, labelTexture: BlockType.LOG_EDUCATION },
+  { coords: { x: 0, y: 5, z: -10 }, labelTexture: BlockType.LOG_PROFESSIONAL_EXPERIENCE },
+];

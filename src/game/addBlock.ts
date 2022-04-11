@@ -76,6 +76,7 @@ const addBlock = (
     const chunk = getCurrentChunk(x, z);
     // Create new block
     const block = new Block(x, y, z, BLOCK_TYPES[currentItemIndex]);
+    console.log(block);
     // Add block to chunk
     const blockKey = `${x},${z}`;
     chunks[chunk][blockKey].push(block);

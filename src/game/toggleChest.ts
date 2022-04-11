@@ -51,14 +51,14 @@ const toggleChest = (
           );
   
           if (x === block.x && y === block.y && z === block.z) {
-            matrix.makeRotationZ(
-              isChestOpen.value ? 0 : CHEST_OPEN_ANGLE
+            matrix.makeRotationX(
+              isChestOpen.value ? 0 : -CHEST_OPEN_ANGLE
             ).setPosition(
-              isChestOpen.value ? block.x : block.x - BLOCK_SIZE,
+              block.x,
               isChestOpen.value
                 ? block.y - BLOCK_SIZE / 2 + CHEST_BASE_BLOCK_HEIGHT + CHEST_TOP_BLOCK_HEIGHT / 2
                 : block.y - BLOCK_SIZE / 2 + CHEST_BASE_BLOCK_HEIGHT + CHEST_TOP_BLOCK_HEIGHT,
-              block.z
+              isChestOpen.value ? block.z : block.z - BLOCK_SIZE,
             );
   
             isChestOpen.value = !isChestOpen.value;
