@@ -34,11 +34,11 @@ export interface Coordinates {
 
 export type MapBlockTypeToTexture = {
   [key in BlockType]: MeshBasicMaterial[];
-}
+};
 
 export type InstancedMeshes = {
   [key in BlockType]: InstancedMesh;
-}
+};
 
 export enum BlockType {
   GRASS = "GRASS",
@@ -57,7 +57,13 @@ export enum BlockType {
   WATER = "WATER",
   LEAVES = "LEAVES",
   CHEST = "CHEST",
-  CHEST_TOP = "CHEST_TOP"
+  CHEST_TOP = "CHEST_TOP",
+  LOG_EDUCATION = "LOG_EDUCATION",
+  LOG_PROFESSIONAL_EXPERIENCE = "LOG_PROFESSIONAL_EXPERIENCE",
+  LOG_PERSONAL_PROJECTS = "LOG_PERSONAL_PROJECTS",
+  LOG_COMPETITIONS = "LOG_COMPETITIONS",
+  LOG_LEADERSHIP = "LOG_LEADERSHIP",
+  LOG_HOBBIES = "LOG_HOBBIES",
 }
 
 export enum BiomeType {
@@ -65,7 +71,7 @@ export enum BiomeType {
   DESERT = "DESERT",
   SNOW = "SNOW",
   FORREST = "FORREST",
-  SNOW_FORREST = "SNOW_FORREST"
+  SNOW_FORREST = "SNOW_FORREST",
 }
 
 export interface Tree {
@@ -85,4 +91,4 @@ export interface Biome {
 
 export type Biomes = {
   [key in BiomeType]: Biome;
-}
+};
