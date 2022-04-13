@@ -4,7 +4,7 @@
 
 import { BoxGeometry, MeshBasicMaterial, TextureLoader } from "three";
 
-import { Biomes, BiomeType, BlockType, Chest, MapBlockTypeToTexture } from "./types";
+import { Biomes, BiomeType, BlockSound, BlockType, Chest, MapBlockToSound, MapBlockTypeToTexture } from "./types";
 
 // Camera
 export const CAMERA_FIELD_OF_VIEW = 75;
@@ -66,6 +66,115 @@ export const BIOME_SIZE = RENDER_DISTANCE ** 2; // How large should a biome be b
 export const TREE_FREQUENCY_PLAIN = 1 / 1000;
 export const TREE_FREQUENCY_FORREST = 1 / 10;
 export const THREE_FREQUENCY_DESERT = 1 / 40;
+
+// Sounds
+export const BASIC_PLACE_BREAK_SOUND = new Audio("../assets/sounds/basic-place-break.mp3");
+export const BUTTON_SOUND = new Audio("../assets/sounds/button.mp3");
+export const CHEST_CLOSE_SOUND = new Audio("../assets/sounds/chest-close.mp3");
+export const CHEST_OPEN_SOUND = new Audio("../assets/sounds/chest-open.mp3");
+export const DIRT_PLACE_BREAK_SOUND = new Audio("../assets/sounds/dirt-place-break.mp3");
+export const GLASS_BREAK_SOUND = new Audio("../assets/sounds/glass-break.mp3");
+export const GRASS_PLACE_BREAK_SOUND = new Audio("../assets/sounds/grass-place-break.mp3");
+export const SAND_BREAK_SOUND = new Audio("../assets/sounds/sand-break.mp3");
+export const WOOD_BREAK_SOUND = new Audio("../assets/sounds/wood-break.mp3");
+export const WOOD_PLACE_SOUND = new Audio("../assets/sounds/wood-place.mp3");
+
+export const MAP_BLOCK_TO_SOUND: MapBlockToSound = {
+  [BlockType.GRASS]: {
+    place: GRASS_PLACE_BREAK_SOUND,
+    break: GRASS_PLACE_BREAK_SOUND
+  },
+  [BlockType.DIRT]: {
+    place: DIRT_PLACE_BREAK_SOUND,
+    break: DIRT_PLACE_BREAK_SOUND
+  },
+  [BlockType.STONE]: {
+    place: BASIC_PLACE_BREAK_SOUND,
+    break: BASIC_PLACE_BREAK_SOUND
+  },
+  [BlockType.SAND]: {
+    place: BASIC_PLACE_BREAK_SOUND,
+    break: SAND_BREAK_SOUND
+  },
+  [BlockType.LOG]: {
+    place: WOOD_PLACE_SOUND,
+    break: WOOD_BREAK_SOUND
+  },
+  [BlockType.COBBLESTONE]: {
+    place: BASIC_PLACE_BREAK_SOUND,
+    break: BASIC_PLACE_BREAK_SOUND
+  },
+  [BlockType.PLANK]: {
+    place: WOOD_PLACE_SOUND,
+    break: WOOD_BREAK_SOUND
+  },
+  [BlockType.BEDROCK]: {
+    place: BASIC_PLACE_BREAK_SOUND,
+    break: BASIC_PLACE_BREAK_SOUND
+  },
+  [BlockType.WATER]: {
+    place: BASIC_PLACE_BREAK_SOUND,
+    break: BASIC_PLACE_BREAK_SOUND
+  },
+  [BlockType.LEAVES]: {
+    place: GRASS_PLACE_BREAK_SOUND,
+    break: GRASS_PLACE_BREAK_SOUND
+  },
+  [BlockType.BRICK]: {
+    place: BASIC_PLACE_BREAK_SOUND,
+    break: BASIC_PLACE_BREAK_SOUND
+  },
+  [BlockType.GLASS]: {
+    place: BASIC_PLACE_BREAK_SOUND,
+    break: GLASS_BREAK_SOUND
+  },
+  [BlockType.OBSIDIAN]: {
+    place: BASIC_PLACE_BREAK_SOUND,
+    break: BASIC_PLACE_BREAK_SOUND
+  },
+  [BlockType.SNOW]: {
+    place: GRASS_PLACE_BREAK_SOUND,
+    break: GRASS_PLACE_BREAK_SOUND
+  },
+  [BlockType.SNOW_LEAVES]: {
+    place: GRASS_PLACE_BREAK_SOUND,
+    break: GLASS_BREAK_SOUND
+  },
+  [BlockType.CHEST]: {
+    place: BASIC_PLACE_BREAK_SOUND,
+    break: BASIC_PLACE_BREAK_SOUND,
+    open: CHEST_OPEN_SOUND,
+    close: CHEST_CLOSE_SOUND
+  },
+  [BlockType.CHEST_TOP]: {
+    place: BASIC_PLACE_BREAK_SOUND,
+    break: BASIC_PLACE_BREAK_SOUND
+  },
+  [BlockType.LOG_EDUCATION]: {
+    place: WOOD_PLACE_SOUND,
+    break: WOOD_BREAK_SOUND
+  },
+  [BlockType.LOG_PROFESSIONAL_EXPERIENCE]: {
+    place: WOOD_PLACE_SOUND,
+    break: WOOD_BREAK_SOUND
+  },
+  [BlockType.LOG_PERSONAL_PROJECTS]: {
+    place: WOOD_PLACE_SOUND,
+    break: WOOD_BREAK_SOUND
+  },
+  [BlockType.LOG_COMPETITIONS]: {
+    place: WOOD_PLACE_SOUND,
+    break: WOOD_BREAK_SOUND
+  },
+  [BlockType.LOG_LEADERSHIP]: {
+    place: WOOD_PLACE_SOUND,
+    break: WOOD_BREAK_SOUND
+  },
+  [BlockType.LOG_HOBBIES]: {
+    place: WOOD_PLACE_SOUND,
+    break: WOOD_BREAK_SOUND
+  },
+};
 
 export const BLOCK_TYPES = Object.values(BlockType);
 

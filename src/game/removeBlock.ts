@@ -10,7 +10,7 @@ import toggleChest from "./toggleChest";
 
 import { getCurrentChunk, getRaycasterIntersection } from "../utils";
 
-import { BLOCK_SIZE, RAYCASTER_DISTANCE } from "../constants";
+import { BLOCK_SIZE, MAP_BLOCK_TO_SOUND, RAYCASTER_DISTANCE } from "../constants";
 import { BlockType, Chunks, Exists, InstancedMeshes, Level, Reference } from "../types";
 
 const removeBlock = (
@@ -80,11 +80,16 @@ const removeBlock = (
           toggleChest(scene, instancedMeshes, chunks, x, y, z, isChestOpen);
         } else {
           // Remove block
+          const potentialBlock = chunks[chunk][blockKey].find(block => block.y === y);
           chunks[chunk][blockKey] = chunks[chunk][blockKey].filter(block => y !== block.y || block.type === BlockType.BEDROCK);
           // Generate neighbor blocks
           if (y < topLevel.value[blockKey]) { // We don't want to generate surrounding blocks beyond the top level
             generateSurroundingBlocks(x, y, z, chunks, knownTerritory);
           }
+          
+          // Play sound of breaking block
+          (document.getElementById("basic-place-break") as HTMLAudioElement).play();
+
           // Display the chunks with the block removed
           displayChunk(scene, instancedMeshes, displayableChunks.value);
         }

@@ -12,6 +12,7 @@ import {
   CHEST_BASE_BLOCK_HEIGHT,
   CHEST_OPEN_ANGLE,
   CHEST_TOP_BLOCK_HEIGHT,
+  MAP_BLOCK_TO_SOUND,
   MAP_BLOCK_TO_TEXTURE
 } from "../constants";
 import { BlockType, Chunks, InstancedMeshes, Reference } from "../types";
@@ -62,6 +63,14 @@ const toggleChest = (
             );
   
             isChestOpen.value = !isChestOpen.value;
+          }
+
+          if (isChestOpen) {
+            console.log(MAP_BLOCK_TO_SOUND[BlockType.CHEST].close)
+            MAP_BLOCK_TO_SOUND[BlockType.CHEST].close.play();
+          } else {
+            console.log(MAP_BLOCK_TO_SOUND[BlockType.CHEST].open)
+            MAP_BLOCK_TO_SOUND[BlockType.CHEST].open.play();
           }
   
           instancedMeshes.value[BlockType.CHEST_TOP].setMatrixAt(count, matrix);

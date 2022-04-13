@@ -97,3 +97,14 @@ export interface Chest {
   coords: Coordinates;
   labelTexture: BlockType
 }
+
+export interface BlockSound {
+  place: HTMLAudioElement;
+  break: HTMLAudioElement;
+  open?: HTMLAudioElement;
+  close?: HTMLAudioElement;
+}
+
+export type MapBlockToSound = {
+  [key in BlockType]: BlockSound;
+}

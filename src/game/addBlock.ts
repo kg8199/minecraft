@@ -8,7 +8,7 @@ import { Block } from "../models";
 
 import { getCurrentBlock, getCurrentChunk, getRaycasterIntersection } from "../utils";
 
-import { BLOCK_SIZE, BLOCK_TYPES, RAYCASTER_DISTANCE } from "../constants";
+import { BLOCK_SIZE, BLOCK_TYPES, MAP_BLOCK_TO_SOUND, RAYCASTER_DISTANCE } from "../constants";
 import { Chunks, Exists, InstancedMeshes, Reference } from "../types";
 import { displayChunks } from ".";
 
@@ -76,10 +76,12 @@ const addBlock = (
     const chunk = getCurrentChunk(x, z);
     // Create new block
     const block = new Block(x, y, z, BLOCK_TYPES[currentItemIndex]);
-    console.log(block);
     // Add block to chunk
     const blockKey = `${x},${z}`;
     chunks[chunk][blockKey].push(block);
+
+    // Play sound of added block
+    new Audio("../assets/sounds/basic-place-break.mp3").play()
 
     // Add the block to the known territory database
     knownTerritory.value[`${x},${y},${z}`] = true;

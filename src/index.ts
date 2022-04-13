@@ -153,6 +153,10 @@ document.addEventListener("mousedown", event => {
   const pickaxe = document.getElementById("pickaxe");
   pickaxe.classList.add("hit");
 
+  console.log(document.getElementById("basic-place-break"));
+
+  (document.getElementById("basic-place-break") as HTMLAudioElement).play();
+
   if (isGameLocked) {
     if (event.button === 2) { // Right click
       if (canAddBlock) {
