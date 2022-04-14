@@ -68,16 +68,16 @@ export const TREE_FREQUENCY_FORREST = 1 / 10;
 export const THREE_FREQUENCY_DESERT = 1 / 40;
 
 // Sounds
-export const BASIC_PLACE_BREAK_SOUND = new Audio("../assets/sounds/basic-place-break.mp3");
-export const BUTTON_SOUND = new Audio("../assets/sounds/button.mp3");
-export const CHEST_CLOSE_SOUND = new Audio("../assets/sounds/chest-close.mp3");
-export const CHEST_OPEN_SOUND = new Audio("../assets/sounds/chest-open.mp3");
-export const DIRT_PLACE_BREAK_SOUND = new Audio("../assets/sounds/dirt-place-break.mp3");
-export const GLASS_BREAK_SOUND = new Audio("../assets/sounds/glass-break.mp3");
-export const GRASS_PLACE_BREAK_SOUND = new Audio("../assets/sounds/grass-place-break.mp3");
-export const SAND_BREAK_SOUND = new Audio("../assets/sounds/sand-break.mp3");
-export const WOOD_BREAK_SOUND = new Audio("../assets/sounds/wood-break.mp3");
-export const WOOD_PLACE_SOUND = new Audio("../assets/sounds/wood-place.mp3");
+export const BASIC_PLACE_BREAK_SOUND = "basic-place-break";
+export const BUTTON_SOUND = "button";
+export const CHEST_CLOSE_SOUND = "chest-close";
+export const CHEST_OPEN_SOUND = "chest-open";
+export const DIRT_PLACE_BREAK_SOUND = "dirt-place-break";
+export const GLASS_BREAK_SOUND = "glass-break";
+export const GRASS_PLACE_BREAK_SOUND = "grass-place-break";
+export const SAND_BREAK_SOUND = "sand-break";
+export const WOOD_BREAK_SOUND = "wood-break";
+export const WOOD_PLACE_SOUND = "wood-place";
 
 export const MAP_BLOCK_TO_SOUND: MapBlockToSound = {
   [BlockType.GRASS]: {
@@ -138,7 +138,7 @@ export const MAP_BLOCK_TO_SOUND: MapBlockToSound = {
   },
   [BlockType.SNOW_LEAVES]: {
     place: GRASS_PLACE_BREAK_SOUND,
-    break: GLASS_BREAK_SOUND
+    break: GRASS_PLACE_BREAK_SOUND
   },
   [BlockType.CHEST]: {
     place: BASIC_PLACE_BREAK_SOUND,

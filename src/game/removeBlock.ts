@@ -8,7 +8,7 @@ import displayChunk from "./displayChunks";
 import generateSurroundingBlocks from "./generateSurroundingBlocks";
 import toggleChest from "./toggleChest";
 
-import { getCurrentChunk, getRaycasterIntersection } from "../utils";
+import { getCurrentChunk, getRaycasterIntersection, playSound } from "../utils";
 
 import { BLOCK_SIZE, MAP_BLOCK_TO_SOUND, RAYCASTER_DISTANCE } from "../constants";
 import { BlockType, Chunks, Exists, InstancedMeshes, Level, Reference } from "../types";
@@ -86,9 +86,11 @@ const removeBlock = (
           if (y < topLevel.value[blockKey]) { // We don't want to generate surrounding blocks beyond the top level
             generateSurroundingBlocks(x, y, z, chunks, knownTerritory);
           }
-          
+
           // Play sound of breaking block
-          (document.getElementById("basic-place-break") as HTMLAudioElement).play();
+          if (potentialBlock) {
+            playSound(MAP_BLOCK_TO_SOUND[potentialBlock.type].break);
+          }
 
           // Display the chunks with the block removed
           displayChunk(scene, instancedMeshes, displayableChunks.value);

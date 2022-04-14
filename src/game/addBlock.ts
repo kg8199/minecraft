@@ -6,7 +6,7 @@ import { Camera, Scene } from "three";
 
 import { Block } from "../models";
 
-import { getCurrentBlock, getCurrentChunk, getRaycasterIntersection } from "../utils";
+import { getCurrentBlock, getCurrentChunk, getRaycasterIntersection, playSound } from "../utils";
 
 import { BLOCK_SIZE, BLOCK_TYPES, MAP_BLOCK_TO_SOUND, RAYCASTER_DISTANCE } from "../constants";
 import { Chunks, Exists, InstancedMeshes, Reference } from "../types";
@@ -81,7 +81,7 @@ const addBlock = (
     chunks[chunk][blockKey].push(block);
 
     // Play sound of added block
-    new Audio("../assets/sounds/basic-place-break.mp3").play()
+    playSound(MAP_BLOCK_TO_SOUND[BLOCK_TYPES[currentItemIndex]].place);
 
     // Add the block to the known territory database
     knownTerritory.value[`${x},${y},${z}`] = true;

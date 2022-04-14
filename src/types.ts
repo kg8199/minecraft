@@ -99,10 +99,10 @@ export interface Chest {
 }
 
 export interface BlockSound {
-  place: HTMLAudioElement;
-  break: HTMLAudioElement;
-  open?: HTMLAudioElement;
-  close?: HTMLAudioElement;
+  place: string;
+  break: string;
+  open?: string;
+  close?: string;
 }
 
 export type MapBlockToSound = {

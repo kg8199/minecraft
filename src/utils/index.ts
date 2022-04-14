@@ -6,3 +6,4 @@ export { default as getBlockOnTopOfPlayer } from "./getBlockOnTopOfPlayer";
 export { default as generateInstancedMeshes } from "./generateInstancedMeshes";
 export { default as getRaycasterIntersection } from "./getRaycasterIntersection";
 export { default as randRange } from "./randRange";
+export { default as playSound } from "./playSound";

@@ -65,6 +65,12 @@ Array.from(itemBar.children).forEach((value, idx) => {
   />`;
 });
 
+// If navigator is Safari, remove pickaxe (causes problems)
+if (/^((?!chrome|android).)*safari/i.test(navigator.userAgent)) {
+  let pickaxe = document.getElementById("pickaxe");
+  pickaxe.setAttribute("style", "display: none");
+}
+
 let scene = new Scene();
 scene.background = new Color(SKY_COLOR); // Change scene background
 const renderer = new WebGLRenderer();
@@ -152,10 +158,6 @@ document.addEventListener("mousedown", event => {
   // Animate the pickaxe
   const pickaxe = document.getElementById("pickaxe");
   pickaxe.classList.add("hit");
-
-  console.log(document.getElementById("basic-place-break"));
-
-  (document.getElementById("basic-place-break") as HTMLAudioElement).play();
 
   if (isGameLocked) {
     if (event.button === 2) { // Right click

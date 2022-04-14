@@ -4,7 +4,7 @@
 
 import { InstancedMesh, Matrix4, Scene } from "three";
 
-import { getBlockCount } from "../utils";
+import { getBlockCount, playSound } from "../utils";
 
 import {
   BLOCK_BOX_CHEST_TOP,
@@ -61,16 +61,16 @@ const toggleChest = (
                 : block.y - BLOCK_SIZE / 2 + CHEST_BASE_BLOCK_HEIGHT + CHEST_TOP_BLOCK_HEIGHT,
               isChestOpen.value ? block.z : block.z - BLOCK_SIZE,
             );
+
+            if (isChestOpen.value) {
+              // Play close sound
+              playSound(MAP_BLOCK_TO_SOUND[BlockType.CHEST].close);
+            } else {
+              // Play open sound
+              playSound(MAP_BLOCK_TO_SOUND[BlockType.CHEST].open);
+            }
   
             isChestOpen.value = !isChestOpen.value;
-          }
-
-          if (isChestOpen) {
-            console.log(MAP_BLOCK_TO_SOUND[BlockType.CHEST].close)
-            MAP_BLOCK_TO_SOUND[BlockType.CHEST].close.play();
-          } else {
-            console.log(MAP_BLOCK_TO_SOUND[BlockType.CHEST].open)
-            MAP_BLOCK_TO_SOUND[BlockType.CHEST].open.play();
           }
   
           instancedMeshes.value[BlockType.CHEST_TOP].setMatrixAt(count, matrix);
