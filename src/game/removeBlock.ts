@@ -21,7 +21,8 @@ const removeBlock = (
   knownTerritory: Reference<Exists>,
   topLevel: Reference<Level>,
   scene: Scene,
-  isChestOpen: Reference<boolean>
+  isChestOpen: Reference<boolean>,
+  soundOn: boolean
 ) => {
   // Throw a raycast to detect which block to remove
   const intersection = getRaycasterIntersection(camera, instancedMeshes);
@@ -77,7 +78,7 @@ const removeBlock = (
       if (block) {
         if (block.type === BlockType.CHEST) {
           // If block is chest, apply function
-          toggleChest(scene, instancedMeshes, chunks, x, y, z, isChestOpen);
+          toggleChest(scene, instancedMeshes, chunks, x, y, z, isChestOpen, soundOn);
         } else {
           // Remove block
           const potentialBlock = chunks[chunk][blockKey].find(block => block.y === y);
@@ -89,7 +90,7 @@ const removeBlock = (
 
           // Play sound of breaking block
           if (potentialBlock) {
-            playSound(MAP_BLOCK_TO_SOUND[potentialBlock.type].break);
+            soundOn && playSound(MAP_BLOCK_TO_SOUND[potentialBlock.type].break);
           }
 
           // Display the chunks with the block removed

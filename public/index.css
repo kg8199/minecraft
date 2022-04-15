@@ -26,6 +26,7 @@ body {
 #crosshair {
   position: absolute;
   width: 1.5%;
+  z-index: 10;
 }
 
 #pickaxe {
@@ -38,6 +39,7 @@ body {
   margin-bottom: -150px;
   margin-right: -150px;
   transform: rotateY(140deg) rotateZ(-70deg);
+  z-index: 10;
 }
 
 .hit {
@@ -56,6 +58,7 @@ body {
   display: flex;
   height: 60px;
   width: 600px;
+  z-index: 10;
 }
 
 #item-bar > div {
@@ -66,9 +69,34 @@ body {
   justify-content: center;
 }
 
+#item-bar > div {
+  position: relative;
+}
+
+#item-bar > div > div {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  font-size: 1rem;
+}
+
 #item-bar > div > img {
   height: 45px;
   width: 45px;
+}
+
+.option-buttons {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  margin: 10px;
+  width: 40%;
+  z-index: 10;
+}
+
+.option-buttons > div {
+  margin-left: 10px;
 }
 
 .button-container {
@@ -96,4 +124,40 @@ body {
 
 .button:hover {
   background-color: rgb(133, 133, 133);
+}
+
+.content {
+  flex: 1;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.mobile {
+  display: none;
+}
+
+@media screen and (max-width : 1024px) {
+  .content {
+    display: none;
+  }
+
+  .mobile {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    background-image: url(../assets/backgrounds/dirt-background.jpeg);
+    background-repeat: repeat;
+    z-index: 100;
+  }
+
+  .mobile > .button-container {
+    width: 80%;
+    margin-top: 15px;
+  }
 }

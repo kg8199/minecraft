@@ -19,7 +19,8 @@ const addBlock = (
   displayableChunks: Reference<Chunks>,
   knownTerritory: Reference<Exists>,
   scene: Scene,
-  currentItemIndex: number
+  currentItemIndex: number,
+  soundOn: boolean
 ) => {
   // Throw a raycast to detect where to place the block
   const intersection = getRaycasterIntersection(camera, instancedMeshes);
@@ -81,7 +82,7 @@ const addBlock = (
     chunks[chunk][blockKey].push(block);
 
     // Play sound of added block
-    playSound(MAP_BLOCK_TO_SOUND[BLOCK_TYPES[currentItemIndex]].place);
+    soundOn && playSound(MAP_BLOCK_TO_SOUND[BLOCK_TYPES[currentItemIndex]].place);
 
     // Add the block to the known territory database
     knownTerritory.value[`${x},${y},${z}`] = true;

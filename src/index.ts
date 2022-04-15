@@ -21,7 +21,8 @@ import {
   generateInstancedMeshes,
   getBlockOnTopOfPlayer,
   getCurrentBlock,
-  getRaycasterIntersection
+  getRaycasterIntersection,
+  playSound
 } from "./utils";
 
 import {
@@ -84,10 +85,13 @@ Array.from(itemBar.children).forEach((value, idx) => {
   }
 
   // Set the background image of the elements
-  element.innerHTML = `<img
-    src="${MAP_BLOCK_TO_PREVIEW[BLOCK_TYPES[idx]]}"
-    alt="item"
-  />`;
+  element.innerHTML = `
+    <img
+      src="${MAP_BLOCK_TO_PREVIEW[BLOCK_TYPES[idx]]}"
+      alt="item"
+    />
+    <div>${idx + 1}</div>
+  `;
 });
 
 // If navigator is Safari, remove pickaxe (causes problems)
@@ -121,6 +125,7 @@ let currentBiomeCount: Reference<number> = { value: 0 }; // How many chunks of t
 let currentAmplitude: Reference<number> = { value: INITIAL_AMPLITUDE }; // The current amplitude of the biome
 let isChestOpen: Reference<boolean> = { value: false };
 let initialDisplay: Reference<boolean> = { value: false };
+let soundOn: Reference<boolean> = { value: false };
 
 // Create a chunk of mesh that will be sent to the GPU without having to send the mesh every single time we display the
 // block. InstancedMesh will allow us to limit interactions between CPU and GPU, and therefore, improve performance.
@@ -132,7 +137,30 @@ let instancedMeshes: Reference<InstancedMeshes> = {
 renderer.setSize(window.innerWidth, window.innerHeight);
 
 // Add the renderer to our page
-document.body.appendChild(renderer.domElement);
+document.getElementById("game").appendChild(renderer.domElement);
+
+// Manage menu buttons
+let exitButton = document.getElementById("exit-button");
+let soundButton = document.getElementById("sound-button");
+soundButton.innerHTML = `<div class="button">Sound: ${soundOn.value ? "On" : "Off"}</div>`;
+
+exitButton.onclick = (e) => {
+  e.stopPropagation();
+  e.cancelBubble = true;
+
+  playSound("button-click");
+
+  soundButton.innerHTML = `<div class="button">Sound: ${soundOn.value ? "On" : "Off"}</div>`;
+};
+soundButton.onclick = (e) => {
+  e.stopPropagation();
+  e.cancelBubble = true;
+
+  soundOn.value = !soundOn.value;
+  playSound("button-click");
+
+  soundButton.innerHTML = `<div class="button">Sound: ${soundOn.value ? "On" : "Off"}</div>`;
+};
 
 // Setup camera - User POV
 let camera = new PerspectiveCamera(
@@ -180,11 +208,11 @@ document.addEventListener("keydown", (event: KeyboardEvent) => {
 
 // Detect mouse event
 document.addEventListener("mousedown", event => {
-  // Animate the pickaxe
-  const pickaxe = document.getElementById("pickaxe");
-  pickaxe.classList.add("hit");
-
   if (isGameLocked) {
+    // Animate the pickaxe
+    const pickaxe = document.getElementById("pickaxe");
+    pickaxe.classList.add("hit");
+
     if (event.button === 2) { // Right click
       if (canAddBlock) {
         addBlock(
@@ -194,7 +222,8 @@ document.addEventListener("mousedown", event => {
           displayableChunks,
           knownTerritory,
           scene,
-          currentItemIndex
+          currentItemIndex,
+          soundOn.value
         );
         canAddBlock = false;
       }
@@ -208,7 +237,8 @@ document.addEventListener("mousedown", event => {
           knownTerritory,
           topLevel,
           scene,
-          isChestOpen
+          isChestOpen,
+          soundOn.value
         );
         canRemoveBlock = false;
       }

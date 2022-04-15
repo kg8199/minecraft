@@ -24,7 +24,8 @@ const toggleChest = (
   x: number,
   y: number,
   z: number,
-  isChestOpen: Reference<boolean>
+  isChestOpen: Reference<boolean>,
+  soundOn: boolean
 ) => {
   // Remove top chest mesh from scene
   scene.remove(instancedMeshes.value[BlockType.CHEST_TOP]);
@@ -64,10 +65,10 @@ const toggleChest = (
 
             if (isChestOpen.value) {
               // Play close sound
-              playSound(MAP_BLOCK_TO_SOUND[BlockType.CHEST].close);
+              soundOn && playSound(MAP_BLOCK_TO_SOUND[BlockType.CHEST].close);
             } else {
               // Play open sound
-              playSound(MAP_BLOCK_TO_SOUND[BlockType.CHEST].open);
+              soundOn && playSound(MAP_BLOCK_TO_SOUND[BlockType.CHEST].open);
             }
   
             isChestOpen.value = !isChestOpen.value;
