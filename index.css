@@ -1,6 +1,6 @@
 @font-face { 
   font-family: minecraft;
-  src: url(/assets/fonts/MinecraftRegular-Bmg3.otf);
+  src: url(./assets/fonts/MinecraftRegular-Bmg3.otf);
 }
 
 a {
@@ -268,7 +268,7 @@ body {
     text-align: center;
     align-items: center;
     justify-content: center;
-    background-image: url(/assets/backgrounds/dirt-background.jpeg);
+    background-image: url(./assets/backgrounds/dirt-background.jpeg);
     background-repeat: repeat;
     z-index: 100;
   }
