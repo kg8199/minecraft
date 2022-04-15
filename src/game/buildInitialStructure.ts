@@ -52,7 +52,7 @@ const buildInitialStructure = (chunks: Chunks, minX: number, maxX: number, minZ:
     const { x, y, z } = CHESTS[i].coords;
 
     let chunk = getCurrentChunk(x, z);
-    chunks[chunk][`${x},${z}`].push(new Block(x, y, z, BlockType.CHEST));
+    chunks[chunk][`${x},${z}`].push(new Block(x, y, z, BlockType.CHEST, CHESTS[i].modalId));
 
     chunk = getCurrentChunk(x+BLOCK_SIZE, z);
     chunks[chunk][`${x+BLOCK_SIZE},${z}`].push(new Block(x + BLOCK_SIZE, y, z, CHESTS[i].labelTexture));

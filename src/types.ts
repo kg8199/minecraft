@@ -95,7 +95,8 @@ export type Biomes = {
 
 export interface Chest {
   coords: Coordinates;
-  labelTexture: BlockType
+  labelTexture: BlockType;
+  modalId: string;
 }
 
 export interface BlockSound {

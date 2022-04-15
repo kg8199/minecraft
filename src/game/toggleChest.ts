@@ -15,7 +15,7 @@ import {
   MAP_BLOCK_TO_SOUND,
   MAP_BLOCK_TO_TEXTURE
 } from "../constants";
-import { BlockType, Chunks, InstancedMeshes, Reference } from "../types";
+import { BlockType, Chunks, Coordinates, InstancedMeshes, Reference } from "../types";
 
 const toggleChest = (
   scene: Scene,
@@ -25,7 +25,9 @@ const toggleChest = (
   y: number,
   z: number,
   isChestOpen: Reference<boolean>,
-  soundOn: boolean
+  soundOn: boolean,
+  currentModal: Reference<string | null>,
+  currentChest: Reference<Coordinates | null>
 ) => {
   // Remove top chest mesh from scene
   scene.remove(instancedMeshes.value[BlockType.CHEST_TOP]);
@@ -69,6 +71,16 @@ const toggleChest = (
             } else {
               // Play open sound
               soundOn && playSound(MAP_BLOCK_TO_SOUND[BlockType.CHEST].open);
+
+              // Add the current chest as a reference
+              currentChest.value = { x, y, z };
+
+              // Open the modal
+              currentModal.value = block.modalId;
+
+              let modal = document.getElementById(currentModal.value);
+              modal.setAttribute("style", "display: block;");
+              document.exitPointerLock();
             }
   
             isChestOpen.value = !isChestOpen.value;

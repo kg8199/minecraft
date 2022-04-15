@@ -728,10 +728,14 @@ export const BIOMES: Biomes = {
 };
 
 export const CHESTS: Chest[] = [
-  { coords: { x: -20, y: 5, z: -40 }, labelTexture: BlockType.LOG_LEADERSHIP },
-  { coords: { x: 20, y: 5, z: -40 }, labelTexture: BlockType.LOG_HOBBIES },
-  { coords: { x: 0, y: 5, z: -40 }, labelTexture: BlockType.LOG_COMPETITIONS },
-  { coords: { x: -10, y: 5, z: -25 }, labelTexture: BlockType.LOG_PERSONAL_PROJECTS },
-  { coords: { x: 10, y: 5, z: -25 }, labelTexture: BlockType.LOG_EDUCATION },
-  { coords: { x: 0, y: 5, z: -10 }, labelTexture: BlockType.LOG_PROFESSIONAL_EXPERIENCE },
+  { coords: { x: -20, y: 5, z: -40 }, labelTexture: BlockType.LOG_LEADERSHIP, modalId: "leadership-modal" },
+  { coords: { x: 20, y: 5, z: -40 }, labelTexture: BlockType.LOG_HOBBIES, modalId: "hobbies-modal" },
+  { coords: { x: 0, y: 5, z: -40 }, labelTexture: BlockType.LOG_COMPETITIONS, modalId: "competitions-modal" },
+  { coords: { x: -10, y: 5, z: -25 }, labelTexture: BlockType.LOG_PERSONAL_PROJECTS, modalId: "personal-projects-modal" },
+  { coords: { x: 10, y: 5, z: -25 }, labelTexture: BlockType.LOG_EDUCATION, modalId: "education-modal" },
+  {
+    coords: { x: 0, y: 5, z: -10 },
+    labelTexture: BlockType.LOG_PROFESSIONAL_EXPERIENCE,
+    modalId: "professional-experience-modal"
+  },
 ];

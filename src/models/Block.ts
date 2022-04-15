@@ -10,15 +10,18 @@ class Block {
   y: number;
   z: number;
 
+  // Modal
+  modalId: string;
+
   // Texture of the block (grass, stone, dirt...)
   type: BlockType;
 
-  public constructor(x: number, y: number, z: number, type: BlockType) {
+  public constructor(x: number, y: number, z: number, type: BlockType, modalId: string = "") {
     this.x = x;
     this.y = y;
     this.z = z;
     this.type = type;
-
+    this.modalId = modalId;
   }
 }
 

@@ -11,7 +11,7 @@ import toggleChest from "./toggleChest";
 import { getCurrentChunk, getRaycasterIntersection, playSound } from "../utils";
 
 import { BLOCK_SIZE, MAP_BLOCK_TO_SOUND, RAYCASTER_DISTANCE } from "../constants";
-import { BlockType, Chunks, Exists, InstancedMeshes, Level, Reference } from "../types";
+import { BlockType, Chunks, Coordinates, Exists, InstancedMeshes, Level, Reference } from "../types";
 
 const removeBlock = (
   camera: Camera,
@@ -22,7 +22,9 @@ const removeBlock = (
   topLevel: Reference<Level>,
   scene: Scene,
   isChestOpen: Reference<boolean>,
-  soundOn: boolean
+  soundOn: boolean,
+  currentModal: Reference<string | null>,
+  currentChest: Reference<Coordinates | null>
 ) => {
   // Throw a raycast to detect which block to remove
   const intersection = getRaycasterIntersection(camera, instancedMeshes);
@@ -78,7 +80,7 @@ const removeBlock = (
       if (block) {
         if (block.type === BlockType.CHEST) {
           // If block is chest, apply function
-          toggleChest(scene, instancedMeshes, chunks, x, y, z, isChestOpen, soundOn);
+          toggleChest(scene, instancedMeshes, chunks, x, y, z, isChestOpen, soundOn, currentModal, currentChest);
         } else {
           // Remove block
           const potentialBlock = chunks[chunk][blockKey].find(block => block.y === y);

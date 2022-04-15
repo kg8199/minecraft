@@ -15,7 +15,8 @@ import {
   cleanTerrain,
   displayChunks,
   removeBlock,
-  updateChunks
+  updateChunks,
+  toggleChest
 } from "./game";
 import {
   generateInstancedMeshes,
@@ -53,6 +54,7 @@ import {
   Biome,
   BiomeType,
   Chunks,
+  Coordinates,
   Exists,
   InstancedMeshes,
   Level,
@@ -126,6 +128,8 @@ let currentAmplitude: Reference<number> = { value: INITIAL_AMPLITUDE }; // The c
 let isChestOpen: Reference<boolean> = { value: false };
 let initialDisplay: Reference<boolean> = { value: false };
 let soundOn: Reference<boolean> = { value: false };
+let currentModal: Reference<string | null> = { value: null }; // The modal we're currently showing
+let currentChest: Reference<Coordinates | null> = { value: null }; // The chest that is currently opened
 
 // Create a chunk of mesh that will be sent to the GPU without having to send the mesh every single time we display the
 // block. InstancedMesh will allow us to limit interactions between CPU and GPU, and therefore, improve performance.
@@ -175,6 +179,33 @@ const controls = new PointerLockControls(camera, document.body); // Link the Con
 document.body.addEventListener("click", () => {
   controls.lock(); // Lock the camera on click
 });
+
+// Setup close buttons from modals
+const closeButtons = document.getElementsByClassName("close_button");
+for (let i = 0; i < closeButtons.length; i++) {
+  (closeButtons[i] as HTMLElement).onclick = () => {
+    // Disable the modal we're currently on
+    document.getElementById(currentModal.value).setAttribute("style", "display: none;");
+    // Close chest
+    toggleChest(
+      scene,
+      instancedMeshes,
+      chunks,
+      currentChest.value.x,
+      currentChest.value.y,
+      currentChest.value.z,
+      isChestOpen,
+      soundOn.value,
+      currentModal,
+      currentChest
+    );
+    // Play sound
+    soundOn.value && playSound("button-click");
+    // Focus back on screen
+    controls.lock();
+    canRemoveBlock = true;
+  };
+}
 
 // Listener that resizes the renderer when the window is resized
 window.addEventListener("resize", () => {
@@ -238,7 +269,9 @@ document.addEventListener("mousedown", event => {
           topLevel,
           scene,
           isChestOpen,
-          soundOn.value
+          soundOn.value,
+          currentModal,
+          currentChest
         );
         canRemoveBlock = false;
       }
