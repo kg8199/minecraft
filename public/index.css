@@ -1,3 +1,13 @@
+@font-face { 
+  font-family: minecraft;
+  src: url(../assets/fonts/MinecraftRegular-Bmg3.otf);
+}
+
+a {
+  color: inherit;
+  text-decoration: none; /* no underline */
+}
+
 body {
   margin: 0;
   background-color: black;
@@ -8,6 +18,9 @@ body {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  font-family: minecraft;
+  font-size: 1.5rem;
+  color: white;
 }
 
 #crosshair {
@@ -56,4 +69,31 @@ body {
 #item-bar > div > img {
   height: 45px;
   width: 45px;
+}
+
+.button-container {
+  width: 30%;
+  height: 40px;
+  border: 2px solid black;
+  border-right: 6px solid black;
+  border-bottom: 7px solid black;
+}
+
+.button {
+  height: 100%;
+  width: 100%;;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 3px solid rgb(89, 89, 89);
+  border-right: 2px solid rgb(89, 89, 89);
+  border-top: 2px solid rgb(162, 162, 162);
+  border-left: 2px solid rgb(162, 162, 162);
+  background-color: rgb(104, 104, 104);
+  cursor: pointer;
+  text-align: center;
+}
+
+.button:hover {
+  background-color: rgb(133, 133, 133);
 }

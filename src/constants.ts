@@ -4,7 +4,10 @@
 
 import { BoxGeometry, MeshBasicMaterial, TextureLoader } from "three";
 
-import { Biomes, BiomeType, BlockSound, BlockType, Chest, MapBlockToSound, MapBlockTypeToTexture } from "./types";
+import { Biomes, BiomeType, BlockType, Chest, MapBlockToSound, MapBlockTypeToTexture } from "./types";
+
+// DOM
+export const ITEM_COUNT = 9;
 
 // Camera
 export const CAMERA_FIELD_OF_VIEW = 75;
@@ -66,6 +69,11 @@ export const BIOME_SIZE = RENDER_DISTANCE ** 2; // How large should a biome be b
 export const TREE_FREQUENCY_PLAIN = 1 / 1000;
 export const TREE_FREQUENCY_FORREST = 1 / 10;
 export const THREE_FREQUENCY_DESERT = 1 / 40;
+export const MIN_INITIAL_TERRAIN_X = -50;
+export const MAX_INITIAL_TERRAIN_X = 50;
+export const MIN_INITIAL_TERRAIN_Z = -70;
+export const MAX_INITIAL_TERRAIN_Z = 30;
+export const INITIAL_TERRAIN_LEVEL = 0;
 
 // Sounds
 export const BASIC_PLACE_BREAK_SOUND = "basic-place-break";

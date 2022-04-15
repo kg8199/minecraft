@@ -9,7 +9,14 @@ import {
 } from "three";
 
 import { Noise, PointerLockControls } from "./models";
-import { addBlock, buildInitialStructure, cleanTerrain, displayChunks, removeBlock, updateChunks } from "./game";
+import {
+  addBlock,
+  buildInitialStructure,
+  cleanTerrain,
+  displayChunks,
+  removeBlock,
+  updateChunks
+} from "./game";
 import {
   generateInstancedMeshes,
   getBlockOnTopOfPlayer,
@@ -33,9 +40,23 @@ import {
   MAP_BLOCK_TO_PREVIEW,
   BLOCK_TYPES,
   BIOMES,
-  INITIAL_AMPLITUDE
+  INITIAL_AMPLITUDE,
+  MIN_INITIAL_TERRAIN_X,
+  MAX_INITIAL_TERRAIN_X,
+  MIN_INITIAL_TERRAIN_Z,
+  MAX_INITIAL_TERRAIN_Z,
+  INITIAL_TERRAIN_LEVEL,
+  ITEM_COUNT
 } from "./constants";
-import { Biome, BiomeType, Chunks, Exists, InstancedMeshes, Level, Reference } from "./types";
+import {
+  Biome,
+  BiomeType,
+  Chunks,
+  Exists,
+  InstancedMeshes,
+  Level,
+  Reference
+} from "./types";
 
 let isGameLocked = false; // If the game is locked
 
@@ -47,6 +68,10 @@ cursor.style.top = (0.5 * window.innerHeight - 0.5 * cursor.clientHeight).toStri
 // Manage the item bar
 let currentItemIndex = 0; // The current block we are using
 let itemBar = document.getElementById("item-bar");
+
+for (let i = 0; i < ITEM_COUNT; i++) {
+  itemBar.appendChild(document.createElement("div"));
+}
 
 Array.from(itemBar.children).forEach((value, idx) => {
   const element = value as HTMLElement;
@@ -304,20 +329,20 @@ const update = () => {
 
     cleanTerrain(
       chunks,
-      -50,
-      50,
-      -70,
-      30,
-      -5
+      MIN_INITIAL_TERRAIN_X,
+      MAX_INITIAL_TERRAIN_X,
+      MIN_INITIAL_TERRAIN_Z,
+      MAX_INITIAL_TERRAIN_Z,
+      INITIAL_TERRAIN_LEVEL - BLOCK_SIZE
     );
 
     buildInitialStructure(
       chunks,
-      -50,
-      50,
-      -70,
-      30,
-      0
+      MIN_INITIAL_TERRAIN_X,
+      MAX_INITIAL_TERRAIN_X,
+      MIN_INITIAL_TERRAIN_Z,
+      MAX_INITIAL_TERRAIN_Z,
+      INITIAL_TERRAIN_LEVEL
     );
 
     displayChunks(scene, instancedMeshes, displayableChunks.value);
