@@ -1,6 +1,6 @@
 let musicOn = false; // If we play music or sound
-let buttonClick = new Audio("../assets/sounds/button.wav"); // Click sound
-let music = new Audio("../assets/sounds/minecraft.mp3"); // Game music
+let buttonClick = new Audio("./assets/sounds/button.wav"); // Click sound
+let music = new Audio("./assets/sounds/minecraft.mp3"); // Game music
 music.loop = true;
 
 let musicButton = document.getElementById("music-button");
